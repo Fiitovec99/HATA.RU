@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/listFlatsFragment">
+
+    <fragment
+        android:id="@+id/listFlatsFragment"
+        android:name="com.example.hataru.presentation.fragments.ListFlatsFragment"
+        android:label="fragment_list_flats"
+        tools:layout="@layout/fragment_list_flats" />
+    <fragment
+        android:id="@+id/mapFragment"
+        android:name="com.example.hataru.presentation.fragments.MapFragment"
+        android:label="fragment_map"
+        tools:layout="@layout/fragment_map" />
+    <fragment
+        android:id="@+id/favoriteFlatFragment"
+        android:name="com.example.hataru.presentation.fragments.FavoriteFlatFragment"
+        android:label="fragment_favorite_flat"
+        tools:layout="@layout/fragment_favorite_flat" />
+    <fragment
+        android:id="@+id/menuFragment"
+        android:name="com.example.hataru.presentation.fragments.MenuFragment"
+        android:label="fragment_menu"
+        tools:layout="@layout/fragment_menu" />
+</navigation>
