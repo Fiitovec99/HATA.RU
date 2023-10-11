@@ -1,4 +1,4 @@
-package com.example.hataru.presentation.fragments
+package com.example.hataru.presentation
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
