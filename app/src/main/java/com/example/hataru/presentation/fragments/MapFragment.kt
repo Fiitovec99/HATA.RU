@@ -1,4 +1,4 @@
-package com.example.hataru.presentation
+package com.example.hataru.presentation.fragments
 
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
@@ -10,11 +10,11 @@ import com.example.hataru.R
 
 class MapFragment : Fragment() {
 
-    companion object {
-        fun newInstance() = MapFragment()
-    }
-
-    private lateinit var viewModel: MapViewModel
+//    companion object {
+//        fun newInstance() = MapFragment()
+//    }
+//
+//    private lateinit var viewModel: MapViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

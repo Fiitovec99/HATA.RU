@@ -1,4 +1,4 @@
-package com.example.hataru.presentation
+package com.example.hataru.presentation.fragments
 
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
@@ -10,11 +10,11 @@ import com.example.hataru.R
 
 class ListFlatsFragment : Fragment() {
 
-    companion object {
-        fun newInstance() = ListFlatsFragment()
-    }
-
-    private lateinit var viewModel: ListFlatsViewModel
+//    companion object {
+//        fun newInstance() = ListFlatsFragment()
+//    }
+//
+//    private lateinit var viewModel: ListFlatsViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
