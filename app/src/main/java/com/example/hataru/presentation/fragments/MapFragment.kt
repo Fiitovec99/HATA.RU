@@ -22,6 +22,7 @@ import com.example.hataru.presentation.MainActivity
 import com.example.hataru.presentation.forMap.GeometryProvider
 import com.example.hataru.presentation.forMap.PlacemarkType
 import com.example.hataru.presentation.forMap.PlacemarkUserData
+import com.example.hataru.presentation.showAlertDialog
 import com.example.hataru.presentation.showToast
 
 import com.yandex.mapkit.Animation
@@ -61,8 +62,14 @@ class MapFragment : Fragment() {
 //    companion object {
 //        fun newInstance() = MapFragment()
 //    }
-//
+//@JvmStatic
+//    fun newInstance() =
+//        MapFragment().apply {
+//            arguments = Bundle().apply {
+//            }
+//        }
 //    private lateinit var viewModel: MapViewModel
+
     private var savedLatLng: Point? = null // переменная для сохранения координат карты
 
 
@@ -75,19 +82,15 @@ class MapFragment : Fragment() {
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
             if (isGranted) {
                 showMyCurrentLocation()
-            } else {   //TODO сделать showAlertDialog
-                val longText = "Вы не дали доступ к геолокации,поменяйте его в настроках приложения!"
-                val alertDialog = AlertDialog.Builder(activity as AppCompatActivity)
-                    .setMessage(longText)
-                    .setPositiveButton("ОК") { dialog, _ -> dialog.dismiss() }
-                    .create()
-                alertDialog.show()
+            } else {
+                showAlertDialog(activity as AppCompatActivity, "Вы не дали доступ к геолокации,поменяйте его в настроках приложения!")
             }
         }
 
     private lateinit var collection: MapObjectCollection
     private lateinit var clasterizedCollection: ClusterizedPlacemarkCollection
-    private var isShowGeometryOnMap = true
+
+
     private val mapWindowSizeChangedListener = SizeChangedListener { _, _, _ ->
         updateFocusRect()
     }
@@ -130,39 +133,11 @@ class MapFragment : Fragment() {
         showToast("Clicked on cluster with ${it.size} items")
         true
     }
-    private val geometryVisibilityVisitor = object : MapObjectVisitor {
-        override fun onPlacemarkVisited(placemark: PlacemarkMapObject) = Unit
-
-        override fun onPolylineVisited(polyline: PolylineMapObject) {
-            polyline.isVisible = isShowGeometryOnMap
-        }
-
-        override fun onPolygonVisited(polygon: PolygonMapObject) {
-            polygon.isVisible = isShowGeometryOnMap
-        }
-
-        override fun onCircleVisited(circle: CircleMapObject) {
-            circle.isVisible = isShowGeometryOnMap
-        }
-
-        override fun onCollectionVisitStart(p0: MapObjectCollection): Boolean = true
-        override fun onCollectionVisitEnd(p0: MapObjectCollection) = Unit
-        override fun onClusterizedCollectionVisitStart(p0: ClusterizedPlacemarkCollection): Boolean =
-            true
-
-        override fun onClusterizedCollectionVisitEnd(p0: ClusterizedPlacemarkCollection) = Unit
-    }
 
     private val singlePlacemarkTapListener = MapObjectTapListener { _, _ ->
         showToast("Clicked the placemark with composite icon")
         true
     }
-    private val animatedPlacemarkTapListener = MapObjectTapListener { _, _ ->
-        showToast("Clicked the animated placemark")
-        true
-    }
-
-
 
 
 
@@ -178,23 +153,23 @@ class MapFragment : Fragment() {
     }
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-//        if(savedInstanceState != null && !savedInstanceState.isEmpty) {
-//            savedInstanceState?.let {
-//                val latitude = it.getDouble(LATITUDE_KEY, 0.0)
-//                val longitude = it.getDouble(LONGITUDE_KEY, 0.0)
-//                mapView.map.move(
-//                    CameraPosition(Point(latitude, longitude), 14.0f, 0.0f, 0.0f),
-//                    Animation(Animation.Type.SMOOTH, 0f),
-//                    null
-//                )
-//            }}
-//        else{
-//            if(isLocationEnabled(activity as AppCompatActivity)){
-//                showMyCurrentLocation()
-//            }else{
-//                showRostovLocation()
-//            }
-//        }
+        if((savedInstanceState != null && !savedInstanceState.isEmpty)) {
+            savedInstanceState?.let {
+                val latitude = it.getDouble(LATITUDE_KEY, 0.0)
+                val longitude = it.getDouble(LONGITUDE_KEY, 0.0)
+                mapView.map.move(
+                    CameraPosition(Point(latitude, longitude), 14.0f, 0.0f, 0.0f),
+                    Animation(Animation.Type.SMOOTH, 0f),
+                    null
+                )
+            }}
+        else{
+            if(isLocationEnabled(activity as AppCompatActivity)){
+                showMyCurrentLocation()
+            }else{
+                showRostovLocation()
+            }
+        }
         }
 
 
@@ -223,7 +198,7 @@ class MapFragment : Fragment() {
         clasterizedCollection = collection.addClusterizedPlacemarkCollection(clusterListener)
         mapView.mapWindow.addSizeChangedListener(mapWindowSizeChangedListener)
         updateFocusRect()
-        mapView.map.move(GeometryProvider.startPosition)
+
 
 
         // Add pins to the clusterized collection
@@ -263,7 +238,6 @@ class MapFragment : Fragment() {
         val placemark = collection.addPlacemark(GeometryProvider.compositeIconPoint).apply {
             addTapListener(singlePlacemarkTapListener)
             // Set text near the placemark with the custom TextStyle
-
             setText(
                 "Special place",
                 TextStyle().apply {
@@ -322,7 +296,7 @@ class MapFragment : Fragment() {
 
     private fun showRostovLocation() {
         mapView.map.move(
-            CameraPosition(Point(47.222078, 39.720358), 14.0f, 0.0f, 0.0f),
+            GeometryProvider.startPosition,
             Animation(Animation.Type.SMOOTH, 0f),
             null
         )
@@ -350,7 +324,7 @@ class MapFragment : Fragment() {
     }
 
     private fun showMyLocationIconOnMap(position: Point) {
-        mapView.map.mapObjects.clear()
+        //mapView.map.mapObjects.clear()  TODO
 
         val icon = mapView.map.mapObjects.addPlacemark(position)
         //icon.setIcon(ImageProvider.fromResource(activity as AppCompatActivity, R.drawable.location_icon48dp))
@@ -374,7 +348,6 @@ class MapFragment : Fragment() {
         super.onStop()
     }
 
-
     override fun onStart() {
         super.onStart()
         MapKitFactory.getInstance().onStart()
@@ -382,21 +355,11 @@ class MapFragment : Fragment() {
         locationClickListener()
     }
 
-
-
     private fun initializeMap() {
         MapKitFactory.initialize(requireActivity() as MainActivity)
     }
 
-    companion object {
 
-        @JvmStatic
-        fun newInstance() =
-            MapFragment().apply {
-                arguments = Bundle().apply {
-                }
-            }
-    }
     private fun updateFocusRect() {
         val horizontalMargin = 40f
         val verticalMargin = 60f
