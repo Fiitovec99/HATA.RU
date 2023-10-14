@@ -4,26 +4,36 @@ import ClusterView
 import android.Manifest
 import android.app.AlertDialog
 import android.content.Context
+import android.content.Context.LOCATION_SERVICE
 import android.content.pm.PackageManager
 import android.graphics.PointF
+import android.location.LocationManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import android.widget.ImageView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.example.hataru.R
 
 import com.example.hataru.databinding.FragmentMapBinding
 import com.example.hataru.presentation.MainActivity
 import com.example.hataru.presentation.forMap.GeometryProvider
+
 import com.example.hataru.presentation.forMap.PlacemarkType
 import com.example.hataru.presentation.forMap.PlacemarkUserData
+import com.example.hataru.presentation.isLocationEnabled
 import com.example.hataru.presentation.showAlertDialog
 import com.example.hataru.presentation.showToast
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialog
 
 import com.yandex.mapkit.Animation
 import com.yandex.mapkit.MapKitFactory
@@ -59,16 +69,6 @@ private const val CLUSTER_RADIUS = 60.0
 private const val CLUSTER_MIN_ZOOM = 15
 class MapFragment : Fragment() {
 
-//    companion object {
-//        fun newInstance() = MapFragment()
-//    }
-//@JvmStatic
-//    fun newInstance() =
-//        MapFragment().apply {
-//            arguments = Bundle().apply {
-//            }
-//        }
-//    private lateinit var viewModel: MapViewModel
 
     private var savedLatLng: Point? = null // переменная для сохранения координат карты
 
@@ -78,6 +78,9 @@ class MapFragment : Fragment() {
     private lateinit var imageLocation: ImageView
     private val LATITUDE_KEY : String = "LATITUDE"
     private val LONGITUDE_KEY : String = "LONGITUDE"
+    private var currentLatutude : Double ? = null
+    private var currentLongitude : Double ?=null
+
     private val requestPermissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
             if (isGranted) {
@@ -94,9 +97,10 @@ class MapFragment : Fragment() {
     private val mapWindowSizeChangedListener = SizeChangedListener { _, _, _ ->
         updateFocusRect()
     }
-    private val placemarkTapListener = MapObjectTapListener { mapObject, _ ->
-        showToast("Tapped the placemark: ${mapObject.userData}")
-        true
+    private val placemarkTapListener = MapObjectTapListener { mapObject, _ -> //TODO
+
+        showAlertDialog(activity as AppCompatActivity,"Tapped the placemark: ${mapObject.userData}")
+         true
     }
     private val pinDragListener = object : MapObjectDragListener {
         override fun onMapObjectDragStart(p0: MapObject) {
@@ -138,38 +142,32 @@ class MapFragment : Fragment() {
         showToast("Clicked the placemark with composite icon")
         true
     }
-
+    private lateinit var locationManager: LocationManager
 
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-
         // Сохраняем текущие координаты карты
         mapView?.let {
             savedLatLng = mapView.mapWindow.map.cameraPosition.target
             outState.putDouble(LATITUDE_KEY, savedLatLng?.latitude ?: 0.0)
             outState.putDouble(LONGITUDE_KEY, savedLatLng?.longitude ?: 0.0)
+
+            outState.putDouble("1", currentLatutude ?: 0.0)
+            outState.putDouble("2", currentLongitude ?: 0.0)
         }
     }
+
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        super.onViewStateRestored(savedInstanceState)
+
+
+    }
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        if((savedInstanceState != null && !savedInstanceState.isEmpty)) {
-            savedInstanceState?.let {
-                val latitude = it.getDouble(LATITUDE_KEY, 0.0)
-                val longitude = it.getDouble(LONGITUDE_KEY, 0.0)
-                mapView.map.move(
-                    CameraPosition(Point(latitude, longitude), 14.0f, 0.0f, 0.0f),
-                    Animation(Animation.Type.SMOOTH, 0f),
-                    null
-                )
-            }}
-        else{
-            if(isLocationEnabled(activity as AppCompatActivity)){
-                showMyCurrentLocation()
-            }else{
-                showRostovLocation()
-            }
-        }
+
+
         }
 
 
@@ -178,10 +176,9 @@ class MapFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentMapBinding.inflate(inflater, container, false)
-
         initializeMap()
         initImageLocation()
-
+        //locationManager =
 
 
         return binding.root
@@ -198,7 +195,6 @@ class MapFragment : Fragment() {
         clasterizedCollection = collection.addClusterizedPlacemarkCollection(clusterListener)
         mapView.mapWindow.addSizeChangedListener(mapWindowSizeChangedListener)
         updateFocusRect()
-
 
 
         // Add pins to the clusterized collection
@@ -269,6 +265,26 @@ class MapFragment : Fragment() {
             )
         }
 
+        if((savedInstanceState != null && !savedInstanceState.isEmpty)) {
+            savedInstanceState?.let {
+                showMyLocationIconOnMap(Point(it.getDouble("1"),it.getDouble("2")))
+                val latitude = it.getDouble(LATITUDE_KEY, 0.0)
+                val longitude = it.getDouble(LONGITUDE_KEY, 0.0)
+                mapView.map.move(
+                    CameraPosition(Point(latitude, longitude), 14.0f, 0.0f, 0.0f),
+                    Animation(Animation.Type.SMOOTH, 0f),
+                    null
+                )
+
+            }}
+        else{
+            if(isLocationEnabled(activity as AppCompatActivity)){
+                showMyCurrentLocation()
+            }else{
+                showRostovLocation()
+            }
+        }
+
     }
 
 
@@ -287,11 +303,7 @@ class MapFragment : Fragment() {
         }
     }
 
-    private fun isLocationEnabled(context: Context): Boolean {
-        val permission = Manifest.permission.ACCESS_FINE_LOCATION
-        val granted = PackageManager.PERMISSION_GRANTED
-        return ContextCompat.checkSelfPermission(context, permission) == granted
-    }
+
 
 
     private fun showRostovLocation() {
@@ -309,22 +321,25 @@ class MapFragment : Fragment() {
             override fun onLocationUpdated(location: Location) {
                 val currentPosition =
                     Point(location.position.latitude, location.position.longitude)
+                currentLatutude = currentPosition.latitude
+                currentLongitude = currentPosition.longitude
+
                 // Перемещение карты в текущее местоположение
                 showMyLocationIconOnMap(currentPosition)
                 mapView.map.move(
                     CameraPosition(currentPosition, 14.0f, 0.0f, 0.0f),
-                    Animation(Animation.Type.SMOOTH, 0f),
+                    Animation(Animation.Type.SMOOTH, 2f),
                     null
                 )
             }
             override fun onLocationStatusUpdated(locationStatus: LocationStatus) {
-                // Обработка обновления статуса геолокации, если требуется
+
             }
         })
     }
 
     private fun showMyLocationIconOnMap(position: Point) {
-        //mapView.map.mapObjects.clear()  TODO
+        //mapView.map.mapObjects.clear()
 
         val icon = mapView.map.mapObjects.addPlacemark(position)
         //icon.setIcon(ImageProvider.fromResource(activity as AppCompatActivity, R.drawable.location_icon48dp))

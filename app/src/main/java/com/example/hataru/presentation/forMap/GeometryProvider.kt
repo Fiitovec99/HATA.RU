@@ -1,10 +1,6 @@
 package com.example.hataru.presentation.forMap
 
-import com.yandex.mapkit.geometry.Circle
-import com.yandex.mapkit.geometry.LinearRing
 import com.yandex.mapkit.geometry.Point
-import com.yandex.mapkit.geometry.Polygon
-import com.yandex.mapkit.geometry.Polyline
 import com.yandex.mapkit.map.CameraPosition
 
 object GeometryProvider {
@@ -25,8 +21,8 @@ object GeometryProvider {
         59.937930 to 30.333767,
         59.937766 to 30.335208,
         59.938203 to 30.334316,
-        59.938607 to 30.337340,
-        59.937988 to 30.337596,
+        47.245484 to 39.761690,
+        47.245487 to 39.761691,
         47.245486 to 39.761692,
         47.218462 to 39.705831,
         47.234235 to 39.709966,
