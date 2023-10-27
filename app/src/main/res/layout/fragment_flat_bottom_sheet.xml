@@ -1,0 +1,60 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <Button
+        android:id="@+id/bottomSheetButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Button Inside Bottom Sheet" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="This is a TextView inside Bottom Sheet"
+        android:padding="16dp"
+        android:textSize="18sp" />
+
+
+    <HorizontalScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <!-- Первое изображение -->
+        <ImageView
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:src="@drawable/ic_circle"
+            android:scaleType="centerCrop"
+            android:layout_margin="8dp"/>
+
+        <!-- Второе изображение -->
+        <ImageView
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:src="@drawable/pin_green"
+            android:scaleType="centerCrop"
+            android:layout_margin="8dp"/>
+
+        <ImageView
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:src="@drawable/pin_red"
+            android:scaleType="centerCrop"
+            android:layout_margin="8dp"/>
+
+        <!-- Добавьте больше ImageView для дополнительных изображений -->
+
+    </LinearLayout>
+</HorizontalScrollView>
+</LinearLayout>

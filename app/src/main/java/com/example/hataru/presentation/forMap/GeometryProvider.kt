@@ -8,7 +8,6 @@ object GeometryProvider {
     // позиция ростова
     val startPosition =  CameraPosition(Point(47.222078, 39.720358), 14.0f, 0.0f, 0.0f)
 
-    val compositeIconPoint = Point(59.939651, 30.339902)
 
     val clusterizedPoints = listOf(
         47.225873 to 39.719055,
