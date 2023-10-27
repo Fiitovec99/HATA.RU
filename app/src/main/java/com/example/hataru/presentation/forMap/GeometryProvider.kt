@@ -9,6 +9,15 @@ object GeometryProvider {
     val startPosition =  CameraPosition(Point(47.222078, 39.720358), 14.0f, 0.0f, 0.0f)
 
 
+    fun getFlats() : List<flat>{
+        var list = mutableListOf<flat>()
+        for (i in 0..20){
+            var random = (1..3).random()
+            list.add(flat(random, clusterizedPoints[i]))
+        }
+            return list
+    }
+
     val clusterizedPoints = listOf(
         47.225873 to 39.719055,
         59.938961 to 30.328576,

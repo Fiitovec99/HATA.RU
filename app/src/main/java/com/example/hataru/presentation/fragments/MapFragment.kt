@@ -21,6 +21,7 @@ import com.example.hataru.presentation.forMap.FlatBottomSheetFragment
 import com.example.hataru.presentation.forMap.GeometryProvider
 import com.example.hataru.presentation.forMap.PlacemarkType
 import com.example.hataru.presentation.forMap.PlacemarkUserData
+import com.example.hataru.presentation.forMap.flat
 import com.example.hataru.presentation.isLocationEnabled
 import com.example.hataru.presentation.showAlertDialog
 import com.example.hataru.presentation.showToast
@@ -81,23 +82,23 @@ class MapFragment : Fragment() {
     }
     private val placemarkTapListener = MapObjectTapListener { mapObject, _ -> //TODO
 
-
-        val bottomSheetFragment = FlatBottomSheetFragment()
-        bottomSheetFragment.show(childFragmentManager, bottomSheetFragment.tag)
+        showToast(mapObject.userData.toString())
+//        val bottomSheetFragment = FlatBottomSheetFragment()
+//        bottomSheetFragment.show(childFragmentManager, bottomSheetFragment.tag)
 
          true
     }
 
+
     private val clusterListener = ClusterListener { cluster ->
-        val placemarkTypes = cluster.placemarks.map {
-            (it.userData as PlacemarkUserData).type
-        }
+
+
         // Sets each cluster appearance using the custom view
         // that shows a cluster's pins
         cluster.appearance.setView(
             ViewProvider(
                 ClusterView(activity as AppCompatActivity).apply {
-                    setData(placemarkTypes)
+                    setData(cluster.size)
                 }
             )
         )
@@ -111,11 +112,6 @@ class MapFragment : Fragment() {
         showToast("Clicked on cluster with ${it.size} items")
         true
     }
-
-
-
-    private lateinit var locationManager: LocationManager
-
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
@@ -203,7 +199,8 @@ class MapFragment : Fragment() {
 
         GeometryProvider.clusterizedPoints.forEachIndexed { index, point ->
             val type = PlacemarkType.values().random()
-            val imageProvider = placemarkTypeToImageProvider[type]!!
+//            val imageProvider = placemarkTypeToImageProvider[type]!!
+            val imageProvider = ImageProvider.fromResource(context, R.drawable.pin_green)
             clasterizedCollection.addPlacemark(
                 point,
                 imageProvider,
@@ -214,8 +211,8 @@ class MapFragment : Fragment() {
             )
                 .apply {
                     // Put any data in MapObject
-
-                    userData = PlacemarkUserData("Data_$index", type)
+                    //PlacemarkUserData("Data_$index", type)
+                    userData = flat(index,point)
                     this.addTapListener(placemarkTapListener)
                 }
         }
