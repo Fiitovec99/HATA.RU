@@ -4,7 +4,6 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.view.isVisible
 import com.example.hataru.R
-import com.example.hataru.presentation.forMap.PlacemarkType
 import com.example.hataru.presentation.forMap.flat
 
 class ClusterView(context: Context) : LinearLayout(context) {

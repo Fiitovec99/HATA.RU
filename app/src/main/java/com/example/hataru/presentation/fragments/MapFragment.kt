@@ -10,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -19,8 +20,6 @@ import com.example.hataru.databinding.FragmentMapBinding
 import com.example.hataru.presentation.MainActivity
 import com.example.hataru.presentation.forMap.FlatBottomSheetFragment
 import com.example.hataru.presentation.forMap.GeometryProvider
-import com.example.hataru.presentation.forMap.PlacemarkType
-import com.example.hataru.presentation.forMap.PlacemarkUserData
 import com.example.hataru.presentation.forMap.flat
 import com.example.hataru.presentation.isLocationEnabled
 import com.example.hataru.presentation.showAlertDialog
@@ -51,6 +50,8 @@ import com.yandex.runtime.ui_view.ViewProvider
 private const val CLUSTER_RADIUS = 60.0
 private const val CLUSTER_MIN_ZOOM = 15
 class MapFragment : Fragment() {
+
+
 
 
     private var savedLatLng: Point? = null // переменная для сохранения координат карты
@@ -90,9 +91,8 @@ class MapFragment : Fragment() {
     }
 
 
+    // слушатель отдаления кластеров
     private val clusterListener = ClusterListener { cluster ->
-
-
         // Sets each cluster appearance using the custom view
         // that shows a cluster's pins
         cluster.appearance.setView(
@@ -103,11 +103,11 @@ class MapFragment : Fragment() {
             )
         )
         cluster.appearance.zIndex = 100f
-
         cluster.addClusterTapListener(clusterTapListener)
     }
 
     // при нажатии на сборище кластеров
+    // вдруг пригодится
     private val clusterTapListener = ClusterTapListener {
         showToast("Clicked on cluster with ${it.size} items")
         true
@@ -172,7 +172,7 @@ class MapFragment : Fragment() {
     }
     override fun onDestroy() {
         super.onDestroy()
-       //TODO
+       //TODO fusedLocationClient.lastLocation
         // Освобождение других ресурсов, связанных с местоположением, если они есть
     }
 
@@ -189,18 +189,10 @@ class MapFragment : Fragment() {
         updateFocusRect()
 
 
-        // Add pins to the clusterized collection
-        val placemarkTypeToImageProvider = mapOf(
-            PlacemarkType.GREEN to ImageProvider.fromResource(activity as AppCompatActivity, R.drawable.pin_green),
-            PlacemarkType.YELLOW to ImageProvider.fromResource(activity as AppCompatActivity, R.drawable.pin_yellow),
-            PlacemarkType.RED to ImageProvider.fromResource(activity as AppCompatActivity, R.drawable.pin_red),
-        )
-
-
         GeometryProvider.clusterizedPoints.forEachIndexed { index, point ->
-            val type = PlacemarkType.values().random()
-//            val imageProvider = placemarkTypeToImageProvider[type]!!
+
             val imageProvider = ImageProvider.fromResource(context, R.drawable.pin_green)
+
             clasterizedCollection.addPlacemark(
                 point,
                 imageProvider,
@@ -212,6 +204,7 @@ class MapFragment : Fragment() {
                 .apply {
                     // Put any data in MapObject
                     //PlacemarkUserData("Data_$index", type)
+
                     userData = flat(index,point)
                     this.addTapListener(placemarkTapListener)
                 }
