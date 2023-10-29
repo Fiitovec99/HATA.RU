@@ -23,6 +23,7 @@ import androidx.fragment.app.Fragment
 import com.example.hataru.R
 import com.example.hataru.databinding.FragmentMapBinding
 import com.example.hataru.presentation.MainActivity
+import com.example.hataru.presentation.forMap.FlatBottomSheetFragment
 import com.example.hataru.presentation.forMap.GeometryProvider
 import com.example.hataru.presentation.forMap.flat
 import com.example.hataru.presentation.isLocationEnabled
@@ -90,8 +91,8 @@ class MapFragment : Fragment() {
     private val placemarkTapListener = MapObjectTapListener { mapObject, _ -> //TODO
 
         showToast(mapObject.userData.toString())
-//        val bottomSheetFragment = FlatBottomSheetFragment()
-//        bottomSheetFragment.show(childFragmentManager, bottomSheetFragment.tag)
+        val bottomSheetFragment = FlatBottomSheetFragment()
+        bottomSheetFragment.show(childFragmentManager, bottomSheetFragment.tag)
 
         true
     }
@@ -115,7 +116,18 @@ class MapFragment : Fragment() {
     // при нажатии на сборище кластеров
     // вдруг пригодится
     private val clusterTapListener = ClusterTapListener {
-        showToast("Clicked on cluster with ${it.size} items")
+
+        val targetPoint = it.appearance.geometry
+        val zoom = 15.0f // Масштаб, на который увеличиваем карту
+
+        // Вычисляем среднюю точку всех маркеров
+        mapView.map.move(
+            CameraPosition(targetPoint, zoom, 0.0f, 0.0f),
+            Animation(Animation.Type.SMOOTH, 1f),
+            null
+        )
+        
+        //showToast("Clicked on cluster with ${it.size} items")
         true
     }
 
