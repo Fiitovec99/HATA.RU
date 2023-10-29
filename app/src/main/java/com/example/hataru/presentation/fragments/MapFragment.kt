@@ -3,22 +3,26 @@ package com.example.hataru.presentation.fragments
 import ClusterView
 import android.Manifest
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Paint
 import android.graphics.PointF
-import android.location.LocationManager
+import android.graphics.Rect
+import android.graphics.RectF
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.example.hataru.R
 import com.example.hataru.databinding.FragmentMapBinding
 import com.example.hataru.presentation.MainActivity
-import com.example.hataru.presentation.forMap.FlatBottomSheetFragment
 import com.example.hataru.presentation.forMap.GeometryProvider
 import com.example.hataru.presentation.forMap.flat
 import com.example.hataru.presentation.isLocationEnabled
@@ -49,9 +53,8 @@ import com.yandex.runtime.ui_view.ViewProvider
 
 private const val CLUSTER_RADIUS = 60.0
 private const val CLUSTER_MIN_ZOOM = 15
+
 class MapFragment : Fragment() {
-
-
 
 
     private var savedLatLng: Point? = null // переменная для сохранения координат карты
@@ -60,8 +63,8 @@ class MapFragment : Fragment() {
     private lateinit var binding: FragmentMapBinding
     private lateinit var mapView: MapView
     private lateinit var imageLocation: ImageView
-    private val LATITUDE_KEY : String = "LATITUDE"
-    private val LONGITUDE_KEY : String = "LONGITUDE"
+    private val LATITUDE_KEY: String = "LATITUDE"
+    private val LONGITUDE_KEY: String = "LONGITUDE"
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
 
@@ -70,7 +73,10 @@ class MapFragment : Fragment() {
             if (isGranted) {
                 showMyCurrentLocation()
             } else {
-                showAlertDialog(activity as AppCompatActivity, "Вы не дали доступ к геолокации,поменяйте его в настроках приложения!")
+                showAlertDialog(
+                    activity as AppCompatActivity,
+                    "Вы не дали доступ к геолокации,поменяйте его в настроках приложения!"
+                )
             }
         }
 
@@ -87,7 +93,7 @@ class MapFragment : Fragment() {
 //        val bottomSheetFragment = FlatBottomSheetFragment()
 //        bottomSheetFragment.show(childFragmentManager, bottomSheetFragment.tag)
 
-         true
+        true
     }
 
 
@@ -120,12 +126,8 @@ class MapFragment : Fragment() {
             savedLatLng = mapView.mapWindow.map.cameraPosition.target
             outState.putDouble(LATITUDE_KEY, savedLatLng?.latitude ?: 0.0)
             outState.putDouble(LONGITUDE_KEY, savedLatLng?.longitude ?: 0.0)
-
-
         }
     }
-
-
 
 
     override fun onCreateView(
@@ -138,7 +140,7 @@ class MapFragment : Fragment() {
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
 
-        if(isLocationEnabled(activity as AppCompatActivity)){
+        if (isLocationEnabled(activity as AppCompatActivity)) {
             if (ActivityCompat.checkSelfPermission(
                     activity as AppCompatActivity,
                     Manifest.permission.ACCESS_FINE_LOCATION
@@ -159,7 +161,7 @@ class MapFragment : Fragment() {
             fusedLocationClient.lastLocation
                 .addOnSuccessListener { location ->
                     if (location != null) { //TODO
-                        showMyLocationIconOnMap(Point(location.latitude,location.longitude))
+                        showMyLocationIconOnMap(Point(location.latitude, location.longitude))
                     }
                 }
                 .addOnFailureListener { exception ->
@@ -170,12 +172,62 @@ class MapFragment : Fragment() {
 
         return binding.root
     }
+
     override fun onDestroy() {
         super.onDestroy()
-       //TODO fusedLocationClient.lastLocation
+        //TODO fusedLocationClient.lastLocation
         // Освобождение других ресурсов, связанных с местоположением, если они есть
     }
 
+
+    private fun createBitmapWithText(text: String): Bitmap {
+        val textSize = resources.getDimension(R.dimen.text_size)
+        val textColor = Color.WHITE
+        val padding = 70
+
+
+        val ovalWidth = 300 // Ширина овала
+        val ovalHeight = 200 // Высота овала
+
+        val paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+            color = textColor
+
+            textAlign = Paint.Align.CENTER
+        }
+        paint.textSize = textSize
+
+        val textBounds = Rect()
+        paint.getTextBounds(text, 0, text.length, textBounds)
+
+        val textWidth = textBounds.width()
+        val textHeight = textBounds.height()
+
+        val width = ovalWidth + 2 * padding
+        val height = ovalHeight + 2 * padding
+
+        val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(bitmap)
+
+        // Рисуем овал
+        val ovalRect = RectF(
+            padding.toFloat(),
+            padding.toFloat(),
+            (width - padding).toFloat(),
+            (height - padding).toFloat()
+        )
+        paint.color = ContextCompat.getColor(requireContext(), R.color.flatWidgetOnMap)
+        canvas.drawRoundRect(ovalRect, ovalWidth.toFloat(), ovalHeight.toFloat(), paint)
+
+        // Рисуем текст внутри овала
+        paint.color = textColor
+        val textX = width / 2.toFloat() // Позиция X текста по центру овала
+        val textY = height / 2.toFloat() + textHeight / 2.toFloat() // Позиция Y текста по центру овала
+        canvas.drawText(text, textX, textY, paint)
+
+        return bitmap
+
+
+    }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -190,22 +242,24 @@ class MapFragment : Fragment() {
 
 
         GeometryProvider.clusterizedPoints.forEachIndexed { index, point ->
-
-            val imageProvider = ImageProvider.fromResource(context, R.drawable.pin_green)
+            val random = (0..100000).random().toString()
+            val price =
+                GeometryProvider.getFlats()[index].id.toString() // Здесь укажите реальную цену квартиры TODO
+            val markerBitmap = createBitmapWithText(random)
+            val priceMarkerImageProvider = ImageProvider.fromBitmap(markerBitmap)
 
             clasterizedCollection.addPlacemark(
                 point,
-                imageProvider,
+                priceMarkerImageProvider,
                 IconStyle().apply {
-                    anchor = PointF(0.5f, 1.0f)
-                    scale = 0.6f
+                    anchor = PointF(0.5f, 1.0f) // установка "якоря" по координатам
+                    scale = 0.65f // размер иконки на карте
                 }
             )
                 .apply {
                     // Put any data in MapObject
                     //PlacemarkUserData("Data_$index", type)
-
-                    userData = flat(index,point)
+                    userData = flat(index, point)
                     this.addTapListener(placemarkTapListener)
                 }
         }
@@ -214,11 +268,8 @@ class MapFragment : Fragment() {
 
 
 
-        if((savedInstanceState != null && !savedInstanceState.isEmpty)) {
+        if ((savedInstanceState != null && !savedInstanceState.isEmpty)) {
             savedInstanceState?.let {
-
-
-
                 val latitude = it.getDouble(LATITUDE_KEY, 0.0)
                 val longitude = it.getDouble(LONGITUDE_KEY, 0.0)
                 mapView.map.move(
@@ -227,11 +278,11 @@ class MapFragment : Fragment() {
                     null
                 )
 
-            }}
-        else{
-            if(isLocationEnabled(activity as AppCompatActivity)){
+            }
+        } else {
+            if (isLocationEnabled(activity as AppCompatActivity)) {
                 showMyCurrentLocation()
-            }else{
+            } else {
                 showRostovLocation()
             }
         }
@@ -239,25 +290,20 @@ class MapFragment : Fragment() {
     }
 
 
-
     private fun locationClickListener() {
         imageLocation.setOnClickListener {
             checkLocationAndMoveMap()
-
         }
     }
 
     private fun checkLocationAndMoveMap() {
-        if(isLocationEnabled(activity as AppCompatActivity)){
+        if (isLocationEnabled(activity as AppCompatActivity)) {
             showMyCurrentLocation()
             showMyCurrentLocationWithIconOnMap() //TODO косяк, нужно исправлять
-        }else{
+        } else {
             requestPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
         }
     }
-
-
-
 
     private fun showRostovLocation() {
         mapView.map.move(
@@ -268,42 +314,45 @@ class MapFragment : Fragment() {
     }
 
 
-    private fun showMyCurrentLocation(){
+    private fun showMyCurrentLocation() {
         val locationManager = MapKitFactory.getInstance().createLocationManager()
         locationManager.requestSingleUpdate(object : LocationListener {
             override fun onLocationUpdated(location: Location) {
-                val currentPosition =
-                    Point(location.position.latitude, location.position.longitude)
-                
+                val currentPosition = Point(location.position.latitude, location.position.longitude)
                 // Перемещение карты в текущее местоположение
-
                 mapView.map.move(
                     CameraPosition(currentPosition, 14.0f, 0.0f, 0.0f),
                     Animation(Animation.Type.SMOOTH, 2f),
                     null
                 )
             }
+
             override fun onLocationStatusUpdated(locationStatus: LocationStatus) {
 
             }
         })
     }
 
-    private fun showMyCurrentLocationWithIconOnMap(){
+    private fun showMyCurrentLocationWithIconOnMap() {
         val locationManager = MapKitFactory.getInstance().createLocationManager()
         locationManager.requestSingleUpdate(object : LocationListener {
             override fun onLocationUpdated(location: Location) {
                 val currentPosition =
                     Point(location.position.latitude, location.position.longitude)
-
                 // Перемещение карты в текущее местоположение
-                showMyLocationIconOnMap(Point(location.position.latitude, location.position.longitude))
+                showMyLocationIconOnMap(
+                    Point(
+                        location.position.latitude,
+                        location.position.longitude
+                    )
+                )
                 mapView.map.move(
                     CameraPosition(currentPosition, 14.0f, 0.0f, 0.0f),
                     Animation(Animation.Type.SMOOTH, 2f),
                     null
                 )
             }
+
             override fun onLocationStatusUpdated(locationStatus: LocationStatus) {
 
             }
@@ -312,11 +361,17 @@ class MapFragment : Fragment() {
 
     private fun showMyLocationIconOnMap(position: Point) {
         //mapView.map.mapObjects.clear()
-
         val icon = mapView.map.mapObjects.addPlacemark(position)
         //icon.setIcon(ImageProvider.fromResource(activity as AppCompatActivity, R.drawable.location_icon48dp))
         icon.setIconStyle(IconStyle().setScale(2.0f))
-        icon.setIconStyle(IconStyle().setAnchor(PointF(0.5f, 0.5f))) // Устанавливаем якорь в центр иконки
+        icon.setIconStyle(
+            IconStyle().setAnchor(
+                PointF(
+                    0.5f,
+                    0.5f
+                )
+            )
+        ) // Устанавливаем якорь в центр иконки
     }
 
 
@@ -358,7 +413,4 @@ class MapFragment : Fragment() {
             )
         )
     }
-
-
-
 }

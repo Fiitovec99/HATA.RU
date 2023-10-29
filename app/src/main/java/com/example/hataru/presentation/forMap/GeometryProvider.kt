@@ -11,9 +11,8 @@ object GeometryProvider {
 
     fun getFlats() : List<flat>{
         var list = mutableListOf<flat>()
-        for (i in 0..20){
-            var random = (1..3).random()
-            list.add(flat(random, clusterizedPoints[i]))
+        for (i in 0..19){
+            list.add(flat(i, clusterizedPoints[i]))
         }
             return list
     }
