@@ -90,27 +90,42 @@ class MapFragment : Fragment() {
     }
     private val placemarkTapListener = MapObjectTapListener { mapObject, _ -> //TODO
 
-        showToast(mapObject.userData.toString())
+        val flat = mapObject.userData as flat
+        showToast(flat.cost.toString())
+
         val bottomSheetFragment = FlatBottomSheetFragment()
+        val args = Bundle()
+        args.putInt("id", flat.id)
+        args.putDouble("cost", flat.cost)
+        // Передаем параметры в аргументы фрагмента
+        bottomSheetFragment.arguments = args
+
         bottomSheetFragment.show(childFragmentManager, bottomSheetFragment.tag)
 
         true
     }
 
-
+    // Sets each cluster appearance using the custom view
+    // that shows a cluster's pins
     // слушатель отдаления кластеров
     private val clusterListener = ClusterListener { cluster ->
-        // Sets each cluster appearance using the custom view
-        // that shows a cluster's pins
+
+        val flatsInCluster = cluster.placemarks.mapNotNull { it.userData as? flat }
+
+        val minValue = flatsInCluster.minByOrNull { it.cost }?.cost ?: 0.0
+        val maxValue = flatsInCluster.maxByOrNull { it.cost }?.cost ?: 0.0
+
         cluster.appearance.setView(
             ViewProvider(
                 ClusterView(activity as AppCompatActivity).apply {
-                    setData(cluster.size)
+                    setData(cluster.size,minValue,maxValue)
                 }
             )
         )
+        //cluster.appearance.useAnimation()
         cluster.appearance.zIndex = 100f
         cluster.addClusterTapListener(clusterTapListener)
+
     }
 
     // при нажатии на сборище кластеров
@@ -254,10 +269,9 @@ class MapFragment : Fragment() {
 
 
         GeometryProvider.clusterizedPoints.forEachIndexed { index, point ->
-            val random = (0..100000).random().toString()
-            val price =
-                GeometryProvider.getFlats()[index].id.toString() // Здесь укажите реальную цену квартиры TODO
-            val markerBitmap = createBitmapWithText(random)
+
+            val flat = GeometryProvider.getFlats()[index]
+            val markerBitmap = createBitmapWithText(flat.cost.toString())
             val priceMarkerImageProvider = ImageProvider.fromBitmap(markerBitmap)
 
             clasterizedCollection.addPlacemark(
@@ -271,7 +285,7 @@ class MapFragment : Fragment() {
                 .apply {
                     // Put any data in MapObject
                     //PlacemarkUserData("Data_$index", type)
-                    userData = flat(index, point)
+                    userData = flat(index, point,flat.cost)
                     this.addTapListener(placemarkTapListener)
                 }
         }
@@ -279,25 +293,25 @@ class MapFragment : Fragment() {
         clasterizedCollection.clusterPlacemarks(CLUSTER_RADIUS, CLUSTER_MIN_ZOOM)
 
 
-
-        if ((savedInstanceState != null && !savedInstanceState.isEmpty)) {
-            savedInstanceState?.let {
-                val latitude = it.getDouble(LATITUDE_KEY, 0.0)
-                val longitude = it.getDouble(LONGITUDE_KEY, 0.0)
-                mapView.map.move(
-                    CameraPosition(Point(latitude, longitude), 14.0f, 0.0f, 0.0f),
-                    Animation(Animation.Type.SMOOTH, 0f),
-                    null
-                )
-
-            }
-        } else {
-            if (isLocationEnabled(activity as AppCompatActivity)) {
-                showMyCurrentLocation()
-            } else {
-                showRostovLocation()
-            }
-        }
+        showRostovLocation()//TODO для удобного текстинга
+//        if ((savedInstanceState != null && !savedInstanceState.isEmpty)) {
+//            savedInstanceState?.let {
+//                val latitude = it.getDouble(LATITUDE_KEY, 0.0)
+//                val longitude = it.getDouble(LONGITUDE_KEY, 0.0)
+//                mapView.map.move(
+//                    CameraPosition(Point(latitude, longitude), 14.0f, 0.0f, 0.0f),
+//                    Animation(Animation.Type.SMOOTH, 0f),
+//                    null
+//                )
+//
+//            }
+//        } else {
+//            if (isLocationEnabled(activity as AppCompatActivity)) {
+//                showMyCurrentLocation()
+//            } else {
+//                showRostovLocation()
+//            }
+//        }
 
     }
 

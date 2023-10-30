@@ -10,6 +10,8 @@ class ClusterView(context: Context) : LinearLayout(context) {
 
     private val flatsLayout by lazy { findViewById<View>(R.id.layout_flats_group) }
     private val flatsCountText by lazy { findViewById<TextView>(R.id.text_flats_count) }
+    private val flatsMinCost by lazy { findViewById<TextView>(R.id.textMinValue) }
+    private val flatsMaxCost by lazy { findViewById<TextView>(R.id.textMaxValue) }
 
     init {
         inflate(context, R.layout.cluster_view, this)
@@ -18,9 +20,11 @@ class ClusterView(context: Context) : LinearLayout(context) {
         setBackgroundResource(R.drawable.cluster_view_background)
     }
 
-    fun setData(size : Int) {
+    fun setData(size : Int,minCost : Double,maxCost : Double) {
         flatsCountText.text = size.toString()
         flatsLayout.isVisible = size != 0
+        flatsMinCost.text = minCost.toString()
+        flatsMaxCost.text = maxCost.toString()
     }
 
 }

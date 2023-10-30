@@ -1,7 +1,10 @@
 package com.example.hataru.presentation.forMap
 
+import android.icu.text.DecimalFormat
 import com.yandex.mapkit.geometry.Point
 import com.yandex.mapkit.map.CameraPosition
+
+import kotlin.random.Random
 
 object GeometryProvider {
 
@@ -12,9 +15,14 @@ object GeometryProvider {
     fun getFlats() : List<flat>{
         var list = mutableListOf<flat>()
         for (i in 0..19){
-            list.add(flat(i, clusterizedPoints[i]))
+            list.add(flat(i, clusterizedPoints[i],getRandomCost()))
         }
             return list
+    }
+
+
+    private fun getRandomCost() : Double{
+        return (1000..3000).random().toDouble()
     }
 
     val clusterizedPoints = listOf(

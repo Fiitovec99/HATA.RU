@@ -1,121 +1,127 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
 
-    <!-- В данном layout содержится верхняя часть, которая не будет изменяться при изменении состояния
-    В данном кейсе его можно заменить на TextView с compound drawable, но я оставлю LinearLayout для наглядности-->
-    <LinearLayout
-        android:id="@+id/layout_top"
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:orientation="horizontal"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <ImageView
-            android:id="@+id/simple_image"
-            android:layout_width="48dp"
-            android:layout_height="match_parent"
-            android:importantForAccessibility="no"
-            app:srcCompat="@drawable/ic_launcher_foreground"
-            app:tint="#32CD32" />
-
-        <TextView
-            android:id="@+id/simple_text"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:text="Text and image in linear layout"
-            android:textSize="20sp" />
-
-    </LinearLayout>
-
-    <!-- В данном layout содержится разметка для collapsed состояния фрагмента -->
-    <LinearLayout
-        android:id="@+id/layout_collapsed"
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/textFlatDetails"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/layout_top">
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_gravity="center_horizontal"
+        android:text="Flat Details"/>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:gravity="center"
-            android:textStyle="italic"
-            android:text="Text about something"
-            android:textSize="24sp" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:gravity="center"
-            android:text="Some element, for example RecyclerView"
-            android:textSize="32sp" />
-
-    </LinearLayout>
-
-    <!-- В данном layout содержится разметка для развёрнутого состояния фрагмента
-    Изначально она находится в состоянии invisible и располагается под layout_top как и layout_collapsed-->
-    <LinearLayout
-        android:id="@+id/layout_expanded"
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/textFlatPrice"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:visibility="invisible"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/layout_top">
+        android:textSize="16sp"
+        android:layout_marginTop="8dp"
+        tools:text="Price: $100000"/>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="72dp"
-            android:orientation="vertical">
+    <TextView
+        android:id="@+id/textFlatLocation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:layout_marginTop="8dp"
+        tools:text="Location: 47.225873, 39.719055"/>
 
-            <TextView
-                android:id="@+id/textViewAdressFlat"
-                android:layout_width="match_parent"
-                android:layout_height="24dp"
-                android:gravity="center"
-                android:text="First Line"
-                android:textSize="20sp" />
+    <!-- Другие детали квартиры, которые вы хотите показать -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_gravity="center_horizontal"
+        tools:text="Flat Details"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_gravity="center_horizontal"
+        tools:text="Flat Details"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_gravity="center_horizontal"
+        tools:text="Flat Details"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_gravity="center_horizontal"
+        tools:text="Flat Details"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_gravity="center_horizontal"
+        tools:text="Flat Details"/>
 
-            <TextView
-                android:id="@+id/textViewNumberRooms"
-                android:layout_width="match_parent"
-                android:layout_height="24dp"
-                android:gravity="center"
-                android:text="Second Line"
-                android:textSize="20sp" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_gravity="center_horizontal"
+        tools:text="Flat Details"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_gravity="center_horizontal"
+        tools:text="Flat Details"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_gravity="center_horizontal"
+        tools:text="Flat Details"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_gravity="center_horizontal"
+        tools:text="Flat Details"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_gravity="center_horizontal"
+        tools:text="Flat Details"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_gravity="center_horizontal"
+        tools:text="Flat Details"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_gravity="center_horizontal"
+        tools:text="Flat Details"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Посмотреть подробнее"
+        />
 
-            <TextView
-                android:id="@+id/textViewFlatCost"
-                android:layout_width="match_parent"
-                android:layout_height="24dp"
-                android:gravity="center"
-                android:text="Third Line"
-                android:textSize="20sp" />
-
-        </LinearLayout>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:layout_marginTop="16dp"
-            android:gravity="center"
-            android:text="Text about something"
-            android:textSize="24sp" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="180dp"
-            android:gravity="center"
-            android:text="Some bigger element, for example bigger RecyclerView"
-            android:textSize="36sp" />
-
-    </LinearLayout>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>
