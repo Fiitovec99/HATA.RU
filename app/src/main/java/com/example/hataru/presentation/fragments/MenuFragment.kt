@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.hataru.R
+import com.example.hataru.databinding.FragmentMenuBinding
 
 class MenuFragment : Fragment() {
 
@@ -15,13 +16,25 @@ class MenuFragment : Fragment() {
 //    }
 //
 //    private lateinit var viewModel: MenuViewModel
+    private lateinit var binding: FragmentMenuBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_menu, container, false)
+        binding = FragmentMenuBinding.inflate(layoutInflater)
+        return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        binding.textView.setOnClickListener {
+            //Дальнейшая реализация логики слушателя
+        }
+
+
+
+    }
 
 }
