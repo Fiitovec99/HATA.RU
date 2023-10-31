@@ -46,6 +46,7 @@ import com.yandex.mapkit.map.ClusterizedPlacemarkCollection
 import com.yandex.mapkit.map.IconStyle
 import com.yandex.mapkit.map.MapObjectCollection
 import com.yandex.mapkit.map.MapObjectTapListener
+import com.yandex.mapkit.map.PlacemarkMapObject
 import com.yandex.mapkit.map.SizeChangedListener
 import com.yandex.mapkit.mapview.MapView
 import com.yandex.runtime.image.ImageProvider
@@ -90,6 +91,8 @@ class MapFragment : Fragment() {
     }
     private val placemarkTapListener = MapObjectTapListener { mapObject, _ -> //TODO
 
+
+
         val flat = mapObject.userData as flat
         showToast(flat.cost.toString())
 
@@ -110,6 +113,8 @@ class MapFragment : Fragment() {
     // слушатель отдаления кластеров
     private val clusterListener = ClusterListener { cluster ->
 
+
+
         val flatsInCluster = cluster.placemarks.mapNotNull { it.userData as? flat }
 
         val minValue = flatsInCluster.minByOrNull { it.cost }?.cost ?: 0.0
@@ -128,19 +133,50 @@ class MapFragment : Fragment() {
 
     }
 
+    fun flatsLocateNearByAnother(listPointsOfCluster: List<Point>, thresholdDistance: Double): Boolean {
+        for (i in 0 until listPointsOfCluster.size - 1) {
+            val point1 = listPointsOfCluster[i]
+            for (j in i + 1 until listPointsOfCluster.size) {
+                val point2 = listPointsOfCluster[j]
+                val distance = calculateDistance(point1, point2)
+                if (distance > thresholdDistance) {
+                    return false
+                }
+            }
+        }
+        return true
+    }
+
+    fun calculateDistance(point1: Point, point2: Point): Double {
+        // Реализуйте вычисление расстояния между двумя точками в соответствии с вашими требованиями.
+        // Например, используя формулу гаверсинуса или евклидово расстояние, в зависимости от ваших потребностей.
+        // Пример расчета евклидова расстояния:
+        return Math.sqrt(Math.pow(point1.latitude - point2.latitude, 2.0) +
+                Math.pow(point1.longitude - point2.longitude, 2.0))
+    }
     // при нажатии на сборище кластеров
     // вдруг пригодится
     private val clusterTapListener = ClusterTapListener {
 
-        val targetPoint = it.appearance.geometry
-        val zoom = 15.0f // Масштаб, на который увеличиваем карту
+        val listPointsOfCluster = it.placemarks.map{ x : PlacemarkMapObject? -> x?.userData as flat}.map { x : flat -> x.location }
+        
+        if(flatsLocateNearByAnother(listPointsOfCluster,0.00001)){
+            showToast("Они близко")
 
-        // Вычисляем среднюю точку всех маркеров
-        mapView.map.move(
-            CameraPosition(targetPoint, zoom, 0.0f, 0.0f),
-            Animation(Animation.Type.SMOOTH, 1f),
-            null
-        )
+        }
+        else{
+            val targetPoint = it.appearance.geometry
+            val zoom = 15.0f // Масштаб, на который увеличиваем карту
+
+            // Вычисляем среднюю точку всех маркеров
+            mapView.map.move(
+                CameraPosition(targetPoint, zoom, 0.0f, 0.0f),
+                Animation(Animation.Type.SMOOTH, 1f),
+                null
+            )
+        }
+
+
         
         //showToast("Clicked on cluster with ${it.size} items")
         true
