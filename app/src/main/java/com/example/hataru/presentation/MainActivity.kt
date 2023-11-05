@@ -19,20 +19,11 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         MapKitFactory.setApiKey(API_KEY)
-
         val navView: BottomNavigationView = findViewById(R.id.bottom_navigation_view)
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_main) as NavHostFragment
         val navController = navHostFragment.navController
         setupWithNavController(navView,navController)
-
-
-
-
-
     }
-
-
-
 
 }
 
