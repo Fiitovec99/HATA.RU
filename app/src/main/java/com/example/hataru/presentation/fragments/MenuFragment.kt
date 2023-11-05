@@ -1,13 +1,15 @@
 package com.example.hataru.presentation.fragments
 
-import androidx.lifecycle.ViewModelProvider
+import android.content.ClipData.newIntent
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.hataru.R
+import androidx.fragment.app.Fragment
 import com.example.hataru.databinding.FragmentMenuBinding
+
 
 class MenuFragment : Fragment() {
 
@@ -30,10 +32,12 @@ class MenuFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.textView.setOnClickListener {
+
             //Дальнейшая реализация логики слушателя
         }
 
 
+        }
 
     }
 
