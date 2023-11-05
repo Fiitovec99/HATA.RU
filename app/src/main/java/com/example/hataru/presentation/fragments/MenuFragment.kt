@@ -37,7 +37,7 @@ class MenuFragment : Fragment() {
         }
 
         binding.LinkToTheWebsite.setOnClickListener{
-            val browserIntent: Intent = Intent(Intent.ACTION_VIEW, Uri.parse("hataru.ru"))
+            val browserIntent: Intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://hataru.ru"))
             startActivity(browserIntent)
 
 
