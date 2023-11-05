@@ -16,6 +16,14 @@
         android:layout_height="wrap_content"
         android:text="Hello World" />
 
+    <TextView
+        android:id="@+id/LinkToTheWebsite"
+        android:gravity="center"
+        android:textSize="28dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Нажмите для перехода на вебсайт"/>
+
 
 
 

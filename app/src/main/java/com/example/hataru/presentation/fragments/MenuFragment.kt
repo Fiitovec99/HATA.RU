@@ -36,6 +36,10 @@ class MenuFragment : Fragment() {
             //Дальнейшая реализация логики слушателя
         }
 
+        binding.LinkToTheWebsite.setOnClickListener{
+            val browserIntent: Intent = Intent(Intent.ACTION_VIEW, Uri.parse("hataru.ru"))
+            startActivity(browserIntent)
+
 
         }
 
