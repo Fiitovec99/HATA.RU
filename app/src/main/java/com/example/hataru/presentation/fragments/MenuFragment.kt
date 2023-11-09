@@ -39,7 +39,7 @@ class MenuFragment : Fragment() {
 
             }
         binding.textViewOpenWhatsUp.setOnClickListener {
-            val phoneNumber = "+89959890049"
+            val phoneNumber = "+79959890049"
             val intent = Intent(Intent.ACTION_VIEW)
             intent.data = Uri.parse("https://api.whatsapp.com/send?phone=$phoneNumber")
 
