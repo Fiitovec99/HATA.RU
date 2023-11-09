@@ -11,12 +11,18 @@ import androidx.navigation.ui.NavigationUI.setupWithNavController
 
 import com.example.hataru.R
 import com.example.hataru.presentation.migration.ApiClient
+import com.example.hataru.presentation.migration.GetRoomsUseCase
+import com.example.hataru.presentation.migration.HotelRepository
 import com.example.hataru.presentation.migration.LoginRequest
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonConfiguration
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.Serializable
 
 class MainActivity : AppCompatActivity() {
     
@@ -36,6 +42,7 @@ class MainActivity : AppCompatActivity() {
         val apiService = ApiClient.apiService
         val loginRequest = LoginRequest(login, password)
         val call = apiService.registerUser(loginRequest)
+        val hotelRepository = HotelRepository()
 
         call.enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
