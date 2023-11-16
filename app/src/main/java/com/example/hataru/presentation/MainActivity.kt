@@ -2,66 +2,67 @@ package com.example.hataru.presentation
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
-import androidx.navigation.Navigation
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.NavigationUI.setupWithNavController
 
 import com.example.hataru.R
-import com.example.hataru.presentation.migration.ApiClient
-import com.example.hataru.presentation.migration.GetRoomsUseCase
-import com.example.hataru.presentation.migration.HotelRepository
-import com.example.hataru.presentation.migration.LoginRequest
+import com.example.hataru.presentation.migration.AddCookiesInterceptor
+import com.example.hataru.presentation.migration.ApiClient.apiService
+
+import com.example.hataru.presentation.migration.RoomType
+import com.example.hataru.presentation.migration.UserCredentials
+
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonConfiguration
-import okhttp3.ResponseBody
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
+import okhttp3.OkHttpClient
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import kotlinx.serialization.decodeFromString
-import kotlinx.serialization.Serializable
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 class MainActivity : AppCompatActivity() {
-    
+    private val login = "65156a39ef62e+14325@customapp.bnovo.ru"
+    private val password = "109bbf24e8d8790c"
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         val navView: BottomNavigationView = findViewById(R.id.bottom_navigation_view)
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_main) as NavHostFragment
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_main) as NavHostFragment
         val navController = navHostFragment.navController
-        setupWithNavController(navView,navController)
+        setupWithNavController(navView, navController)
 
 
-        val login = "65156a39ef62e+14325@customapp.bnovo.ru"
-        val password = "109bbf24e8d8790c"
+        apiService.authenticateUser(credentials = UserCredentials(login, password)).enqueue(object : Callback<Void> {
+            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                if (response.isSuccessful) {
+                    val cookies: List<String> = response.headers().values("Cookie")
 
-        val apiService = ApiClient.apiService
-        val loginRequest = LoginRequest(login, password)
-        val call = apiService.registerUser(loginRequest)
-        val hotelRepository = HotelRepository()
+                    apiService.getRoomTypes(cookie = cookies).enqueue(object : Callback<RoomType> {
+                        override fun onResponse(call: Call<RoomType>, roomTypeResponse: Response<RoomType>) {
+                            if (roomTypeResponse.isSuccessful) {
+                                val roomTypes = roomTypeResponse.body()
+                                Log.d("API_RESPONSE", "Response: ${roomTypes.toString()}")
+                                Toast.makeText(this@MainActivity,response.code().toString(),Toast.LENGTH_LONG).show()
+                            }
+                        }
 
-        call.enqueue(object : Callback<ResponseBody> {
-            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-                val code = response.code()
-                if (code ==200) {
-                    Toast.makeText(applicationContext,"asd", Toast.LENGTH_LONG).show()
-                    // Регистрация прошла успешно, сервер вернул код 2xx
-                    Toast.makeText(applicationContext, "Регистрация прошла успешно!", Toast.LENGTH_LONG).show()
-                } else {
-                    // Регистрация не удалась, сервер вернул другой код
-                    Toast.makeText(applicationContext, "Не удалось зарегистрироваться. Код: $code", Toast.LENGTH_LONG).show()
+                        override fun onFailure(call: Call<RoomType>, t: Throwable) {
+                        }
+                    })
                 }
             }
-
-            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                // Обработка ошибок сети или других ошибок
-                Toast.makeText(applicationContext, "Ошибка: ${t.message}", Toast.LENGTH_LONG).show()
+            override fun onFailure(call: Call<Void>, t: Throwable) {
             }
         })
+
+
 
 
 
@@ -72,6 +73,7 @@ class MainActivity : AppCompatActivity() {
 
 
 }
+
 
 
 
