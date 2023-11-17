@@ -7,3 +7,4 @@ interface HotelApi {
     @GET("/room")
     fun getRooms(): Call<RoomResponse>
 }
+

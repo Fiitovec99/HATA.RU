@@ -31,34 +31,35 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        val navView: BottomNavigationView = findViewById(R.id.bottom_navigation_view)
-        val navHostFragment =
-            supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_main) as NavHostFragment
-        val navController = navHostFragment.navController
-        setupWithNavController(navView, navController)
+        setNavigation()
 
 
         apiService.authenticateUser(credentials = UserCredentials(login, password)).enqueue(object : Callback<Void> {
             override fun onResponse(call: Call<Void>, response: Response<Void>) {
                 if (response.isSuccessful) {
-                    val cookies: List<String> = response.headers().values("Cookie")
+//                    val cookies: List<String> = response.headers().values("Cookie")
 
-                    apiService.getRoomTypes(cookie = cookies).enqueue(object : Callback<RoomType> {
+                    //Log.d("API_RESPONSE", "Response: ${cookies.joinToString(", ")}")
+
+                    apiService.getRoomTypes().enqueue(object : Callback<RoomType> {
                         override fun onResponse(call: Call<RoomType>, roomTypeResponse: Response<RoomType>) {
                             if (roomTypeResponse.isSuccessful) {
+                                val rawResponse = roomTypeResponse.raw()
                                 val roomTypes = roomTypeResponse.body()
-                                Log.d("API_RESPONSE", "Response: ${roomTypes.toString()}")
-                                Toast.makeText(this@MainActivity,response.code().toString(),Toast.LENGTH_LONG).show()
+                                Log.d("API_RESPONSE", "${roomTypeResponse.raw().request}")
+                                Log.d("API_RESPONSE", "Response: ${roomTypeResponse.code()} ${roomTypeResponse.message()} ${roomTypeResponse.raw().body}")
+                                Toast.makeText(this@MainActivity,roomTypes.toString(),Toast.LENGTH_LONG).show()
                             }
                         }
 
                         override fun onFailure(call: Call<RoomType>, t: Throwable) {
+                            Log.e("API_RESPONSE","Authentication failed")
                         }
                     })
                 }
             }
             override fun onFailure(call: Call<Void>, t: Throwable) {
+                Log.e("API_RESPONSE","Authentication failed")
             }
         })
 
@@ -67,6 +68,14 @@ class MainActivity : AppCompatActivity() {
 
 
 
+    }
+
+    private fun setNavigation(){
+        val navView: BottomNavigationView = findViewById(R.id.bottom_navigation_view)
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_main) as NavHostFragment
+        val navController = navHostFragment.navController
+        setupWithNavController(navView, navController)
     }
 
 
