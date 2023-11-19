@@ -56,7 +56,11 @@ import com.yandex.runtime.ui_view.ViewProvider
 private const val CLUSTER_RADIUS = 60.0
 private const val CLUSTER_MIN_ZOOM = 15
 
+private var flats = GeometryProvider.getFlats()
+
 class MapFragment : Fragment() {
+
+
     private var savedLatLng: Point? = null // переменная для сохранения координат карты
     private lateinit var binding: FragmentMapBinding
     private lateinit var mapView: MapView
@@ -105,41 +109,24 @@ class MapFragment : Fragment() {
         cluster.appearance.setView(
             ViewProvider(
                 ClusterView(activity as AppCompatActivity).apply {
-                    setData(cluster.size,minValue,maxValue)
+                    setData(cluster.size, minValue, maxValue)
                 }
             )
         )
-        //cluster.appearance.useAnimation()
         cluster.appearance.zIndex = 100f
         cluster.addClusterTapListener(clusterTapListener)
     }
 
-    private fun flatsLocateNearByAnother(listPointsOfCluster: List<Point>, thresholdDistance: Double): Boolean {
-        for (i in 0 until listPointsOfCluster.size - 1) {
-            val point1 = listPointsOfCluster[i]
-            for (j in i + 1 until listPointsOfCluster.size) {
-                val point2 = listPointsOfCluster[j]
-                val distance = calculateDistance(point1, point2)
-                if (distance > thresholdDistance) {
-                    return false
-                }
-            }
-        }
-        return true
-    }
-    private fun calculateDistance(point1: Point, point2: Point): Double {
-        return Math.sqrt(Math.pow(point1.latitude - point2.latitude, 2.0) +
-                Math.pow(point1.longitude - point2.longitude, 2.0))
-    }
 
     // при нажатии на сборище кластеров
     private val clusterTapListener = ClusterTapListener {
-        val listPointsOfCluster = it.placemarks.map{ x : PlacemarkMapObject? -> x?.userData as flat}.map { x : flat -> x.location }
-        if(flatsLocateNearByAnother(listPointsOfCluster,0.00001)){ // расстояние в меридиане
+        val listPointsOfCluster =
+            it.placemarks.map { x: PlacemarkMapObject? -> x?.userData as flat }
+                .map { x: flat -> x.location }
+        if (flatsLocateNearByAnother(listPointsOfCluster, 0.00001)) { // расстояние в меридиане
             showToast("Они близко")
             //просмотр множества квартир
-        }
-        else{
+        } else {
             val targetPoint = it.appearance.geometry
             val zoom = 15.0f // Масштаб, на который увеличиваем карту
             mapView.map.move(
@@ -150,6 +137,7 @@ class MapFragment : Fragment() {
         }
         true
     }
+
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         // Сохраняем текущие координаты карты
@@ -217,7 +205,7 @@ class MapFragment : Fragment() {
         updateFocusRect()
         GeometryProvider.clusterizedPoints.forEachIndexed { index, point ->
 
-            val flat = GeometryProvider.getFlats()[index]
+            val flat = flats[index]
             val markerBitmap = createBitmapWithText(flat.cost.toString())
             val priceMarkerImageProvider = ImageProvider.fromBitmap(markerBitmap)
 
@@ -231,30 +219,30 @@ class MapFragment : Fragment() {
             )
                 .apply {
                     // Put any data in MapObject
-                    userData = flat(index, point,flat.cost)
+                    userData = flat(index, point, flat.cost)
                     this.addTapListener(placemarkTapListener)
                 }
         }
         clasterizedCollection.clusterPlacemarks(CLUSTER_RADIUS, CLUSTER_MIN_ZOOM)
-        showRostovLocation()//TODO для удобного текстинга
-//        if ((savedInstanceState != null && !savedInstanceState.isEmpty)) {
-//            savedInstanceState?.let {
-//                val latitude = it.getDouble(LATITUDE_KEY, 0.0)
-//                val longitude = it.getDouble(LONGITUDE_KEY, 0.0)
-//                mapView.map.move(
-//                    CameraPosition(Point(latitude, longitude), 14.0f, 0.0f, 0.0f),
-//                    Animation(Animation.Type.SMOOTH, 0f),
-//                    null
-//                )
-//
-//            }
-//        } else {
-//            if (isLocationEnabled(activity as AppCompatActivity)) {
-//                showMyCurrentLocation()
-//            } else {
-//                showRostovLocation()
-//            }
-//        }
+        //showRostovLocation()//TODO для удобного тестинга
+        if ((savedInstanceState != null && !savedInstanceState.isEmpty)) {
+            savedInstanceState?.let {
+                val latitude = it.getDouble(LATITUDE_KEY, 0.0)
+                val longitude = it.getDouble(LONGITUDE_KEY, 0.0)
+                mapView.map.move(
+                    CameraPosition(Point(latitude, longitude), 14.0f, 0.0f, 0.0f),
+                    Animation(Animation.Type.SMOOTH, 0f),
+                    null
+                )
+
+            }
+        } else {
+            if (isLocationEnabled(activity as AppCompatActivity)) {
+                showMyCurrentLocation()
+            } else {
+                showRostovLocation()
+            }
+        }
     }
 
     private fun locationClickListener() {
@@ -271,6 +259,7 @@ class MapFragment : Fragment() {
             requestPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
         }
     }
+
     private fun showRostovLocation() {
         mapView.map.move(
             GeometryProvider.startPosition,
@@ -278,6 +267,7 @@ class MapFragment : Fragment() {
             null
         )
     }
+
     private fun showMyCurrentLocation() {
         val locationManager = MapKitFactory.getInstance().createLocationManager()
         locationManager.requestSingleUpdate(object : LocationListener {
@@ -289,6 +279,7 @@ class MapFragment : Fragment() {
                     null
                 )
             }
+
             override fun onLocationStatusUpdated(locationStatus: LocationStatus) {
             }
         })
@@ -313,6 +304,7 @@ class MapFragment : Fragment() {
                     null
                 )
             }
+
             override fun onLocationStatusUpdated(locationStatus: LocationStatus) {
             }
         })
@@ -325,12 +317,15 @@ class MapFragment : Fragment() {
         icon.setIconStyle(IconStyle().setScale(2.0f))
         icon.setIconStyle(
             IconStyle().setAnchor(
-                PointF(0.5f, 0.5f)))
+                PointF(0.5f, 0.5f)
+            )
+        )
     }
 
     private fun initImageLocation() {
         imageLocation = binding.imageLocation
     }
+
     private fun initMap() {
         mapView = binding.mapview
     }
@@ -348,9 +343,34 @@ class MapFragment : Fragment() {
         locationClickListener()
     }
 
+    private fun flatsLocateNearByAnother(
+        listPointsOfCluster: List<Point>,
+        thresholdDistance: Double
+    ): Boolean {
+        for (i in 0 until listPointsOfCluster.size - 1) {
+            val point1 = listPointsOfCluster[i]
+            for (j in i + 1 until listPointsOfCluster.size) {
+                val point2 = listPointsOfCluster[j]
+                val distance = calculateDistance(point1, point2)
+                if (distance > thresholdDistance) {
+                    return false
+                }
+            }
+        }
+        return true
+    }
+
+    private fun calculateDistance(point1: Point, point2: Point): Double {
+        return Math.sqrt(
+            Math.pow(point1.latitude - point2.latitude, 2.0) +
+                    Math.pow(point1.longitude - point2.longitude, 2.0)
+        )
+    }
+
     private fun initializeMap() {
         MapKitFactory.initialize(requireActivity() as MainActivity)
     }
+
     private fun createBitmapWithText(text: String): Bitmap {
         val textSize = resources.getDimension(R.dimen.text_size)
         val textColor = Color.WHITE
@@ -389,7 +409,8 @@ class MapFragment : Fragment() {
         // Рисуем текст внутри овала
         paint.color = textColor
         val textX = width / 2.toFloat() // Позиция X текста по центру овала
-        val textY = height / 2.toFloat() + textHeight / 2.toFloat() // Позиция Y текста по центру овала
+        val textY =
+            height / 2.toFloat() + textHeight / 2.toFloat() // Позиция Y текста по центру овала
         canvas.drawText(text, textX, textY, paint)
         return bitmap
     }
