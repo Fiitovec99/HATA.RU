@@ -14,7 +14,9 @@
         android:id="@+id/mapFragment"
         android:name="com.example.hataru.presentation.fragments.MapFragment"
         android:label="fragment_map"
-        tools:layout="@layout/fragment_map" />
+        tools:layout="@layout/fragment_map" >
+
+    </fragment>
     <fragment
         android:id="@+id/favoriteFlatFragment"
         android:name="com.example.hataru.presentation.fragments.FavoriteFlatFragment"
@@ -25,4 +27,8 @@
         android:name="com.example.hataru.presentation.fragments.MenuFragment"
         android:label="fragment_menu"
         tools:layout="@layout/fragment_menu" />
+    <dialog
+        android:id="@+id/flatBottomSheetFragment"
+        android:name="com.example.hataru.presentation.forMap.FlatBottomSheetFragment"
+        android:label="FlatBottomSheetFragment" />
 </navigation>
