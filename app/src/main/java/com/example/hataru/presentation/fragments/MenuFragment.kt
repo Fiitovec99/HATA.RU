@@ -16,7 +16,7 @@ import com.example.hataru.databinding.FragmentMenuBinding
 
 class MenuFragment : Fragment() {
 
-//    companion object {
+    //    companion object {
 //        fun newInstance() = MenuFragment()
 //    }
 //
@@ -34,10 +34,12 @@ class MenuFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.textView.setOnClickListener {
-            //Дальнейшая реализация логики слушателя
 
-            }
+        binding.LinkToTheWebsite.setOnClickListener{
+            val intent  = Intent(Intent.ACTION_VIEW,Uri.parse("https://hataru.ru"))
+            startActivity(intent)
+        }
+
         binding.textViewOpenWhatsUp.setOnClickListener {
             val phoneNumber = "+79959890049"
             val intent = Intent(Intent.ACTION_VIEW)
@@ -49,9 +51,8 @@ class MenuFragment : Fragment() {
                 Toast.makeText( activity as AppCompatActivity,"WhatsApp не установлен.", Toast.LENGTH_SHORT).show()
             }
         }
-        }
-
 
 
     }
 
+}

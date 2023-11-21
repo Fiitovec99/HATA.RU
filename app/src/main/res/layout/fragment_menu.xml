@@ -3,8 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".presentation.fragments.MenuFragment"
-    android:background="#1E89DD"
+    android:background="#E5E4E4"
     android:orientation="vertical">
 
 
@@ -13,44 +14,79 @@
         android:gravity="center"
         android:textSize="38dp"
         android:textStyle="bold"
+        android:textColor="@color/black"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Меню" />
 
-    <TextView
-        android:id="@+id/LinkToTheWebsite"
-        android:layout_width="match_parent"
+    <androidx.cardview.widget.CardView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Наш сайт"
-        android:textSize="28sp"
-        android:textStyle="bold"
-        android:padding="16dp"
+        android:layout_gravity="center"
         android:layout_margin="16dp"
-        android:drawablePadding="8dp"
-        />
+        app:cardCornerRadius="25dp"
+        app:cardElevation="4dp">
 
-    <TextView
-        android:id="@+id/textViewOpenWhatsUp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Мы в WhatsUp"
-        android:textSize="28sp"
-        android:textStyle="bold"
-        android:padding="16dp"
-        android:layout_margin="16dp"
-        android:drawablePadding="8dp"
-        />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:text="HATA.RU — сервис краткосрочной аренды апартаментов. Мы предоставляем понятный, предсказуемый сервис, где будет чисто и безопасно.
 
-    <TextView
+Вам не нужно встречаться с менеджерами или собственниками квартир, после бронирования вам будут доступны инструкции по самостоятельному заезду.
+
+Апартаменты оборудованы всем необходимым, чтобы чувствовать себя как дома."
+            android:background="?attr/selectableItemBackground" />
+
+    </androidx.cardview.widget.CardView>
+
+
+
+    <androidx.cardview.widget.CardView
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="О нас"
-        android:textSize="28sp"
-        android:textStyle="bold"
-        android:padding="16dp"
+        android:layout_gravity="center"
         android:layout_margin="16dp"
-        android:drawablePadding="8dp"
-        />
+        app:cardCornerRadius="25dp"
+        app:cardElevation="4dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Контактная информация"
+                android:layout_gravity="center"
+                android:textStyle="bold"
+                android:textSize="16sp"/>
+
+            <TextView
+                android:id="@+id/LinkToTheWebsite"
+                android:layout_width="wrap_content"
+                android:paddingTop="10dp"
+                android:layout_height="wrap_content"
+                android:text="@string/site_string"
+                android:textSize="20sp"/>
+
+            <TextView
+                android:id="@+id/textViewOpenWhatsUp"
+                android:layout_width="wrap_content"
+                android:paddingTop="10dp"
+                android:layout_height="wrap_content"
+                android:text="@string/whatsUp_string"
+                android:textSize="20sp"/>
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+
 
 
 

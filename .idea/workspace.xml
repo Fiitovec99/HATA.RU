@@ -138,11 +138,24 @@
         <option name="Android.Gradle.BeforeRunTask" enabled="true" />
       </method>
     </configuration>
+    <configuration default="true" type="JetRunConfigurationType">
+      <module name="HATA.RU.app.main" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
+      <module name="HATA.RU.app.main" />
+      <option name="filePath" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="c5a5e01d-b134-40ac-97fe-c016699c171e" name="Changes" comment="" />
+      <changelist id="44a449ba-e721-464d-a7ae-8421287642ed" name="Changes" comment="" />
       <created>1696965609991</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
