@@ -1,5 +1,9 @@
 <resources>
     <string name="app_name">HATA.RU</string>
-    <string name="site_string">Наш сайт</string>
-    <string name="whatsUp_string">Мы в WhatsUp></string>
+    <string name="site_string">
+        <u>Наш сайт </u>
+    </string>
+    <string name="whatsUp_string">
+        <u>Мы в WhatsUp </u>
+        </string>
 </resources>
