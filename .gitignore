@@ -32,9 +32,6 @@ proguard/
 # Log Files
 *.log
 
-# no Keys.kt file
-*./presentation/Keys.kt
-
 # Android Studio Navigation editor temp files
 .navigation/
 
