@@ -22,7 +22,7 @@ class FlatBottomSheetFragment : BottomSheetDialogFragment() {
     private lateinit var binding : FragmentFlatBottomSheetBinding
 
    private  var flatId : Int = 0
-    private  var flatCost : Double = 0.0
+    private  var flatCost : Int = 0
 
 
 
@@ -32,8 +32,9 @@ class FlatBottomSheetFragment : BottomSheetDialogFragment() {
     ): View? {
         binding = FragmentFlatBottomSheetBinding.inflate(inflater, container, false)
 
+
         flatId = arguments?.getInt("id", -1) ?: -1
-        flatCost = arguments?.getDouble("cost", 0.0) ?: 0.0
+        flatCost = arguments?.getInt("cost", 0) ?: 0
         //TODO
 
         return binding.root
@@ -42,7 +43,8 @@ class FlatBottomSheetFragment : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.apply {
-            textFlatPrice.text = flatCost.toString()
+            textFlatPrice.text = "Цена аренды: " + flatCost.toString()
+            exampleOfFlatImageView.setImageResource(R.drawable.example_of_flat_bottom_fragment)
 
         }
 

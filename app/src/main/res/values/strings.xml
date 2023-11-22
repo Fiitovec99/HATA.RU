@@ -2,4 +2,6 @@
     <string name="app_name">HATA.RU</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="min_cost_format">От %dр</string>
+    <string name="max_cost_format">До %dр</string>
 </resources>

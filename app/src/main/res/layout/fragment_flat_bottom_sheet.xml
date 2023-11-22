@@ -13,8 +13,12 @@
         android:textSize="18sp"
         android:textStyle="bold"
         android:layout_gravity="center_horizontal"
-        android:text="Flat Details"/>
+        android:text="Характеристики квартиры"/>
 
+    <ImageView
+        android:id="@+id/example_of_flat_imageView"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"/>
 
     <TextView
         android:id="@+id/textFlatPrice"
@@ -30,44 +34,7 @@
         android:layout_height="wrap_content"
         android:textSize="16sp"
         android:layout_marginTop="8dp"
-        tools:text="Location: 47.225873, 39.719055"/>
-
-    <!-- Другие детали квартиры, которые вы хотите показать -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:layout_gravity="center_horizontal"
-        tools:text="Flat Details"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:layout_gravity="center_horizontal"
-        tools:text="Flat Details"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:layout_gravity="center_horizontal"
-        tools:text="Flat Details"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:layout_gravity="center_horizontal"
-        tools:text="Flat Details"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:layout_gravity="center_horizontal"
-        tools:text="Flat Details"/>
+        android:text="Location: 47.225873, 39.719055"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -75,53 +42,20 @@
         android:textSize="18sp"
         android:textStyle="bold"
         android:layout_gravity="center_horizontal"
-        tools:text="Flat Details"/>
+        android:text="Flat Details"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="18sp"
         android:textStyle="bold"
         android:layout_gravity="center_horizontal"
-        tools:text="Flat Details"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:layout_gravity="center_horizontal"
-        tools:text="Flat Details"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:layout_gravity="center_horizontal"
-        tools:text="Flat Details"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:layout_gravity="center_horizontal"
-        tools:text="Flat Details"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:layout_gravity="center_horizontal"
-        tools:text="Flat Details"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:layout_gravity="center_horizontal"
-        tools:text="Flat Details"/>
+       android:text="Flat Details"/>
+
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Посмотреть подробнее"
-        />
+        android:gravity="center"
+        android:layout_gravity="center_horizontal"
+        android:text="Посмотреть подробнее" />
 
 </LinearLayout>

@@ -88,11 +88,11 @@ class MapFragment : Fragment() {
     }
     private val placemarkTapListener = MapObjectTapListener { mapObject, _ -> //TODO
         val flat = mapObject.userData as flat
-        showToast(flat.cost.toString())
+        //showToast(flat.cost.toString())
         val bottomSheetFragment = FlatBottomSheetFragment()
         val args = Bundle()
         args.putInt("id", flat.id)
-        args.putDouble("cost", flat.cost)
+        args.putInt("cost", flat.cost)
         // Передаем параметры в аргументы фрагмента
         bottomSheetFragment.arguments = args
         bottomSheetFragment.show(childFragmentManager, bottomSheetFragment.tag)
@@ -104,8 +104,8 @@ class MapFragment : Fragment() {
     // слушатель отдаления кластеров
     private val clusterListener = ClusterListener { cluster ->
         val flatsInCluster = cluster.placemarks.mapNotNull { it.userData as? flat }
-        val minValue = flatsInCluster.minByOrNull { it.cost }?.cost ?: 0.0
-        val maxValue = flatsInCluster.maxByOrNull { it.cost }?.cost ?: 0.0
+        val minValue = flatsInCluster.minByOrNull { it.cost }?.cost ?: 0
+        val maxValue = flatsInCluster.maxByOrNull { it.cost }?.cost ?: 0
         cluster.appearance.setView(
             ViewProvider(
                 ClusterView(activity as AppCompatActivity).apply {

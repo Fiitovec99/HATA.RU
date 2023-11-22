@@ -1,7 +1,9 @@
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.core.content.ContextCompat.getString
 import androidx.core.view.isVisible
 import com.example.hataru.R
 import com.example.hataru.presentation.forMap.flat
@@ -20,11 +22,12 @@ class ClusterView(context: Context) : LinearLayout(context) {
         setBackgroundResource(R.drawable.cluster_view_background)
     }
 
-    fun setData(size : Int,minCost : Double,maxCost : Double) {
+    @SuppressLint("SetTextI18n")
+    fun setData(size : Int, minCost : Int, maxCost : Int) {
         flatsCountText.text = size.toString()
         flatsLayout.isVisible = size != 0
-        flatsMinCost.text = minCost.toString()
-        flatsMaxCost.text = maxCost.toString()
+        flatsMinCost.text = context.getString(R.string.min_cost_format, minCost)
+        flatsMaxCost.text = context.getString(R.string.max_cost_format, maxCost)
     }
 
 }

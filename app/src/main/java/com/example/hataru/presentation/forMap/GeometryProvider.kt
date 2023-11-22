@@ -21,8 +21,8 @@ object GeometryProvider {
     }
 
 
-    private fun getRandomCost() : Double{
-        return (1000..3000).random().toDouble()
+    private fun getRandomCost() : Int{
+        return (1000..3000).random()
     }
 
     val clusterizedPoints = listOf(
