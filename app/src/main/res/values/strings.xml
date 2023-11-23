@@ -1,7 +1,15 @@
 <resources>
     <string name="app_name">HATA.RU</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="min_cost_format">От %dр</string>
     <string name="max_cost_format">До %dр</string>
+    <string name="site_string">
+        <u>Наш сайт </u>
+    </string>
+    <string name="whatsUp_string">
+        <u>Мы в WhatsUp </u>
+        </string>
+
 </resources>
