@@ -27,6 +27,8 @@ import com.example.hataru.presentation.forMap.FlatBottomSheetFragment
 import com.example.hataru.presentation.forMap.GeometryProvider
 import com.example.hataru.presentation.forMap.flat
 import com.example.hataru.presentation.isLocationEnabled
+import com.example.hataru.presentation.migration.Roomtypes
+import com.example.hataru.presentation.migration.flatsContainer
 import com.example.hataru.presentation.showAlertDialog
 import com.example.hataru.presentation.showToast
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -51,12 +53,13 @@ import com.yandex.mapkit.map.SizeChangedListener
 import com.yandex.mapkit.mapview.MapView
 import com.yandex.runtime.image.ImageProvider
 import com.yandex.runtime.ui_view.ViewProvider
+import java.io.Serializable
 
 
 private const val CLUSTER_RADIUS = 60.0
 private const val CLUSTER_MIN_ZOOM = 15
 
-private var flats = GeometryProvider.getFlats()
+private var flats = flatsContainer.roomTypes.roomtypes
 
 class MapFragment : Fragment() {
 
@@ -87,12 +90,13 @@ class MapFragment : Fragment() {
         updateFocusRect()
     }
     private val placemarkTapListener = MapObjectTapListener { mapObject, _ -> //TODO
-        val flat = mapObject.userData as flat
+        val flat = mapObject.userData as Roomtypes
         //showToast(flat.cost.toString())
         val bottomSheetFragment = FlatBottomSheetFragment()
         val args = Bundle()
-        args.putInt("id", flat.id)
-        args.putInt("cost", flat.cost)
+        args.putSerializable("roomtypes", flat as Serializable)
+//        args.putInt("id", flat.id!!.toInt())
+//        args.putInt("cost", flat.price!!.toDouble().toInt())
         // Передаем параметры в аргументы фрагмента
         bottomSheetFragment.arguments = args
         bottomSheetFragment.show(childFragmentManager, bottomSheetFragment.tag)
@@ -103,9 +107,10 @@ class MapFragment : Fragment() {
     // that shows a cluster's pins
     // слушатель отдаления кластеров
     private val clusterListener = ClusterListener { cluster ->
-        val flatsInCluster = cluster.placemarks.mapNotNull { it.userData as? flat }
-        val minValue = flatsInCluster.minByOrNull { it.cost }?.cost ?: 0
-        val maxValue = flatsInCluster.maxByOrNull { it.cost }?.cost ?: 0
+        val flatsInCluster = cluster.placemarks.mapNotNull { it.userData as? Roomtypes }
+        val minValue = flatsInCluster.minByOrNull { it.price?.toDoubleOrNull() ?: Double.MAX_VALUE }?.price?.toDoubleOrNull() ?: 0.0
+        val maxValue = flatsInCluster.maxByOrNull { it.price?.toDoubleOrNull() ?: Double.MIN_VALUE }?.price?.toDoubleOrNull() ?: 0.0
+
         cluster.appearance.setView(
             ViewProvider(
                 ClusterView(activity as AppCompatActivity).apply {
@@ -121,8 +126,8 @@ class MapFragment : Fragment() {
     // при нажатии на сборище кластеров
     private val clusterTapListener = ClusterTapListener {
         val listPointsOfCluster =
-            it.placemarks.map { x: PlacemarkMapObject? -> x?.userData as flat }
-                .map { x: flat -> x.location }
+            it.placemarks.map { x: PlacemarkMapObject? -> x?.userData as Roomtypes }
+                .map { x: Roomtypes -> Point(x.geoData!!.x!!.toDouble(),x.geoData!!.y!!.toDouble()) }
         if (flatsLocateNearByAnother(listPointsOfCluster, 0.00001)) { // расстояние в меридиане
             showToast("Они близко")
             //просмотр множества квартир
@@ -203,10 +208,10 @@ class MapFragment : Fragment() {
         clasterizedCollection = collection.addClusterizedPlacemarkCollection(clusterListener)
         mapView.mapWindow.addSizeChangedListener(mapWindowSizeChangedListener)
         updateFocusRect()
-        GeometryProvider.clusterizedPoints.forEachIndexed { index, point ->
+        flatsContainer.clusterizedPoints.forEachIndexed { index, point ->
 
             val flat = flats[index]
-            val markerBitmap = createBitmapWithText(flat.cost.toString())
+            val markerBitmap = createBitmapWithText(flat.price?.toDouble().toString())
             val priceMarkerImageProvider = ImageProvider.fromBitmap(markerBitmap)
 
             clasterizedCollection.addPlacemark(
@@ -219,7 +224,7 @@ class MapFragment : Fragment() {
             )
                 .apply {
                     // Put any data in MapObject
-                    userData = flat(index, point, flat.cost)
+                    userData = flats[index]
                     this.addTapListener(placemarkTapListener)
                 }
         }

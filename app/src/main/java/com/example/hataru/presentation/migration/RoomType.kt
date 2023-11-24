@@ -1,8 +1,9 @@
 package com.example.hataru.presentation.migration
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import java.io.Serializable
 
-data class Roomtypes(
+data class Roomtypes (
 
     @JsonProperty("id") var id: String? = null,
     @JsonProperty("hotel_id") var hotelId: String? = null,
@@ -34,7 +35,7 @@ data class Roomtypes(
     @JsonProperty("subrooms") var subrooms: ArrayList<Subrooms> = arrayListOf(),
     @JsonProperty("rooms") var rooms: ArrayList<String> = arrayListOf()
 
-)
+) : Serializable
 
 data class ExampleJson2KtKotlin(
 

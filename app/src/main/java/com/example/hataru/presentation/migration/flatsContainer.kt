@@ -7,6 +7,7 @@ import android.content.res.Resources
 import com.example.hataru.R
 import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.yandex.mapkit.geometry.Point
 import java.io.BufferedReader
 import java.io.File
 import java.io.FileReader
@@ -2866,6 +2867,8 @@ object flatsContainer {
 
     val roomTypes: ExampleJson2KtKotlin = objectMapper.readValue(content, ExampleJson2KtKotlin::class.java)
 
+    val clusterizedPoints = roomTypes.roomtypes.map { x : Roomtypes -> Point(x.geoData!!.x!!.toDouble(),
+        x!!.geoData!!.y!!.toDouble()) }
 
 }
 
