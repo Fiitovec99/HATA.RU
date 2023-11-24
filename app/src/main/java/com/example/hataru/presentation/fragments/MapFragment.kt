@@ -89,15 +89,12 @@ class MapFragment : Fragment() {
     private val mapWindowSizeChangedListener = SizeChangedListener { _, _, _ ->
         updateFocusRect()
     }
-    private val placemarkTapListener = MapObjectTapListener { mapObject, _ -> //TODO
+    private val placemarkTapListener = MapObjectTapListener { mapObject, _ ->
         val flat = mapObject.userData as Roomtypes
         //showToast(flat.cost.toString())
         val bottomSheetFragment = FlatBottomSheetFragment()
         val args = Bundle()
         args.putSerializable("roomtypes", flat as Serializable)
-//        args.putInt("id", flat.id!!.toInt())
-//        args.putInt("cost", flat.price!!.toDouble().toInt())
-        // Передаем параметры в аргументы фрагмента
         bottomSheetFragment.arguments = args
         bottomSheetFragment.show(childFragmentManager, bottomSheetFragment.tag)
         true
@@ -108,8 +105,8 @@ class MapFragment : Fragment() {
     // слушатель отдаления кластеров
     private val clusterListener = ClusterListener { cluster ->
         val flatsInCluster = cluster.placemarks.mapNotNull { it.userData as? Roomtypes }
-        val minValue = flatsInCluster.minByOrNull { it.price?.toDoubleOrNull() ?: Double.MAX_VALUE }?.price?.toDoubleOrNull() ?: 0.0
-        val maxValue = flatsInCluster.maxByOrNull { it.price?.toDoubleOrNull() ?: Double.MIN_VALUE }?.price?.toDoubleOrNull() ?: 0.0
+        val minValue = flatsInCluster.minByOrNull { it.price }?.price ?: 0.0
+        val maxValue = flatsInCluster.maxByOrNull { it.price }?.price ?: 0.0
 
         cluster.appearance.setView(
             ViewProvider(
@@ -128,9 +125,10 @@ class MapFragment : Fragment() {
         val listPointsOfCluster =
             it.placemarks.map { x: PlacemarkMapObject? -> x?.userData as Roomtypes }
                 .map { x: Roomtypes -> Point(x.geoData!!.x!!.toDouble(),x.geoData!!.y!!.toDouble()) }
+
         if (flatsLocateNearByAnother(listPointsOfCluster, 0.00001)) { // расстояние в меридиане
-            showToast("Они близко")
-            //просмотр множества квартир
+            showToast("Квартиры находятся в одном здании, реализация впереди!")
+            //просмотр множества квартир Todo
         } else {
             val targetPoint = it.appearance.geometry
             val zoom = 15.0f // Масштаб, на который увеличиваем карту
@@ -208,10 +206,11 @@ class MapFragment : Fragment() {
         clasterizedCollection = collection.addClusterizedPlacemarkCollection(clusterListener)
         mapView.mapWindow.addSizeChangedListener(mapWindowSizeChangedListener)
         updateFocusRect()
+
         flatsContainer.clusterizedPoints.forEachIndexed { index, point ->
 
             val flat = flats[index]
-            val markerBitmap = createBitmapWithText(flat.price?.toDouble().toString())
+            val markerBitmap = createBitmapWithText(flat.price.toInt().toString())
             val priceMarkerImageProvider = ImageProvider.fromBitmap(markerBitmap)
 
             clasterizedCollection.addPlacemark(

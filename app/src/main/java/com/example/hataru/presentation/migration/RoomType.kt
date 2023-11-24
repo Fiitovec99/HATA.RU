@@ -11,9 +11,9 @@ data class Roomtypes (
     @JsonProperty("name") var name: String? = null,
     @JsonProperty("type") var type: String? = null,
     @JsonProperty("adults") var adults: String? = null,
-    @JsonProperty("children") var children: String? = null,
-    @JsonProperty("children_age") var childrenAge: String? = null,
-    @JsonProperty("price") var price: String? = null,
+    @JsonProperty("children") var children: Int? = null,
+    @JsonProperty("children_age") var childrenAge: Int? = null,
+    @JsonProperty("price") var price: Double,
     @JsonProperty("board") var board: String? = null,
     @JsonProperty("code") var code: String? = null,
     @JsonProperty("description") var description: String? = null,
@@ -34,21 +34,17 @@ data class Roomtypes (
     @JsonProperty("extra") var extra: Extra? = Extra(),
     @JsonProperty("subrooms") var subrooms: ArrayList<Subrooms> = arrayListOf(),
     @JsonProperty("rooms") var rooms: ArrayList<String> = arrayListOf()
-
 ) : Serializable
 
-data class ExampleJson2KtKotlin(
 
+data class ExampleJson2KtKotlin(
     @JsonProperty("frontend_version") var frontendVersion: String? = null,
     @JsonProperty("roomtypes") var roomtypes: ArrayList<Roomtypes> = arrayListOf()
-
 )
 
 data class GeoData(
-
     @JsonProperty("x") var x: String? = null,
     @JsonProperty("y") var y: String? = null
-
 )
 
 data class Extra(

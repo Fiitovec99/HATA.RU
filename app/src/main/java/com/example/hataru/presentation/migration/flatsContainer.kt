@@ -2867,6 +2867,9 @@ object flatsContainer {
 
     val roomTypes: ExampleJson2KtKotlin = objectMapper.readValue(content, ExampleJson2KtKotlin::class.java)
 
+
+
+
     val clusterizedPoints = roomTypes.roomtypes.map { x : Roomtypes -> Point(x.geoData!!.x!!.toDouble(),
         x!!.geoData!!.y!!.toDouble()) }
 

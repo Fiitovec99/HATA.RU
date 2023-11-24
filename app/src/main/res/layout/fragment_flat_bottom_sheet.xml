@@ -13,7 +13,7 @@
         android:textSize="18sp"
         android:textStyle="bold"
         android:layout_gravity="center_horizontal"
-        android:text="Характеристики квартиры"/>
+        android:text="О квартире"/>
 
     <ImageView
         android:id="@+id/example_of_flat_imageView"
@@ -34,22 +34,22 @@
         android:layout_height="wrap_content"
         android:textSize="16sp"
         android:layout_marginTop="8dp"
-        android:text="Location: 47.225873, 39.719055"/>
+        tools:text="Улица ..."/>
+
 
     <TextView
+        android:id="@+id/countAdultsFlatTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="18sp"
-        android:textStyle="bold"
-        android:layout_gravity="center_horizontal"
-        android:text="Flat Details"/>
+        tools:text="Кол-вогостей"/>
+
     <TextView
+        android:id="@+id/countChildrenFlatTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="18sp"
-        android:textStyle="bold"
-        android:layout_gravity="center_horizontal"
-       android:text="Flat Details"/>
+        tools:text="Кол-во гостей"/>
 
     <Button
         android:layout_width="wrap_content"
