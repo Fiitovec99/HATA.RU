@@ -1,61 +1,93 @@
 package com.example.hataru.presentation.migration
 
+import com.fasterxml.jackson.annotation.JsonProperty
 
+data class Roomtypes(
 
+    @JsonProperty("id") var id: String? = null,
+    @JsonProperty("hotel_id") var hotelId: String? = null,
+    @JsonProperty("parent_id") var parentId: String? = null,
+    @JsonProperty("name") var name: String? = null,
+    @JsonProperty("type") var type: String? = null,
+    @JsonProperty("adults") var adults: String? = null,
+    @JsonProperty("children") var children: String? = null,
+    @JsonProperty("children_age") var childrenAge: String? = null,
+    @JsonProperty("price") var price: String? = null,
+    @JsonProperty("board") var board: String? = null,
+    @JsonProperty("code") var code: String? = null,
+    @JsonProperty("description") var description: String? = null,
+    @JsonProperty("sort_order") var sortOrder: String? = null,
+    @JsonProperty("country") var country: String? = null,
+    @JsonProperty("city") var city: String? = null,
+    @JsonProperty("address") var address: String? = null,
+    @JsonProperty("city_eng") var cityEng: String? = null,
+    @JsonProperty("address_eng") var addressEng: String? = null,
+    @JsonProperty("postcode") var postcode: String? = null,
+    @JsonProperty("gis_point") var gisPoint: String? = null,
+    @JsonProperty("geo_data") var geoData: GeoData? = GeoData(),
+    @JsonProperty("booking_url") var bookingUrl: String? = null,
+    @JsonProperty("tripadvisor_url") var tripadvisorUrl: String? = null,
+    @JsonProperty("provider_roomtype_settings") var providerRoomtypeSettings: ArrayList<String> = arrayListOf(),
+    @JsonProperty("provider_roomtype_id") var providerRoomtypeId: String? = null,
+    @JsonProperty("deleted") var deleted: String? = null,
+    @JsonProperty("extra") var extra: Extra? = Extra(),
+    @JsonProperty("subrooms") var subrooms: ArrayList<Subrooms> = arrayListOf(),
+    @JsonProperty("rooms") var rooms: ArrayList<String> = arrayListOf()
 
-data class RoomType(
-        val id: String,
-        val hotel_id: String,
-        val parent_id: String,
-        val name: String,
-        val type: String,
-        val adults: String,
-        val children: String,
-        val price: String,
-        val board: String,
-        val description: String,
-        val sort_order: String?,
-        val country: String?,
-        val city: String?,
-        val city_eng: String?,
-        val address: String?,
-        val address_eng: String?,
-        val postcode: String?,
-        val geo_data: GeoData?,
-        val subrooms: List<Any>,
-        val rooms: List<Room>
+)
+
+data class ExampleJson2KtKotlin(
+
+    @JsonProperty("frontend_version") var frontendVersion: String? = null,
+    @JsonProperty("roomtypes") var roomtypes: ArrayList<Roomtypes> = arrayListOf()
+
 )
 
 data class GeoData(
-        val x: String,
-        val y: String
-)
 
-data class UserCredentials(
-        val username: String,
-        val password: String
-)
-
-
-data class Room(
-        val id: String,
-        val hotel_id: String,
-        val room_type_id: String,
-        val room_type_name: String?,
-        val name: String,
-        val tags: String,
-        val sort_order: String,
+    @JsonProperty("x") var x: String? = null,
+    @JsonProperty("y") var y: String? = null
 
 )
 
-
-
-data class AuthenticationResponse(
-        val token: String,
+data class Extra(
+    @JsonProperty("set_guests") val setGuests: String? = null,
+    @JsonProperty("children_ages") val childrenAges: List<Any>? = null
 )
 
 
+data class Subrooms(
 
-data class AuthRequest(val username: String, val password: String)
+    @JsonProperty("id") var id: String? = null,
+    @JsonProperty("hotel_id") var hotelId: String? = null,
+    @JsonProperty("parent_id") var parentId: String? = null,
+    @JsonProperty("name") var name: String? = null,
+    @JsonProperty("type") var type: String? = null,
+    @JsonProperty("adults") var adults: String? = null,
+    @JsonProperty("children") var children: String? = null,
+    @JsonProperty("children_age") var childrenAge: String? = null,
+    @JsonProperty("price") var price: String? = null,
+    @JsonProperty("board") var board: String? = null,
+    @JsonProperty("code") var code: String? = null,
+    @JsonProperty("description") var description: String? = null,
+    @JsonProperty("sort_order") var sortOrder: String? = null,
+    @JsonProperty("country") var country: String? = null,
+    @JsonProperty("city") var city: String? = null,
+    @JsonProperty("address") var address: String? = null,
+    @JsonProperty("city_eng") var cityEng: String? = null,
+    @JsonProperty("address_eng") var addressEng: String? = null,
+    @JsonProperty("postcode") var postcode: String? = null,
+    @JsonProperty("gis_point") var gisPoint: String? = null,
+    @JsonProperty("geo_data") var geoData: String? = null,
+    @JsonProperty("booking_url") var bookingUrl: String? = null,
+    @JsonProperty("tripadvisor_url") var tripadvisorUrl: String? = null,
+    @JsonProperty("provider_roomtype_settings") var providerRoomtypeSettings: ArrayList<String> = arrayListOf(),
+    @JsonProperty("provider_roomtype_id") var providerRoomtypeId: String? = null,
+    @JsonProperty("deleted") var deleted: String? = null,
+    @JsonProperty("extra") var extra: Extra? = Extra(),
+    @JsonProperty("subrooms") var subrooms: String? = null,
+    @JsonProperty("rooms") var rooms: ArrayList<String> = arrayListOf()
 
+)
 
+data class UserCredentials(val login: String?, val password: String?)

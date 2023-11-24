@@ -14,8 +14,8 @@ interface ApiService {
     fun getRoomTypes(
         @Header("Content-Type") contentTypeHeader: String = "application/json",
         @Header("Accept") acceptHeader: String = "application/json",
-//        @Header("Cookie") cookie: List<String>
-    ): Call<RoomType>
+        //@Header("Cookie") cookie: List<String>
+    ): Call<Roomtypes>
 
 
 
