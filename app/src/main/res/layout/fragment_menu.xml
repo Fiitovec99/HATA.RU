@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".presentation.fragments.MenuFragment"
+    tools:context="hataru.fragments.MenuFragment"
     android:background="#E5E4E4"
     android:orientation="vertical">
 
