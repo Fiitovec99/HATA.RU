@@ -40,16 +40,16 @@ class MenuFragment : Fragment() {
         }
 
         binding.textViewOpenWhatsUp.setOnClickListener {
-            val phoneNumber = "+79959890049"
+            val phoneNumber ="+79959890049"
             val intent = Intent(Intent.ACTION_VIEW)
-            intent.data = Uri.parse("https://api.whatsapp.com/send?phone=$phoneNumber")
-
+            intent.data = Uri.parse("whatsapp://send?phone=$phoneNumber")
             try {
                 startActivity(intent)
             } catch (e: ActivityNotFoundException) {
-                Toast.makeText( activity as AppCompatActivity,"WhatsApp не установлен.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(activity,"Приложение не установлено",Toast.LENGTH_SHORT).show()
             }
         }
+
 
 
     }
