@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="36dp"
+        tools:layout_editor_absoluteY="-185dp">
+
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="16dp">
+
+            <!-- Изображение квартиры в полноэкранном режиме -->
+            <ImageView
+                android:id="@+id/image_View_Apartment_Full"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/kvartira_vypolnennaya_v_stile_xajtek" />
+
+            <!-- Информация о квартире в полноэкранном режиме -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/image_View_Apartment_Full"
+                android:layout_marginTop="16dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/text_View_Address_Full"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Адрес: улица, дом"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/text_View_Area_Full"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="Площадь: 100 кв. м"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/text_View_Guests_Full"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="Гости: 4"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/text_View_Price_Full"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="Цена за сутки: $100"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/text_View_Description_Full"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Описание"
+                    android:textSize="16sp" />
+            </LinearLayout>
+        </RelativeLayout>
+
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
