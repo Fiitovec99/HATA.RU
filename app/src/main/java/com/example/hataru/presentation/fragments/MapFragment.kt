@@ -59,7 +59,7 @@ import java.io.Serializable
 private const val CLUSTER_RADIUS = 60.0
 private const val CLUSTER_MIN_ZOOM = 15
 
-private var flats = flatsContainer.roomTypes.roomtypes
+private var flats = flatsContainer.roomTypes
 
 class MapFragment : Fragment() {
 

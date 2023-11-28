@@ -1,5 +1,6 @@
 package com.example.hataru.presentation
 
+import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -11,6 +12,7 @@ import com.example.hataru.R
 import com.example.hataru.presentation.migration.AddCookiesInterceptor
 import com.example.hataru.presentation.migration.ApiClient
 import com.example.hataru.presentation.migration.ApiClient.apiService
+import com.example.hataru.presentation.migration.Roomtypes
 
 
 import com.example.hataru.presentation.migration.UserCredentials
@@ -33,31 +35,34 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 
 
-
-
-
 class MainActivity : AppCompatActivity() {
 
     private val API_KEY = "0fbc6a26-ede5-4bec-8b40-ec2e3ea8b780"
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setNavigation()
+
         MapKitFactory.setApiKey(API_KEY)
+        MapKitFactory.initialize(this)
+       
+//        MapKitFactory.setApiKey(API_KEY)
+//        MapKitFactory.initialize(this)
 
 
 
-//        apiService.authenticateUser(credentials = UserCredentials(login, password)).enqueue(object :
+//        apiService.authenticateUser(credentials = UserCredentials("6557acdcf08a9+14325@customapp.bnovo.ru", "f56c2ee76f46fa61")).enqueue(object :
 //            Callback<Void> {
 //            override fun onResponse(call: Call<Void>, response: Response<Void>) {
 //                if (response.isSuccessful) {
 //                    //val cookies: List<String> = response.headers().values("Cookie")
 //
 //                    //Log.d("API_RESPONSE", "Response: ${cookies.joinToString(", ")}")
-//                    apiService.getRoomTypes().enqueue(object : Callback<RoomType> {
-//                        override fun onResponse(call: Call<RoomType>, roomTypeResponse: Response<RoomType>) {
+//                    apiService.getRoomTypes().enqueue(object : Callback<Roomtypes> {
+//                        override fun onResponse(call: Call<Roomtypes>, roomTypeResponse: Response<Roomtypes>) {
 //                            if (roomTypeResponse.isSuccessful) {
 //                                val rawResponse = roomTypeResponse.raw()
 //                                val roomTypes = roomTypeResponse.body()
@@ -67,7 +72,7 @@ class MainActivity : AppCompatActivity() {
 //                            }
 //                        }
 //
-//                        override fun onFailure(call: Call<RoomType>, t: Throwable) {
+//                        override fun onFailure(call: Call<Roomtypes>, t: Throwable) {
 //                            Log.e("API_RESPONSE","Authentication failed")
 //                        }
 //                    })
@@ -83,7 +88,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onResume() {
-        Log.d("TAG",roomTypes.roomtypes.size.toString())
+        Log.d("TAG",roomTypes.size.toString())
         super.onResume()
     }
 
