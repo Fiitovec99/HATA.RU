@@ -1,60 +1,89 @@
 package hataru.fragments
 
-
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentContainerView
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.RecyclerView
 import com.example.hataru.R
-import com.example.hataru.databinding.FragmentFavoriteFlatBinding
-import com.example.hataru.databinding.FragmentMenuBinding
+import hataru.presentation.ApartmentActivity
+import hataru.presentation.ApartmentFragment
+import hataru.presentation.ApartmentListAdapter
+import hataru.presentation.FavoriteFlatViewModel
 
 class FavoriteFlatFragment : Fragment() {
 
-    //    companion object {
-//        fun newInstance() = FavoriteFlatFragment()
-//    }
-//
-//    private lateinit var viewModel: FavoriteFlatViewModel
-    private lateinit var binding: FragmentFavoriteFlatBinding
+    private lateinit var viewModel: FavoriteFlatViewModel
+    private lateinit var apartmentListAdapter: ApartmentListAdapter
+    private var apartmentContainer: FragmentContainerView? = null
 
     override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentFavoriteFlatBinding.inflate(inflater, container, false)
-        return binding.root
+        return inflater.inflate(R.layout.fragment_list_flats, container, false)
     }
-    fun ShowToast(){
-        Toast.makeText(activity as AppCompatActivity, "в разработке",Toast.LENGTH_SHORT)
-                .show()
-    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        apartmentContainer = view.findViewById(R.id.apartment_container)
+        setupRecyclerView()
+        viewModel = ViewModelProvider(this)[FavoriteFlatViewModel::class.java]
+        viewModel.apartmentList.observe(viewLifecycleOwner) {
+            apartmentListAdapter.submitList(it)
+        }
+    }
 
+    private fun isOnePaneMode(): Boolean {
+        val apartmentContainer = activity?.findViewById<FragmentContainerView>(R.id.apartment_container)
+        return apartmentContainer == null
+    }
 
-        binding.apply {
-            imageViewApartment.setOnClickListener {
-                ShowToast()
-            }
-            imageViewApartment1.setOnClickListener {
-                ShowToast()
-            }
-            imageViewApartment2.setOnClickListener {
-                ShowToast()
-            }
-            imageViewApartment3.setOnClickListener {
-                ShowToast()
-            }
-            imageViewApartment4.setOnClickListener {
-                ShowToast()
-            }
-            imageViewApartment5.setOnClickListener {
-                ShowToast()
+    private fun launchFragment(fragment: Fragment) {
+        parentFragmentManager.popBackStack()
+        parentFragmentManager.beginTransaction()
+            .replace(R.id.apartment_container, fragment)
+            .addToBackStack(null)
+            .commit()
+    }
+
+    private fun setupRecyclerView() {
+        val rvApartmentList = view?.findViewById<RecyclerView>(R.id.rv_apartment_list)
+        with(rvApartmentList) {
+            apartmentListAdapter = ApartmentListAdapter()
+            this?.adapter = apartmentListAdapter
+            rvApartmentList?.recycledViewPool?.setMaxRecycledViews(
+                ApartmentListAdapter.VIEW_TYPE_LIKED,
+                ApartmentListAdapter.MAX_POOL_SIZE
+            )
+            rvApartmentList?.recycledViewPool?.setMaxRecycledViews(
+                ApartmentListAdapter.VIEW_TYPE_NOLIKED,
+                ApartmentListAdapter.MAX_POOL_SIZE
+            )
+        }
+
+        setupLikeButtonClickListener()
+        setupApartmentClickListener()
+    }
+
+    private fun setupApartmentClickListener() {
+        apartmentListAdapter.onApartmentClickListener = {
+            if (isOnePaneMode()) {
+                val intent = ApartmentActivity.newIntent(requireContext(), it.id)
+                startActivity(intent)
+            } else {
+                launchFragment(ApartmentFragment.newInstanceItem(it.id))
             }
         }
     }
+
+    private fun setupLikeButtonClickListener() {
+        apartmentListAdapter.onLikeButtonClickListener = {
+            viewModel.changeLikedStage(it)
+        }
+    }
 }
+
