@@ -40,15 +40,18 @@ class MainActivity : AppCompatActivity() {
     private val API_KEY = "0fbc6a26-ede5-4bec-8b40-ec2e3ea8b780"
 
 
-
+    private var isMapKitInitialized = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setNavigation()
 
         MapKitFactory.setApiKey(API_KEY)
-        MapKitFactory.initialize(this)
-       
+
+        if (!isMapKitInitialized) {
+            MapKitFactory.initialize(this)
+            isMapKitInitialized = true
+        }
 //        MapKitFactory.setApiKey(API_KEY)
 //        MapKitFactory.initialize(this)
 
