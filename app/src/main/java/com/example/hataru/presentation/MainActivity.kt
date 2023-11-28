@@ -1,8 +1,14 @@
 package com.example.hataru.presentation
 
+import android.content.Intent
+import android.graphics.Typeface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.StyleSpan
 import android.util.Log
+import android.widget.TextView
 import android.widget.Toast
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI.setupWithNavController
@@ -36,6 +42,14 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        if (flag){
+            flag = false
+            val intent = Intent(this, OnboardingActivity::class.java)
+            startActivity(intent)
+        }
+
+
         setNavigation()
 
 
@@ -87,7 +101,9 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-
+    companion object{
+        private var flag = true
+    }
 
 }
 
