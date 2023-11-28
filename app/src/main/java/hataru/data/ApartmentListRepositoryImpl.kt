@@ -2,8 +2,10 @@ package hataru.data
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import hataru.data.flatsContainer.roomTypes
 import hataru.domain.Apartment
 import hataru.domain.ApartmentListRepository
+import kotlin.math.roundToInt
 import kotlin.random.Random
 
 object ApartmentListRepositoryImpl: ApartmentListRepository {
@@ -14,9 +16,9 @@ object ApartmentListRepositoryImpl: ApartmentListRepository {
     private var autoIncrementId = 0
 
     init{
-        for (i in 0 until 1000){
-            val item = Apartment("adress $i",
-                "description $i", i, 1000*i, 10.0+i, Random.nextBoolean()
+        for (ap in roomTypes){
+            val item = Apartment("Адрес: " + ap.address!!, ap.description!!, ap.adults!!,
+                ap.price.toInt()!!,(Random.nextDouble(10.0,30.0)*10).roundToInt()/10.0, false, ap.id!!.toInt()
             )
             addApartment(item)
         }

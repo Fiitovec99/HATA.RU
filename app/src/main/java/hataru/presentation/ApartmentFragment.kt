@@ -18,6 +18,7 @@ class ApartmentFragment : Fragment() {
     private lateinit var twfArea: TextView
     private lateinit var twfGuests: TextView
     private lateinit var twfPrice: TextView
+    private lateinit var twfDescription: TextView
 
     private var apartmentId = Apartment.UNDEFIND_ID
 
@@ -36,6 +37,12 @@ class ApartmentFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        twfAddress = view.findViewById(R.id.text_View_Address_Full)
+        twfArea = view.findViewById(R.id.text_View_Area_Full)
+        twfGuests = view.findViewById(R.id.text_View_Guests_Full)
+        twfPrice = view.findViewById(R.id.text_View_Price_Full)
+        twfDescription = view.findViewById(R.id.text_View_Description_Full)
+
         viewModel = ViewModelProvider(this)[ApartmentViewModel::class.java]
         initViews(view)
         launch()
@@ -45,9 +52,10 @@ class ApartmentFragment : Fragment() {
         viewModel.getApartment(apartmentId)
         viewModel.apartment.observe(viewLifecycleOwner) {
             twfAddress.text = it.address
-            twfArea.text = it.area.toString()
-            twfGuests.text = it.people.toString()
-            twfPrice.text = it.price.toString()
+            twfArea.text = "Площадь: " + it.area.toString()
+            twfGuests.text = "Кол-во гостей: " + it.people.toString()
+            twfPrice.text = "Цена: " + it.price.toString() + "руб"
+            twfDescription.text = "\n" + it.description
         }
     }
 
@@ -60,10 +68,10 @@ class ApartmentFragment : Fragment() {
     }
 
     private fun initViews(view: View) {
-        twfAddress = view.findViewById<TextView>(R.id.text_View_Address_Full)
-        twfArea = view.findViewById<TextView>(R.id.text_View_Area_Full)
-        twfGuests = view.findViewById<TextView>(R.id.text_View_Guests_Full)
-        twfPrice = view.findViewById<TextView>(R.id.text_View_Price_Full)
+        twfAddress = view.findViewById(R.id.text_View_Address_Full)
+        twfArea = view.findViewById(R.id.text_View_Area_Full)
+        twfGuests = view.findViewById(R.id.text_View_Guests_Full)
+        twfPrice = view.findViewById(R.id.text_View_Price_Full)
     }
 
     companion object {

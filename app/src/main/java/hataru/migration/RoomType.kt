@@ -5,12 +5,12 @@ import java.io.Serializable
 
 data class Roomtypes (
 
-    @JsonProperty("id") var id: String? = null,
+    @JsonProperty("id") var id: Int? = null,
     @JsonProperty("hotel_id") var hotelId: String? = null,
     @JsonProperty("parent_id") var parentId: String? = null,
     @JsonProperty("name") var name: String? = null,
     @JsonProperty("type") var type: String? = null,
-    @JsonProperty("adults") var adults: String? = null,
+    @JsonProperty("adults") var adults: Int? = null,
     @JsonProperty("children") var children: Int? = null,
     @JsonProperty("children_age") var childrenAge: Int? = null,
     @JsonProperty("price") var price: Double,

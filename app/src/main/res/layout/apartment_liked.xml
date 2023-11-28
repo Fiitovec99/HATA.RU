@@ -27,7 +27,7 @@
             android:scaleType="centerCrop"
             android:src="@drawable/kvartira_vypolnennaya_v_stile_xajtek" />
 
-        <!-- Кнопка "Нравится" (Like) в виде сердечка -->
+        <!-- Кнопка "Нравится" (Like) -->
         <ImageButton
             android:id="@+id/button_Like"
             android:layout_width="40dp"
@@ -77,6 +77,13 @@
                 android:layout_marginTop="4dp"
                 android:text="Цена за сутки: $100"
                 android:textSize="14sp" />
+
+<!--            <TextView-->
+<!--                android:id="@+id/text_View_Description"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Описание"-->
+<!--                android:textSize="16sp" />-->
         </LinearLayout>
     </RelativeLayout>
 

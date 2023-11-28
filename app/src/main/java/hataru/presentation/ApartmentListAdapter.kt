@@ -30,9 +30,9 @@ class ApartmentListAdapter : ListAdapter<Apartment, ApartmentViewHolder>(Apartme
             onApartmentClickListener?.invoke(apartment)
         }
         viewHolder.twAddress.text = apartment.address
-        viewHolder.twArea.text = apartment.area.toString()
-        viewHolder.twGuests.text = apartment.people.toString()
-        viewHolder.twPrice.text = apartment.price.toString()
+        viewHolder.twArea.text = "Площадь: " + apartment.area.toString()
+        viewHolder.twGuests.text = "Кол-во гостей: " + apartment.people.toString()
+        viewHolder.twPrice.text = "Цена: " + apartment.price.toString() + "руб"
     }
 
     override fun getItemViewType(position: Int): Int {

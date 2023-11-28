@@ -61,6 +61,13 @@
                     android:layout_marginTop="4dp"
                     android:text="Цена за сутки: $100"
                     android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/text_View_Description_Full"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Описание"
+                    android:textSize="16sp" />
             </LinearLayout>
         </RelativeLayout>
 
