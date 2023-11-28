@@ -1,4 +1,4 @@
-package com.example.listrooms.presentation
+package hataru.presentation
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

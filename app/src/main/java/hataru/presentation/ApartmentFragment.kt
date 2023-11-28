@@ -1,4 +1,4 @@
-package com.example.listrooms.presentation
+package hataru.presentation
 
 import android.os.Bundle
 import android.view.LayoutInflater

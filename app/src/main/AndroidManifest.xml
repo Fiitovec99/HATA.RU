@@ -26,6 +26,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+    <activity android:name="hataru.presentation.ApartmentActivity">
+        <!-- дополнительные настройки, если есть -->
+    </activity>
     </application>
 
 </manifest>

@@ -1,4 +1,4 @@
-package com.example.listrooms.presentation
+package hataru.presentation
 
 import android.content.Context
 import android.content.Intent

@@ -1,4 +1,4 @@
-package com.example.listrooms.presentation
+package hataru.presentation
 
 import androidx.recyclerview.widget.DiffUtil
 import hataru.domain.Apartment
