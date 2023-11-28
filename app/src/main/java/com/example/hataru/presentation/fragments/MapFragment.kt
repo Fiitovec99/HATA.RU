@@ -70,6 +70,7 @@ class MapFragment : Fragment() {
     private lateinit var imageLocation: ImageView
     private val LATITUDE_KEY: String = "LATITUDE"
     private val LONGITUDE_KEY: String = "LONGITUDE"
+    private val ZOOM_KEY = "ZOOM"
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private val requestPermissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
@@ -143,11 +144,11 @@ class MapFragment : Fragment() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        // Сохраняем текущие координаты карты
-        mapView?.let {
-            savedLatLng = mapView.mapWindow.map.cameraPosition.target
-            outState.putDouble(LATITUDE_KEY, savedLatLng?.latitude ?: 0.0)
-            outState.putDouble(LONGITUDE_KEY, savedLatLng?.longitude ?: 0.0)
+        mapView.map?.let { map ->
+            val cameraPosition = map.cameraPosition
+            outState.putDouble(LATITUDE_KEY, cameraPosition.target.latitude)
+            outState.putDouble(LONGITUDE_KEY, cameraPosition.target.longitude)
+            outState.putFloat(ZOOM_KEY, cameraPosition.zoom)
         }
     }
 
@@ -233,8 +234,9 @@ class MapFragment : Fragment() {
             savedInstanceState?.let {
                 val latitude = it.getDouble(LATITUDE_KEY, 0.0)
                 val longitude = it.getDouble(LONGITUDE_KEY, 0.0)
+                val zoom = it.getFloat(ZOOM_KEY, 14.0f)
                 mapView.map.move(
-                    CameraPosition(Point(latitude, longitude), 14.0f, 0.0f, 0.0f),
+                    CameraPosition(Point(latitude, longitude), zoom, 0.0f, 0.0f),
                     Animation(Animation.Type.SMOOTH, 0f),
                     null
                 )
