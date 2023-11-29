@@ -1,5 +1,6 @@
 package hataru.onboarding.screens
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -15,7 +16,6 @@ import com.example.hataru.databinding.FragmentSecondScreenBinding
 class SecondScreen : Fragment() {
     private lateinit var binding: FragmentSecondScreenBinding
 
-    private val navigateToMainActivity = MutableLiveData<Boolean>()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -25,13 +25,16 @@ class SecondScreen : Fragment() {
 
         binding.continue2.setOnClickListener {
             findNavController().navigate(R.id.mainActivity)
-            navigateToMainActivity.value = true
+            onBoardingFinished()
         }
 
         return view
     }
-
-    fun getNavigateToMainActivity(): LiveData<Boolean> {
-        return navigateToMainActivity
+    private fun onBoardingFinished(){
+        val sharedPref = requireActivity().getSharedPreferences("onBoarding", Context.MODE_PRIVATE)
+        val editor = sharedPref.edit()
+        editor.putBoolean("Finished", true)
+        editor.apply()
     }
+
 }

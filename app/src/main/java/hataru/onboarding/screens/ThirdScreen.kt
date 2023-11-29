@@ -1,5 +1,6 @@
 package hataru.onboarding.screens
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -30,10 +31,16 @@ class ThirdScreen : Fragment() {
 
         binding.continue3.setOnClickListener {
             findNavController().navigate(R.id.mainActivity)
-            navigateToMainActivity.value = true
+            onBoardingFinished()
         }
 
         return view
+    }
+    private fun onBoardingFinished(){
+        val sharedPref = requireActivity().getSharedPreferences("onBoarding", Context.MODE_PRIVATE)
+        val editor = sharedPref.edit()
+        editor.putBoolean("Finished", true)
+        editor.apply()
     }
 
     fun getNavigateToMainActivity(): LiveData<Boolean> {
