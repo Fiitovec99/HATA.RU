@@ -1,4 +1,4 @@
-package com.example.hataru.presentation.onboarding
+package hataru.onboarding
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -7,9 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.hataru.R
 import com.example.hataru.databinding.FragmentViewPagerBinding
-import com.example.hataru.presentation.onboarding.screens.FirstScreen
-import com.example.hataru.presentation.onboarding.screens.SecondScreen
-import com.example.hataru.presentation.onboarding.screens.ThirdScreen
+import hataru.onboarding.screens.FirstScreen
+import hataru.onboarding.screens.SecondScreen
+import hataru.onboarding.screens.ThirdScreen
 
 class ViewPagerFragment : Fragment() {
 

@@ -1,5 +1,6 @@
-package com.example.hataru.presentation.onboarding
+package hataru.onboarding
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import androidx.fragment.app.Fragment
@@ -9,6 +10,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.hataru.R
+import hataru.OnboardingActivity
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -24,7 +26,6 @@ class SplashFragment : Fragment() {
             findNavController().navigate(R.id.action_splashFragment_to_viewPagerFragment)
         }
 
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_splash, container, false)
     }
 }

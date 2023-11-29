@@ -28,9 +28,10 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 
 import com.yandex.mapkit.MapKitFactory
 
+
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import hataru.presentation.OnboardingActivity
+import hataru.OnboardingActivity
 import okhttp3.OkHttpClient
 import retrofit2.Call
 import retrofit2.Callback
@@ -43,6 +44,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 class MainActivity : AppCompatActivity() {
 
     private val API_KEY = "0fbc6a26-ede5-4bec-8b40-ec2e3ea8b780"
+    private var isMapKitInitialized = false
 
 
 
@@ -50,17 +52,16 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        if (flag){
-            flag = false
-            val intent = Intent(this, OnboardingActivity::class.java)
-            startActivity(intent)
-        }
 
-
-        setNavigation()
 
         MapKitFactory.setApiKey(API_KEY)
-        MapKitFactory.initialize(this)
+        if (!isMapKitInitialized) {
+            MapKitFactory.initialize(this)
+            isMapKitInitialized = true
+        }
+        setNavigation()
+
+
        
 //        MapKitFactory.setApiKey(API_KEY)
 //        MapKitFactory.initialize(this)
@@ -114,9 +115,6 @@ class MainActivity : AppCompatActivity() {
         setupWithNavController(navView, navController)
     }
 
-    companion object{
-        private var flag = true
-    }
 
 }
 

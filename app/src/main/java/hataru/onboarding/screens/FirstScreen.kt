@@ -1,4 +1,4 @@
-package com.example.hataru.presentation.onboarding.screens
+package hataru.onboarding.screens
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -14,7 +14,7 @@ import com.example.hataru.R
 import com.example.hataru.databinding.FragmentFirstScreenBinding
 import com.example.hataru.databinding.FragmentThirdScreenBinding
 import com.example.hataru.databinding.FragmentViewPagerBinding
-import com.example.hataru.presentation.onboarding.ViewPagerAdapter
+import hataru.onboarding.ViewPagerAdapter
 
 class FirstScreen : Fragment() {
     private lateinit var binding: FragmentFirstScreenBinding

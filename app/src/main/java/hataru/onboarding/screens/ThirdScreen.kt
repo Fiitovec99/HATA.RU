@@ -1,4 +1,4 @@
-package com.example.hataru.presentation.onboarding.screens
+package hataru.onboarding.screens
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

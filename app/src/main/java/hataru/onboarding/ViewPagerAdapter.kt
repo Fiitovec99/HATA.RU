@@ -1,4 +1,4 @@
-package com.example.hataru.presentation.onboarding
+package hataru.onboarding
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager

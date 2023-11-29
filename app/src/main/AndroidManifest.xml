@@ -18,16 +18,18 @@
         android:theme="@style/Theme.HATARU"
         tools:targetApi="31">
         <activity
-            android:name="hataru.presentation.OnboardingActivity"
-            android:exported="false" />
+            android:name="hataru.OnboardingActivity"
+            android:exported="true">
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
+        </activity>
         <activity
             android:name="hataru.MainActivity"
             android:exported="true"
             android:screenOrientation="portrait">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+
         </activity>
         <activity android:name="hataru.presentation.ApartmentActivity">
             <!-- дополнительные настройки, если есть -->
