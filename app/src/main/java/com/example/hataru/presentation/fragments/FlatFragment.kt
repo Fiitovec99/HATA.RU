@@ -1,29 +1,31 @@
 package com.example.hataru.presentation.fragments
 
+import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.example.hataru.R
-import com.example.hataru.databinding.FragmentFlatBottomSheetBinding
+import com.example.hataru.databinding.FragmentFlatBinding
 import com.example.hataru.domain.entity.Roomtypes
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.example.hataru.presentation.viewModels.FlatViewModel
 import java.io.Serializable
 
+class FlatFragment : Fragment() {
 
-class FlatBottomSheetFragment : BottomSheetDialogFragment() {
 
-    private lateinit var binding: FragmentFlatBottomSheetBinding
+    private lateinit var binding : FragmentFlatBinding
     private lateinit var flat : Roomtypes
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentFlatBottomSheetBinding.inflate(inflater, container, false)
-
+        binding = FragmentFlatBinding.inflate(layoutInflater,container,false)
         flat = arguments?.getSerializable("roomtypes") as Roomtypes
+
         return binding.root
     }
 
@@ -36,13 +38,7 @@ class FlatBottomSheetFragment : BottomSheetDialogFragment() {
             countAdultsFlatTextView.text = "Количество взрослых: "+ flat.adults.toString()
             countChildrenFlatTextView.text = "Количество детей: " + flat.children.toString()
 
-            buttonOpeningFlat.setOnClickListener{
 
-                val args = Bundle()
-                args.putSerializable("roomtypes", flat as Serializable)
-
-                findNavController().navigate(R.id.flatFragment,args)
-            }
         }
 
 
@@ -51,6 +47,3 @@ class FlatBottomSheetFragment : BottomSheetDialogFragment() {
 
 
 }
-
-
-
