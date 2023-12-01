@@ -20,6 +20,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.example.hataru.R
 import com.example.hataru.databinding.FragmentMapBinding
 import com.example.hataru.MainActivity
@@ -27,6 +28,7 @@ import com.example.hataru.data.GeometryProvider
 import com.example.hataru.isLocationEnabled
 import com.example.hataru.domain.entity.Roomtypes
 import com.example.hataru.data.flatsContainer
+import com.example.hataru.presentation.viewModels.MapViewModel
 import com.example.hataru.showAlertDialog
 import com.example.hataru.showToast
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -61,14 +63,12 @@ private var flats = flatsContainer.roomTypes
 
 class MapFragment : Fragment() {
 
-
+    private lateinit var viewModel: MapViewModel
     private var savedLatLng: Point? = null // переменная для сохранения координат карты
     private lateinit var binding: FragmentMapBinding
     private lateinit var mapView: MapView
     private lateinit var imageLocation: ImageView
-    private val LATITUDE_KEY: String = "LATITUDE"
-    private val LONGITUDE_KEY: String = "LONGITUDE"
-    private val ZOOM_KEY = "ZOOM"
+
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private val requestPermissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
@@ -90,7 +90,6 @@ class MapFragment : Fragment() {
     }
     private val placemarkTapListener = MapObjectTapListener { mapObject, _ ->
         val flat = mapObject.userData as Roomtypes
-        //showToast(flat.cost.toString())
         val bottomSheetFragment = FlatBottomSheetFragment()
         val args = Bundle()
         args.putSerializable("roomtypes", flat as Serializable)
@@ -140,15 +139,6 @@ class MapFragment : Fragment() {
         true
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        mapView.map?.let { map ->
-            val cameraPosition = map.cameraPosition
-            outState.putDouble(LATITUDE_KEY, cameraPosition.target.latitude)
-            outState.putDouble(LONGITUDE_KEY, cameraPosition.target.longitude)
-            outState.putFloat(ZOOM_KEY, cameraPosition.zoom)
-        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -157,6 +147,9 @@ class MapFragment : Fragment() {
         binding = FragmentMapBinding.inflate(inflater, container, false)
         initializeMap()
         initImageLocation()
+        viewModel = ViewModelProvider(requireActivity()).get(MapViewModel::class.java)
+
+
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
         if (isLocationEnabled(activity as AppCompatActivity)) {
@@ -227,26 +220,30 @@ class MapFragment : Fragment() {
                 }
         }
         clasterizedCollection.clusterPlacemarks(CLUSTER_RADIUS, CLUSTER_MIN_ZOOM)
-        //showRostovLocation()//TODO для удобного тестинга
-        if ((savedInstanceState != null && !savedInstanceState.isEmpty)) {
-            savedInstanceState?.let {
-                val latitude = it.getDouble(LATITUDE_KEY, 0.0)
-                val longitude = it.getDouble(LONGITUDE_KEY, 0.0)
-                val zoom = it.getFloat(ZOOM_KEY, 14.0f)
-                mapView.map.move(
-                    CameraPosition(Point(latitude, longitude), zoom, 0.0f, 0.0f),
-                    Animation(Animation.Type.SMOOTH, 0f),
-                    null
-                )
 
-            }
-        } else {
+        //showRostovLocation()//TODO для удобного тестинга
+        if (viewModel.latitude != 0.0 && viewModel.longitude != 0.0) {
+            val currentPosition = Point(viewModel.latitude, viewModel.longitude)
+            mapView.map.move(
+                CameraPosition(currentPosition, viewModel.zoom, 0.0f, 0.0f),
+                Animation(Animation.Type.SMOOTH, 0f),
+                null
+            )}
+         else {
             if (isLocationEnabled(activity as AppCompatActivity)) {
                 showMyCurrentLocation()
             } else {
                 showRostovLocation()
             }
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        val cameraPosition = mapView.map.cameraPosition
+        viewModel.latitude = cameraPosition.target.latitude
+        viewModel.longitude = cameraPosition.target.longitude
+        viewModel.zoom = cameraPosition.zoom
     }
 
     private fun locationClickListener() {
