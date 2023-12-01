@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="photo_resources">
+        <item>@drawable/example_of_flat_bottom_fragment</item>
+        <item>@drawable/example_of_flat_bottom_fragment</item>
+        <item>@drawable/example_of_flat_bottom_fragment</item>
+        <item>@drawable/example_of_flat_bottom_fragment</item>
+    </array>
+</resources>
