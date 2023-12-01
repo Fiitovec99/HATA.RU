@@ -26,7 +26,8 @@ class SplashFragment : Fragment() {
                 findNavController().navigate(R.id.action_splashFragment_to_viewPagerFragment)
             }
         }
-        mainHandler.postDelayed(runnable, 1500)
+
+        mainHandler.postDelayed(runnable, 0) //TODO поставить 1500
 
         return inflater.inflate(R.layout.fragment_splash, container, false)
     }

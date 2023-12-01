@@ -51,12 +51,6 @@
         android:textSize="18sp"
         tools:text="Кол-во гостей"/>
 
-    <Button
-        android:id="@+id/buttonOpeningFlat"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:layout_gravity="center_horizontal"
-        android:text="Посмотреть подробнее" />
+
 
 </LinearLayout>
