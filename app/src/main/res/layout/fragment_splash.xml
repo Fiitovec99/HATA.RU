@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="hataru.onboarding.SplashFragment"
+    tools:context=".presentation.onboarding.SplashFragment"
     android:background="#B0F1FF">
 
     <ImageView

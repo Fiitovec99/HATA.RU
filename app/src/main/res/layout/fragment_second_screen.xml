@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="hataru.onboarding.screens.SecondScreen">
+    tools:context=".presentation.onboarding.screens.SecondScreen">
 
     <ImageView
         android:id="@+id/imageView7"

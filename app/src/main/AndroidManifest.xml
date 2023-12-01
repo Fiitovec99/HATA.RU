@@ -18,7 +18,8 @@
         android:theme="@style/Theme.HATARU"
         tools:targetApi="31">
         <activity
-            android:name="hataru.OnboardingActivity"
+            android:name=".OnboardingActivity"
+            android:screenOrientation="portrait"
             android:exported="true">
         <intent-filter>
             <action android:name="android.intent.action.MAIN" />
@@ -26,12 +27,12 @@
         </intent-filter>
         </activity>
         <activity
-            android:name="hataru.MainActivity"
+            android:name=".MainActivity"
             android:exported="true"
             android:screenOrientation="portrait">
 
         </activity>
-        <activity android:name="hataru.presentation.ApartmentActivity">
+        <activity android:name=".presentation.ApartmentActivity">
             <!-- дополнительные настройки, если есть -->
         </activity>
     </application>
