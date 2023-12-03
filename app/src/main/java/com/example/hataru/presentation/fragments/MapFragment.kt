@@ -1,6 +1,7 @@
 package com.example.hataru.presentation.fragments
 
 import ApartmentsViewPagerFragment
+import ApartmentsViewPagerFragment.Companion.KEY_GET_FLAT_INTO_ADAPTER
 import com.example.hataru.presentation.ClusterView
 import android.Manifest
 import android.content.pm.PackageManager
@@ -31,6 +32,7 @@ import com.example.hataru.data.GeometryProvider
 import com.example.hataru.isLocationEnabled
 import com.example.hataru.domain.entity.Roomtypes
 import com.example.hataru.data.flatsContainer
+import com.example.hataru.presentation.fragments.FlatBottomSheetFragment.Companion.KEY_GET_FLAT
 import com.example.hataru.presentation.viewModels.MapViewModel
 import com.example.hataru.showAlertDialog
 import com.example.hataru.showToast
@@ -95,7 +97,7 @@ class MapFragment : Fragment() {
         val flat = mapObject.userData as Roomtypes
         val bottomSheetFragment = FlatBottomSheetFragment()
         val args = Bundle()
-        args.putSerializable("roomtypes", flat as Serializable)
+        args.putSerializable(KEY_GET_FLAT, flat as Serializable)
         bottomSheetFragment.arguments = args
         bottomSheetFragment.show(childFragmentManager, bottomSheetFragment.tag)
         true
@@ -131,7 +133,7 @@ class MapFragment : Fragment() {
             showToast("Квартиры находятся в одном здании, реализация впереди!")
             val flats = it.placemarks?.mapNotNull { it.userData as? Roomtypes }
             val args = Bundle()
-            args.putSerializable("roomtypes", flats as? Serializable)
+            args.putSerializable(KEY_GET_FLAT_INTO_ADAPTER, flats as? Serializable)
             val viewPagerFragment = ApartmentsViewPagerFragment()
             viewPagerFragment.arguments = args
             findNavController().navigate(R.id.apartmentsViewPagerFragment,args)

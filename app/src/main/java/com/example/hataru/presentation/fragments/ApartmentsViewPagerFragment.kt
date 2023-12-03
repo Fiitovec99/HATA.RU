@@ -9,6 +9,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.example.hataru.R
 import com.example.hataru.domain.entity.Roomtypes
 import com.example.hataru.presentation.fragments.FlatFragment
+import com.example.hataru.presentation.fragments.FlatFragment.Companion.KEY_GET_FLAT_INTO_FLATFRAGMENT
 
 class ApartmentsViewPagerFragment : Fragment() {
 
@@ -23,7 +24,7 @@ class ApartmentsViewPagerFragment : Fragment() {
 
         viewPager = view.findViewById(R.id.viewPager)
 
-        roomtypesList = arguments?.getSerializable("roomtypes") as List<Roomtypes>
+        roomtypesList = arguments?.getSerializable(KEY_GET_FLAT_INTO_ADAPTER) as List<Roomtypes>
 
         if (roomtypesList.isNotEmpty()) {
             viewPager.adapter = ApartmentsPagerAdapter(this, roomtypesList)
@@ -46,10 +47,14 @@ class ApartmentsViewPagerFragment : Fragment() {
             // Создайте фрагмент для отображения информации о квартире
             val apartmentFragment = FlatFragment()
             val bundle = Bundle()
-            bundle.putSerializable("roomtype", roomtypesList[position])
+            bundle.putSerializable(KEY_GET_FLAT_INTO_FLATFRAGMENT, roomtypesList[position])
             apartmentFragment.arguments = bundle
             return apartmentFragment
         }
+    }
+
+    companion object{
+        const val KEY_GET_FLAT_INTO_ADAPTER = "GET_FOR_ADAPTER"
     }
 }
 

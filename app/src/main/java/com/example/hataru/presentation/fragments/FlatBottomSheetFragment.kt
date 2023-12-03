@@ -12,6 +12,7 @@ import com.example.hataru.databinding.FragmentFlatBottomSheetBinding
 import com.example.hataru.domain.entity.Roomtypes
 import com.example.hataru.presentation.SpaceItemDecoration
 import com.example.hataru.presentation.adapter.PhotoAdapter
+import com.example.hataru.presentation.fragments.FlatFragment.Companion.KEY_GET_FLAT_INTO_FLATFRAGMENT
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import java.io.Serializable
 
@@ -27,7 +28,7 @@ class FlatBottomSheetFragment : BottomSheetDialogFragment() {
     ): View? {
         binding = FragmentFlatBottomSheetBinding.inflate(inflater, container, false)
 
-        flat =  arguments?.getSerializable("roomtypes") as Roomtypes
+        flat =  arguments?.getSerializable(KEY_GET_FLAT) as Roomtypes
         val photoRecyclerView: RecyclerView = binding.photoRecyclerView
 
         // Получите массив ресурсов изображений
@@ -65,12 +66,17 @@ class FlatBottomSheetFragment : BottomSheetDialogFragment() {
             buttonOpeningFlat.setOnClickListener{
 
                 val args = Bundle()
-                args.putSerializable("roomtypes", flat as Serializable)
+                args.putSerializable(KEY_GET_FLAT_INTO_FLATFRAGMENT, flat as Serializable)
 
                 findNavController().navigate(R.id.flatFragment,args)
             }
         }
 
+
+    }
+
+    companion object{
+        const val KEY_GET_FLAT = "GET_FLAT"
 
     }
 

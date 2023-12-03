@@ -87,4 +87,5 @@ class ApartmentFragment : Fragment() {
             }
         }
     }
+
 }
