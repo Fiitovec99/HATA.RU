@@ -24,7 +24,7 @@ class FlatFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentFlatBinding.inflate(layoutInflater,container,false)
-        flat = arguments?.getSerializable("roomtypes") as Roomtypes
+        flat = arguments?.getSerializable("roomtype") as Roomtypes
 
         return binding.root
     }

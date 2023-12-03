@@ -1,5 +1,6 @@
 package com.example.hataru.presentation.fragments
 
+import ApartmentsViewPagerFragment
 import com.example.hataru.presentation.ClusterView
 import android.Manifest
 import android.content.pm.PackageManager
@@ -11,6 +12,7 @@ import android.graphics.PointF
 import android.graphics.Rect
 import android.graphics.RectF
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,6 +23,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.example.hataru.R
 import com.example.hataru.databinding.FragmentMapBinding
 import com.example.hataru.MainActivity
@@ -57,7 +60,7 @@ import java.io.Serializable
 
 
 private const val CLUSTER_RADIUS = 60.0
-private const val CLUSTER_MIN_ZOOM = 15
+private const val CLUSTER_MIN_ZOOM = 18
 
 private var flats = flatsContainer.roomTypes
 
@@ -126,10 +129,17 @@ class MapFragment : Fragment() {
 
         if (flatsLocateNearByAnother(listPointsOfCluster, 0.00001)) { // расстояние в меридиане
             showToast("Квартиры находятся в одном здании, реализация впереди!")
-            //просмотр множества квартир Todo
+            val flats = it.placemarks?.mapNotNull { it.userData as? Roomtypes }
+            val args = Bundle()
+            args.putSerializable("roomtypes", flats as? Serializable)
+            val viewPagerFragment = ApartmentsViewPagerFragment()
+            viewPagerFragment.arguments = args
+            findNavController().navigate(R.id.apartmentsViewPagerFragment,args)
+
         } else {
             val targetPoint = it.appearance.geometry
-            val zoom = 15.0f // Масштаб, на который увеличиваем карту
+            val currentZoom = mapView.map.cameraPosition.zoom
+            val zoom = if (currentZoom >= 15.0f) currentZoom + 2.0f else 15.0f
             mapView.map.move(
                 CameraPosition(targetPoint, zoom, 0.0f, 0.0f),
                 Animation(Animation.Type.SMOOTH, 1f),
@@ -138,6 +148,7 @@ class MapFragment : Fragment() {
         }
         true
     }
+
 
 
     override fun onCreateView(

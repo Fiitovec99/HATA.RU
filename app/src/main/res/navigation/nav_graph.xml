@@ -34,10 +34,17 @@
         <action
             android:id="@+id/action_flatBottomSheetFragment_to_flatFragment"
             app:destination="@id/flatFragment" />
+        <action
+            android:id="@+id/action_flatBottomSheetFragment_to_apartmentsViewPagerFragment"
+            app:destination="@id/apartmentsViewPagerFragment" />
     </dialog>
     <fragment
         android:id="@+id/flatFragment"
         android:name="com.example.hataru.presentation.fragments.FlatFragment"
         android:label="fragment_flat"
         tools:layout="@layout/fragment_flat" />
+    <fragment
+        android:id="@+id/apartmentsViewPagerFragment"
+        android:name="ApartmentsViewPagerFragment"
+        android:label="ApartmentsViewPagerFragment" />
 </navigation>
