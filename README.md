@@ -21,3 +21,5 @@
 
 
 Операционна система: **Android 7.0+**
+
+**Ссылка на [Figma](https://www.figma.com/file/k0UfFwfUhrutCCClW0qKhI/hataru-(%D0%BF%D1%80%D0%BE%D0%B5%D0%BA%D1%82-%D0%BF%D0%B4)?type=design&node-id=0%3A1&mode=design&t=B39rjKbHxuuJRSG4-1)**
