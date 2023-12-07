@@ -39,6 +39,8 @@ android {
 }
 
 dependencies {
+    implementation("com.yandex.android:maps.mobile:4.4.0-full")
+
     implementation ("androidx.viewpager2:viewpager2:1.0.0")
 
     implementation ("com.fasterxml.jackson.core:jackson-databind:2.12.5")
@@ -53,7 +55,7 @@ dependencies {
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.10.0")
-    implementation("com.yandex.android:maps.mobile:4.4.0-lite")
+
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("androidx.legacy:legacy-support-v4:1.0.0")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.6.2")

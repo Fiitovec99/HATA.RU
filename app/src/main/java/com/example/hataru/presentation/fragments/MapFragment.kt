@@ -47,6 +47,7 @@ import com.yandex.mapkit.location.Location
 import com.yandex.mapkit.location.LocationListener
 import com.yandex.mapkit.location.LocationStatus
 import com.yandex.mapkit.map.CameraPosition
+import com.yandex.mapkit.map.Cluster
 import com.yandex.mapkit.map.ClusterListener
 import com.yandex.mapkit.map.ClusterTapListener
 import com.yandex.mapkit.map.ClusterizedPlacemarkCollection
@@ -94,60 +95,20 @@ class MapFragment : Fragment() {
         updateFocusRect()
     }
     private val placemarkTapListener = MapObjectTapListener { mapObject, _ ->
-        val flat = mapObject.userData as Roomtypes
-        val bottomSheetFragment = FlatBottomSheetFragment()
-        val args = Bundle()
-        args.putSerializable(KEY_GET_FLAT, flat as Serializable)
-        bottomSheetFragment.arguments = args
-        bottomSheetFragment.show(childFragmentManager, bottomSheetFragment.tag)
+        showFlatDetails(mapObject.userData as Roomtypes)
         true
     }
 
     // Sets each cluster appearance using the custom view
     // that shows a cluster's pins
-    // слушатель отдаления кластеров
     private val clusterListener = ClusterListener { cluster ->
-        val flatsInCluster = cluster.placemarks.mapNotNull { it.userData as? Roomtypes }
-        val minValue = flatsInCluster.minByOrNull { it.price }?.price ?: 0.0
-        val maxValue = flatsInCluster.maxByOrNull { it.price }?.price ?: 0.0
-
-        cluster.appearance.setView(
-            ViewProvider(
-                ClusterView(activity as AppCompatActivity).apply {
-                    setData(cluster.size, minValue, maxValue)
-                }
-            )
-        )
-        cluster.appearance.zIndex = 100f
-        cluster.addClusterTapListener(clusterTapListener)
+        handleClusterTap(cluster)
     }
 
 
     // при нажатии на сборище кластеров
     private val clusterTapListener = ClusterTapListener {
-        val listPointsOfCluster =
-            it.placemarks.map { x: PlacemarkMapObject? -> x?.userData as Roomtypes }
-                .map { x: Roomtypes -> Point(x.geoData!!.x!!.toDouble(),x.geoData!!.y!!.toDouble()) }
-
-        if (flatsLocateNearByAnother(listPointsOfCluster, 0.00001)) { // расстояние в меридиане
-            showToast("Квартиры находятся в одном здании, реализация впереди!")
-            val flats = it.placemarks?.mapNotNull { it.userData as? Roomtypes }
-            val args = Bundle()
-            args.putSerializable(KEY_GET_FLAT_INTO_ADAPTER, flats as? Serializable)
-            val viewPagerFragment = ApartmentsViewPagerFragment()
-            viewPagerFragment.arguments = args
-            findNavController().navigate(R.id.apartmentsViewPagerFragment,args)
-
-        } else {
-            val targetPoint = it.appearance.geometry
-            val currentZoom = mapView.map.cameraPosition.zoom
-            val zoom = if (currentZoom >= 15.0f) currentZoom + 2.0f else 15.0f
-            mapView.map.move(
-                CameraPosition(targetPoint, zoom, 0.0f, 0.0f),
-                Animation(Animation.Type.SMOOTH, 1f),
-                null
-            )
-        }
+        handleMultiClusterTap(it)
         true
     }
 
@@ -355,6 +316,53 @@ class MapFragment : Fragment() {
         MapKitFactory.getInstance().onStart()
         mapView.onStart();
         locationClickListener()
+    }
+    private fun handleMultiClusterTap(it: Cluster) {
+        val listPointsOfCluster =
+            it.placemarks.map { x: PlacemarkMapObject? -> x?.userData as Roomtypes }
+                .map { x: Roomtypes -> Point(x.geoData!!.x!!.toDouble(),x.geoData!!.y!!.toDouble()) }
+
+        if (flatsLocateNearByAnother(listPointsOfCluster, 0.00001)) { // расстояние в меридиане
+            showToast("Квартиры находятся в одном здании, реализация впереди!")
+            val flats = it.placemarks?.mapNotNull { it.userData as? Roomtypes }
+            val args = Bundle()
+            args.putSerializable(KEY_GET_FLAT_INTO_ADAPTER, flats as? Serializable)
+            val viewPagerFragment = ApartmentsViewPagerFragment()
+            viewPagerFragment.arguments = args
+            findNavController().navigate(R.id.apartmentsViewPagerFragment,args)
+
+        } else {
+            val targetPoint = it.appearance.geometry
+            val currentZoom = mapView.map.cameraPosition.zoom
+            val zoom = if (currentZoom >= 15.0f) currentZoom + 2.0f else 15.0f
+            mapView.map.move(
+                CameraPosition(targetPoint, zoom, 0.0f, 0.0f),
+                Animation(Animation.Type.SMOOTH, 1f),
+                null
+            )
+        }
+    }
+    private fun handleClusterTap(cluster: Cluster) {
+        val flatsInCluster = cluster.placemarks.mapNotNull { it.userData as? Roomtypes }
+        val minValue = flatsInCluster.minByOrNull { it.price }?.price ?: 0.0
+        val maxValue = flatsInCluster.maxByOrNull { it.price }?.price ?: 0.0
+
+        cluster.appearance.setView(
+            ViewProvider(
+                ClusterView(activity as AppCompatActivity).apply {
+                    setData(cluster.size, minValue, maxValue)
+                }
+            )
+        )
+        cluster.appearance.zIndex = 100f
+        cluster.addClusterTapListener(clusterTapListener)
+    }
+    private fun showFlatDetails(flat: Roomtypes) {
+        val bottomSheetFragment = FlatBottomSheetFragment()
+        val args = Bundle()
+        args.putSerializable(KEY_GET_FLAT, flat as Serializable)
+        bottomSheetFragment.arguments = args
+        bottomSheetFragment.show(childFragmentManager, bottomSheetFragment.tag)
     }
 
     private fun flatsLocateNearByAnother(
