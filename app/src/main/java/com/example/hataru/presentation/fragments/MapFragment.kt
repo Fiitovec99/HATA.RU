@@ -12,19 +12,29 @@ import android.graphics.Paint
 import android.graphics.PointF
 import android.graphics.Rect
 import android.graphics.RectF
+import android.graphics.drawable.ColorDrawable
+import android.opengl.Visibility
 import android.os.Bundle
 import android.util.Log
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.EditText
 import android.widget.ImageView
+import android.widget.PopupWindow
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.hataru.R
 import com.example.hataru.databinding.FragmentMapBinding
 import com.example.hataru.MainActivity
@@ -32,12 +42,14 @@ import com.example.hataru.data.GeometryProvider
 import com.example.hataru.isLocationEnabled
 import com.example.hataru.domain.entity.Roomtypes
 import com.example.hataru.data.flatsContainer
+import com.example.hataru.presentation.adapter.FlatListOnMap
 import com.example.hataru.presentation.fragments.FlatBottomSheetFragment.Companion.KEY_GET_FLAT
 import com.example.hataru.presentation.viewModels.MapViewModel
 import com.example.hataru.showAlertDialog
 import com.example.hataru.showToast
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.yandex.mapkit.Animation
 import com.yandex.mapkit.MapKitFactory
 import com.yandex.mapkit.ScreenPoint
@@ -91,6 +103,8 @@ class MapFragment : Fragment() {
     private lateinit var clasterizedCollection: ClusterizedPlacemarkCollection
     private lateinit var locationCollection: ClusterizedPlacemarkCollection
 
+
+
     private val mapWindowSizeChangedListener = SizeChangedListener { _, _, _ ->
         updateFocusRect()
     }
@@ -112,6 +126,43 @@ class MapFragment : Fragment() {
         true
     }
 
+    private fun showPreferencesPopup(anchorView: View) {
+        val inflater = LayoutInflater.from(requireContext())
+        val popupView = inflater.inflate(R.layout.layout_filter_preferences, null)
+
+        val popupWindow = PopupWindow(
+            popupView,
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
+
+        // Настройка фокуса
+        popupWindow.isFocusable = true
+        popupWindow.isTouchable = true
+        popupWindow.isOutsideTouchable = true
+        popupWindow.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        // Настройка элементов внутри пользовательской вьюшки
+        val editTextPreference = popupView.findViewById<EditText>(R.id.editTextPreference)
+        val btnApplyPreferences = popupView.findViewById<Button>(R.id.btnApplyPreferences)
+
+        // Обработчик нажатия на кнопку "Применить предпочтения"
+        btnApplyPreferences.setOnClickListener {
+            val preferenceText = editTextPreference.text.toString()
+            // Здесь вы можете использовать preferenceText по вашему усмотрению
+            // Например, передать в метод вашего MapFragment для обновления карты с учетом предпочтений
+            popupWindow.dismiss() // Закрываем PopupWindow после применения предпочтений
+            //binding.btnOpenFilterWidget.visibility = View.VISIBLE
+        }
+
+        // Показываем PopupWindow сверху от anchorView
+        popupWindow.showAtLocation(anchorView, Gravity.TOP, 0, 0)
+
+    }
+    private fun isPointInVisibleRegion(point: Point, topLeft: Point, bottomRight: Point): Boolean {
+        return (point.latitude in bottomRight.latitude..topLeft.latitude) &&
+                (point.longitude in topLeft.longitude..bottomRight.longitude)
+    }
 
 
     override fun onCreateView(
@@ -122,6 +173,77 @@ class MapFragment : Fragment() {
         initializeMap()
         initImageLocation()
         viewModel = ViewModelProvider(requireActivity()).get(MapViewModel::class.java)
+        mapView = binding.mapview
+
+
+
+
+        val bottomSheet = binding.persistentBottomSheet
+        val bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet)
+        bottomSheetBehavior.isHideable = false
+        bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+        bottomSheetBehavior.isDraggable = true
+
+
+
+
+
+        val recyclerView: RecyclerView = binding.recyclerViewBottomSheet
+        val layoutManager = LinearLayoutManager(context)
+        val adapter = FlatListOnMap(flats)
+        recyclerView.layoutManager = layoutManager
+        recyclerView.adapter = adapter
+
+        viewModel.visibleFlats.observe(viewLifecycleOwner, Observer { visibleFlats ->
+            // Update the RecyclerView adapter with the new list of visible flats
+            adapter.updateFlats(visibleFlats)
+            adapter.notifyDataSetChanged()
+        })
+
+
+
+        bottomSheetBehavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
+            override fun onStateChanged(bottomSheet: View, newState: Int) {
+                when (newState) {
+                    BottomSheetBehavior.STATE_COLLAPSED -> {
+                        // Bottom sheet is collapsed
+                    }
+                    BottomSheetBehavior.STATE_EXPANDED -> {
+                        // Bottom sheet is expanded
+                    }
+                    BottomSheetBehavior.STATE_HIDDEN -> {
+                        // Bottom sheet is hidden
+                        val visibleRegion = mapView.map.visibleRegion
+                        val visibleFlats = flats.filter { flat ->
+                            flat.geoData?.let { geoData ->
+                                val x = geoData.x?.toDoubleOrNull()
+                                val y = geoData.y?.toDoubleOrNull()
+
+                                if (x != null && y != null) {
+                                    val flatPoint = Point(x, y)
+                                    isPointInVisibleRegion(flatPoint, visibleRegion.topLeft, visibleRegion.bottomRight)
+                                } else {
+                                    false
+                                }
+                            } ?: false
+                        }
+
+
+                        viewModel.updateVisibleFlats(visibleFlats)
+                    }
+                    // Add other states as needed
+                }
+            }
+            override fun onSlide(bottomSheet: View, slideOffset: Float) {
+                // Handle slide offset changes if needed
+            }
+        })
+
+
+
+
+
+
 
 
 
@@ -167,6 +289,13 @@ class MapFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initMap()
+
+
+//        val btnOpenPreferences = view.findViewById<Button>(R.id.btnOpenFilterWidget)
+//        btnOpenPreferences.setOnClickListener {
+//            binding.btnOpenFilterWidget.visibility = View.GONE
+//            showPreferencesPopup(it)
+//        }
 
         collection = mapView.map.mapObjects.addCollection()
         clasterizedCollection = collection.addClusterizedPlacemarkCollection(clusterListener)
@@ -356,6 +485,7 @@ class MapFragment : Fragment() {
         )
         cluster.appearance.zIndex = 100f
         cluster.addClusterTapListener(clusterTapListener)
+
     }
     private fun showFlatDetails(flat: Roomtypes) {
         val bottomSheetFragment = FlatBottomSheetFragment()
