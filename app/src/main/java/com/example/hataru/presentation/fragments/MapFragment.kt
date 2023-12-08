@@ -181,27 +181,21 @@ class MapFragment : Fragment(),CameraListener {
         mapView = binding.mapview
 
 
-
+        ////////////////////////////////////////////////////////////////////////////////
 
         val bottomSheet = binding.persistentBottomSheet
         val bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet)
         bottomSheetBehavior.isHideable = false
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
         bottomSheetBehavior.isDraggable = true
+        bottomSheet.setOnClickListener {
+            if(bottomSheetBehavior.state == BottomSheetBehavior.STATE_COLLAPSED)
+                bottomSheetBehavior.state= BottomSheetBehavior.STATE_EXPANDED
+            else{
+                bottomSheetBehavior.state= BottomSheetBehavior.STATE_COLLAPSED
+            }
 
-
-
-        val recyclerView: RecyclerView = binding.recyclerViewBottomSheet
-        val layoutManager = LinearLayoutManager(context)
-        val adapter = FlatListOnMap(emptyList())
-        viewModel.visibleFlats.observe(viewLifecycleOwner, Observer { visibleFlats ->
-            adapter.updateFlats(visibleFlats)
-            binding.countFlatsOnMap.text = "Обнаружено " + getApartmentsString(visibleFlats.size)
-        })
-
-        recyclerView.layoutManager = layoutManager
-        recyclerView.adapter = adapter
-
+        }
 
         bottomSheetBehavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
@@ -226,9 +220,22 @@ class MapFragment : Fragment(),CameraListener {
 
 
 
+        val recyclerView: RecyclerView = binding.recyclerViewBottomSheet
+        val layoutManager = LinearLayoutManager(context)
+        val adapter = FlatListOnMap(emptyList())
+        viewModel.visibleFlats.observe(viewLifecycleOwner, Observer { visibleFlats ->
+            adapter.updateFlats(visibleFlats)
+            binding.countFlatsOnMap.text = "Обнаружено " + getApartmentsString(visibleFlats.size)
+        })
+
+        recyclerView.layoutManager = layoutManager
+        recyclerView.adapter = adapter
 
 
 
+
+
+        ///////////////////////////////////////////////////////////////////////
 
 
 
