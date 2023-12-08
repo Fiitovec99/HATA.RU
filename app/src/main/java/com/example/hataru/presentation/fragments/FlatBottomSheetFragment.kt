@@ -13,6 +13,7 @@ import com.example.hataru.domain.entity.Roomtypes
 import com.example.hataru.presentation.SpaceItemDecoration
 import com.example.hataru.presentation.adapter.PhotoAdapter
 import com.example.hataru.presentation.fragments.FlatFragment.Companion.KEY_GET_FLAT_INTO_FLATFRAGMENT
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import java.io.Serializable
 
@@ -27,19 +28,20 @@ class FlatBottomSheetFragment : BottomSheetDialogFragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentFlatBottomSheetBinding.inflate(inflater, container, false)
-
         flat =  arguments?.getSerializable(KEY_GET_FLAT) as Roomtypes
-        val photoRecyclerView: RecyclerView = binding.photoRecyclerView
 
+
+
+        ///////////////////////////////
+        val photoRecyclerView: RecyclerView = binding.photoRecyclerView
         // Получите массив ресурсов изображений
         val photoResources = resources.obtainTypedArray(R.array.photo_resources)
 
         val photos = mutableListOf<Int>()
-        // Добавьте первые 4 изображения из массива ресурсов в список
+
         for (i in 0 ..3) {
             photos.add(photoResources.getResourceId(i, 0))
         }
-
         photoResources.recycle()
 
         val photoAdapter = PhotoAdapter(photos)
@@ -50,13 +52,15 @@ class FlatBottomSheetFragment : BottomSheetDialogFragment() {
         val spaceInPixels = resources.getDimensionPixelSize(R.dimen.space_between_photos)
         photoRecyclerView.addItemDecoration(SpaceItemDecoration(spaceInPixels))
         photoRecyclerView.layoutManager = layoutManager
-
+        ///////////////////////////////////
 
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+
         binding.apply {
             textFlatPrice.text = "Цена аренды: " + flat.price!!.toInt().toString() + "р"
             textFlatLocation.text = flat.address
