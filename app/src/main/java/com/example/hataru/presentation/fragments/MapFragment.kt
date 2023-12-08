@@ -58,14 +58,18 @@ import com.yandex.mapkit.geometry.Point
 import com.yandex.mapkit.location.Location
 import com.yandex.mapkit.location.LocationListener
 import com.yandex.mapkit.location.LocationStatus
+import com.yandex.mapkit.map.CameraListener
 import com.yandex.mapkit.map.CameraPosition
+import com.yandex.mapkit.map.CameraUpdateReason
 import com.yandex.mapkit.map.Cluster
 import com.yandex.mapkit.map.ClusterListener
 import com.yandex.mapkit.map.ClusterTapListener
 import com.yandex.mapkit.map.ClusterizedPlacemarkCollection
 import com.yandex.mapkit.map.IconStyle
+import com.yandex.mapkit.map.Map
 import com.yandex.mapkit.map.MapObjectCollection
 import com.yandex.mapkit.map.MapObjectTapListener
+import com.yandex.mapkit.map.MapWindow
 import com.yandex.mapkit.map.PlacemarkMapObject
 import com.yandex.mapkit.map.SizeChangedListener
 import com.yandex.mapkit.mapview.MapView
@@ -79,10 +83,9 @@ private const val CLUSTER_MIN_ZOOM = 18
 
 private var flats = flatsContainer.roomTypes
 
-class MapFragment : Fragment() {
+class MapFragment : Fragment(),CameraListener {
 
     private lateinit var viewModel: MapViewModel
-    private var savedLatLng: Point? = null // переменная для сохранения координат карты
     private lateinit var binding: FragmentMapBinding
     private lateinit var mapView: MapView
     private lateinit var imageLocation: ImageView
@@ -101,9 +104,6 @@ class MapFragment : Fragment() {
         }
     private lateinit var collection: MapObjectCollection
     private lateinit var clasterizedCollection: ClusterizedPlacemarkCollection
-    private lateinit var locationCollection: ClusterizedPlacemarkCollection
-
-
 
     private val mapWindowSizeChangedListener = SizeChangedListener { _, _, _ ->
         updateFocusRect()
@@ -113,8 +113,6 @@ class MapFragment : Fragment() {
         true
     }
 
-    // Sets each cluster appearance using the custom view
-    // that shows a cluster's pins
     private val clusterListener = ClusterListener { cluster ->
         handleClusterTap(cluster)
     }
@@ -135,18 +133,15 @@ class MapFragment : Fragment() {
             ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.WRAP_CONTENT
         )
-
-        // Настройка фокуса
         popupWindow.isFocusable = true
         popupWindow.isTouchable = true
         popupWindow.isOutsideTouchable = true
         popupWindow.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
-        // Настройка элементов внутри пользовательской вьюшки
+
         val editTextPreference = popupView.findViewById<EditText>(R.id.editTextPreference)
         val btnApplyPreferences = popupView.findViewById<Button>(R.id.btnApplyPreferences)
 
-        // Обработчик нажатия на кнопку "Применить предпочтения"
         btnApplyPreferences.setOnClickListener {
             val preferenceText = editTextPreference.text.toString()
             // Здесь вы можете использовать preferenceText по вашему усмотрению
@@ -155,13 +150,23 @@ class MapFragment : Fragment() {
             //binding.btnOpenFilterWidget.visibility = View.VISIBLE
         }
 
-        // Показываем PopupWindow сверху от anchorView
         popupWindow.showAtLocation(anchorView, Gravity.TOP, 0, 0)
 
     }
     private fun isPointInVisibleRegion(point: Point, topLeft: Point, bottomRight: Point): Boolean {
         return (point.latitude in bottomRight.latitude..topLeft.latitude) &&
                 (point.longitude in topLeft.longitude..bottomRight.longitude)
+    }
+
+    fun getApartmentsString(count: Int): String {
+        val lastDigit = count % 10
+        val lastTwoDigits = count % 100
+
+        return when {
+            lastDigit == 1 && lastTwoDigits != 11 -> "$count квартира"
+            (lastDigit in 2..4 && !(lastTwoDigits in 12..14)) -> "$count квартиры"
+            else -> "$count квартир"
+        }
     }
 
 
@@ -186,20 +191,16 @@ class MapFragment : Fragment() {
 
 
 
-
-
         val recyclerView: RecyclerView = binding.recyclerViewBottomSheet
         val layoutManager = LinearLayoutManager(context)
-        val adapter = FlatListOnMap(flats)
-        recyclerView.layoutManager = layoutManager
-        recyclerView.adapter = adapter
-
+        val adapter = FlatListOnMap(emptyList())
         viewModel.visibleFlats.observe(viewLifecycleOwner, Observer { visibleFlats ->
-            // Update the RecyclerView adapter with the new list of visible flats
             adapter.updateFlats(visibleFlats)
-            adapter.notifyDataSetChanged()
+            binding.countFlatsOnMap.text = "Обнаружено " + getApartmentsString(visibleFlats.size)
         })
 
+        recyclerView.layoutManager = layoutManager
+        recyclerView.adapter = adapter
 
 
         bottomSheetBehavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
@@ -213,23 +214,7 @@ class MapFragment : Fragment() {
                     }
                     BottomSheetBehavior.STATE_HIDDEN -> {
                         // Bottom sheet is hidden
-                        val visibleRegion = mapView.map.visibleRegion
-                        val visibleFlats = flats.filter { flat ->
-                            flat.geoData?.let { geoData ->
-                                val x = geoData.x?.toDoubleOrNull()
-                                val y = geoData.y?.toDoubleOrNull()
 
-                                if (x != null && y != null) {
-                                    val flatPoint = Point(x, y)
-                                    isPointInVisibleRegion(flatPoint, visibleRegion.topLeft, visibleRegion.bottomRight)
-                                } else {
-                                    false
-                                }
-                            } ?: false
-                        }
-
-
-                        viewModel.updateVisibleFlats(visibleFlats)
                     }
                     // Add other states as needed
                 }
@@ -291,11 +276,18 @@ class MapFragment : Fragment() {
         initMap()
 
 
+        mapView.map.addCameraListener(this)
 //        val btnOpenPreferences = view.findViewById<Button>(R.id.btnOpenFilterWidget)
 //        btnOpenPreferences.setOnClickListener {
 //            binding.btnOpenFilterWidget.visibility = View.GONE
 //            showPreferencesPopup(it)
 //        }
+        viewModel.visibleFlats.observe(viewLifecycleOwner, Observer { visibleFlats ->
+            // Update your UI with the new list of visible flats
+            // For example, update your RecyclerView adapter
+            
+
+        })
 
         collection = mapView.map.mapObjects.addCollection()
         clasterizedCollection = collection.addClusterizedPlacemarkCollection(clusterListener)
@@ -347,6 +339,8 @@ class MapFragment : Fragment() {
         viewModel.latitude = cameraPosition.target.latitude
         viewModel.longitude = cameraPosition.target.longitude
         viewModel.zoom = cameraPosition.zoom
+
+        mapView.map.removeCameraListener(this)
     }
 
     private fun locationClickListener() {
@@ -577,5 +571,32 @@ class MapFragment : Fragment() {
                 mapView.mapWindow.height() - verticalMargin
             )
         )
+    }
+
+
+
+    override fun onCameraPositionChanged(
+        p0: Map,
+        p1: CameraPosition,
+        p2: CameraUpdateReason,
+        p3: Boolean
+    ) {
+        val visibleRegion = mapView.map.visibleRegion
+        val visibleFlats = flats.filter { flat ->
+            flat.geoData?.let { geoData ->
+                val x = geoData.x?.toDoubleOrNull()
+                val y = geoData.y?.toDoubleOrNull()
+
+                if (x != null && y != null) {
+                    val flatPoint = Point(x, y)
+                    isPointInVisibleRegion(flatPoint, visibleRegion.topLeft, visibleRegion.bottomRight)
+                } else {
+                    false
+                }
+            } ?: false
+        }
+
+        //Log.d("MapFragment", "Visible Flats: ${visibleFlats.size}")
+        viewModel.updateVisibleFlats(visibleFlats)
     }
 }
