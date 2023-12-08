@@ -40,6 +40,7 @@ android {
 }
 
 dependencies {
+
     implementation("com.yandex.android:maps.mobile:4.4.0-full")
 
     implementation ("androidx.viewpager2:viewpager2:1.0.0")
