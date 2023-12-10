@@ -183,14 +183,18 @@ class MapFragment : Fragment(),CameraListener {
 
         ////////////////////////////////////////////////////////////////////////////////
 
+
+
         val bottomSheet = binding.persistentBottomSheet
         val bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet)
         bottomSheetBehavior.isHideable = false
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
         bottomSheetBehavior.isDraggable = true
         bottomSheet.setOnClickListener {
-            if(bottomSheetBehavior.state == BottomSheetBehavior.STATE_COLLAPSED)
+            if(bottomSheetBehavior.state == BottomSheetBehavior.STATE_COLLAPSED &&
+                !binding.countFlatsOnMap.text.toString().contains('0')) {
                 bottomSheetBehavior.state= BottomSheetBehavior.STATE_EXPANDED
+            }
             else{
                 bottomSheetBehavior.state= BottomSheetBehavior.STATE_COLLAPSED
             }
@@ -201,7 +205,7 @@ class MapFragment : Fragment(),CameraListener {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
                 when (newState) {
                     BottomSheetBehavior.STATE_COLLAPSED -> {
-                        // Bottom sheet is collapsed
+                      
                     }
                     BottomSheetBehavior.STATE_EXPANDED -> {
                         // Bottom sheet is expanded
