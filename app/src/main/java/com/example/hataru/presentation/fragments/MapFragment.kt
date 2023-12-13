@@ -118,7 +118,7 @@ class MapFragment : Fragment(),CameraListener, ViewTreeObserver.OnPreDrawListene
         binding = FragmentMapBinding.inflate(inflater, container, false)
         initializeMap()
         initImageLocation()
-        viewModel = ViewModelProvider(requireActivity()).get(MapViewModel::class.java)
+        viewModel = ViewModelProvider(this).get(MapViewModel::class.java)
         mapView = binding.mapview
 
 
@@ -205,6 +205,8 @@ class MapFragment : Fragment(),CameraListener, ViewTreeObserver.OnPreDrawListene
         return binding.root
     }
 
+
+
     override fun onDestroy() {
         super.onDestroy()
         //TODO fusedLocationClient.lastLocation
@@ -226,14 +228,16 @@ class MapFragment : Fragment(),CameraListener, ViewTreeObserver.OnPreDrawListene
         showFlatsOnMap()
 
         //showRostovLocation()//TODO для удобного тестинга
-        if (viewModel.latitude != 0.0 && viewModel.longitude != 0.0) {
-            val currentPosition = Point(viewModel.latitude, viewModel.longitude)
+        val cameraPosition = viewModel.cameraPosition.value?.first
+        val zoom = viewModel.cameraPosition.value?.second ?: 14f
+
+        if (cameraPosition?.latitude != null && cameraPosition.latitude != 0.0 && cameraPosition.longitude != 0.0) {
             mapView.map.move(
-                CameraPosition(currentPosition, viewModel.zoom, 0.0f, 0.0f),
+                CameraPosition(cameraPosition, zoom, 0.0f, 0.0f),
                 Animation(Animation.Type.SMOOTH, 0f),
                 null
-            )}
-         else {
+            )
+        } else {
             if (isLocationEnabled(activity as AppCompatActivity)) {
                 showMyCurrentLocation()
             } else {
@@ -268,10 +272,12 @@ class MapFragment : Fragment(),CameraListener, ViewTreeObserver.OnPreDrawListene
 
     override fun onDestroyView() {
         super.onDestroyView()
-        val cameraPosition = mapView.map.cameraPosition
-        viewModel.latitude = cameraPosition.target.latitude
-        viewModel.longitude = cameraPosition.target.longitude
-        viewModel.zoom = cameraPosition.zoom
+
+        viewModel.cameraPosition.observe(this, Observer {
+            val cameraPosition = mapView.map.cameraPosition
+            viewModel.updateCameraPosition(Pair(Point(cameraPosition.target.latitude,
+                cameraPosition.target.longitude),cameraPosition.zoom))
+        })
 
         mapView.map.removeCameraListener(this)
         
