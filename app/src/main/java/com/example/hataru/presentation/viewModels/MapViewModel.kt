@@ -2,15 +2,21 @@ package com.example.hataru.presentation.viewModels
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import com.example.hataru.domain.entity.Roomtypes
+import com.yandex.mapkit.geometry.Point
 
 
 class MapViewModel : ViewModel() {
-    var latitude: Double = 0.0
-    var longitude: Double = 0.0
-    var zoom: Float = 14.0f
+
+    //////////////////
+    private val _cameraPosition = MutableLiveData<Pair<Point, Float>>()
+    val cameraPosition: LiveData<Pair<Point, Float>> get() = _cameraPosition
+
+    fun updateCameraPosition(pair: Pair<Point, Float>) {
+        _cameraPosition.value = pair
+    }
+    ////////////////////////
 
 
     private val _visibleFlats = MutableLiveData<List<Roomtypes>>()
@@ -20,6 +26,6 @@ class MapViewModel : ViewModel() {
     fun updateVisibleFlats(newFlats: List<Roomtypes>) {
         _visibleFlats.value = newFlats
     }
-
+    /////////////////////////
 
 }
