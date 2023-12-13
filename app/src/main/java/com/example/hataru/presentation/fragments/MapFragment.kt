@@ -2,9 +2,7 @@ package com.example.hataru.presentation.fragments
 
 import ApartmentsViewPagerFragment
 import ApartmentsViewPagerFragment.Companion.KEY_GET_FLAT_INTO_ADAPTER
-import com.example.hataru.presentation.ClusterView
 import android.Manifest
-import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
@@ -12,43 +10,33 @@ import android.graphics.Paint
 import android.graphics.PointF
 import android.graphics.Rect
 import android.graphics.RectF
-import android.graphics.drawable.ColorDrawable
-import android.opengl.Visibility
 import android.os.Bundle
-import android.util.Log
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
+import android.view.ViewTreeObserver
 import android.widget.ImageView
-import android.widget.PopupWindow
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.example.hataru.R
-import com.example.hataru.databinding.FragmentMapBinding
 import com.example.hataru.MainActivity
+import com.example.hataru.R
 import com.example.hataru.data.GeometryProvider
-import com.example.hataru.isLocationEnabled
-import com.example.hataru.domain.entity.Roomtypes
 import com.example.hataru.data.flatsContainer
+import com.example.hataru.databinding.FragmentMapBinding
+import com.example.hataru.domain.entity.Roomtypes
+import com.example.hataru.isLocationEnabled
+import com.example.hataru.presentation.ClusterView
 import com.example.hataru.presentation.adapter.FlatListOnMap
 import com.example.hataru.presentation.fragments.FlatBottomSheetFragment.Companion.KEY_GET_FLAT
 import com.example.hataru.presentation.viewModels.MapViewModel
 import com.example.hataru.showAlertDialog
 import com.example.hataru.showToast
 import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationServices
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.yandex.mapkit.Animation
 import com.yandex.mapkit.MapKitFactory
@@ -69,7 +57,6 @@ import com.yandex.mapkit.map.IconStyle
 import com.yandex.mapkit.map.Map
 import com.yandex.mapkit.map.MapObjectCollection
 import com.yandex.mapkit.map.MapObjectTapListener
-import com.yandex.mapkit.map.MapWindow
 import com.yandex.mapkit.map.PlacemarkMapObject
 import com.yandex.mapkit.map.SizeChangedListener
 import com.yandex.mapkit.mapview.MapView
@@ -83,7 +70,7 @@ private const val CLUSTER_MIN_ZOOM = 18
 
 private var flats = flatsContainer.roomTypes
 
-class MapFragment : Fragment(),CameraListener {
+class MapFragment : Fragment(),CameraListener, ViewTreeObserver.OnPreDrawListener {
 
     private lateinit var viewModel: MapViewModel
     private lateinit var binding: FragmentMapBinding
@@ -109,7 +96,7 @@ class MapFragment : Fragment(),CameraListener {
         updateFocusRect()
     }
     private val placemarkTapListener = MapObjectTapListener { mapObject, _ ->
-        showFlatDetails(mapObject.userData as Roomtypes)
+        showFlatDetailsBySheetFragment(mapObject.userData as Roomtypes)
         true
     }
 
@@ -117,56 +104,10 @@ class MapFragment : Fragment(),CameraListener {
         handleClusterTap(cluster)
     }
 
-
     // при нажатии на сборище кластеров
     private val clusterTapListener = ClusterTapListener {
         handleMultiClusterTap(it)
         true
-    }
-
-    private fun showPreferencesPopup(anchorView: View) {
-        val inflater = LayoutInflater.from(requireContext())
-        val popupView = inflater.inflate(R.layout.layout_filter_preferences, null)
-
-        val popupWindow = PopupWindow(
-            popupView,
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.WRAP_CONTENT
-        )
-        popupWindow.isFocusable = true
-        popupWindow.isTouchable = true
-        popupWindow.isOutsideTouchable = true
-        popupWindow.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-
-
-        val editTextPreference = popupView.findViewById<EditText>(R.id.editTextPreference)
-        val btnApplyPreferences = popupView.findViewById<Button>(R.id.btnApplyPreferences)
-
-        btnApplyPreferences.setOnClickListener {
-            val preferenceText = editTextPreference.text.toString()
-            // Здесь вы можете использовать preferenceText по вашему усмотрению
-            // Например, передать в метод вашего MapFragment для обновления карты с учетом предпочтений
-            popupWindow.dismiss() // Закрываем PopupWindow после применения предпочтений
-            //binding.btnOpenFilterWidget.visibility = View.VISIBLE
-        }
-
-        popupWindow.showAtLocation(anchorView, Gravity.TOP, 0, 0)
-
-    }
-    private fun isPointInVisibleRegion(point: Point, topLeft: Point, bottomRight: Point): Boolean {
-        return (point.latitude in bottomRight.latitude..topLeft.latitude) &&
-                (point.longitude in topLeft.longitude..bottomRight.longitude)
-    }
-
-    fun getApartmentsString(count: Int): String {
-        val lastDigit = count % 10
-        val lastTwoDigits = count % 100
-
-        return when {
-            lastDigit == 1 && lastTwoDigits != 11 -> "$count квартира"
-            (lastDigit in 2..4 && !(lastTwoDigits in 12..14)) -> "$count квартиры"
-            else -> "$count квартир"
-        }
     }
 
 
@@ -191,6 +132,7 @@ class MapFragment : Fragment(),CameraListener {
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
         bottomSheetBehavior.isDraggable = true
         bottomSheet.setOnClickListener {
+
             if(bottomSheetBehavior.state == BottomSheetBehavior.STATE_COLLAPSED &&
                 !binding.countFlatsOnMap.text.toString().contains('0')) {
                 bottomSheetBehavior.state= BottomSheetBehavior.STATE_EXPANDED
@@ -203,19 +145,10 @@ class MapFragment : Fragment(),CameraListener {
 
         bottomSheetBehavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
-                when (newState) {
-                    BottomSheetBehavior.STATE_COLLAPSED -> {
-                      
-                    }
-                    BottomSheetBehavior.STATE_EXPANDED -> {
-                        // Bottom sheet is expanded
-                    }
-                    BottomSheetBehavior.STATE_HIDDEN -> {
-                        // Bottom sheet is hidden
+                updateMapViewInteraction(newState)
 
-                    }
-                    // Add other states as needed
-                }
+                val isBottomSheetOpen = newState == BottomSheetBehavior.STATE_EXPANDED
+                binding.transparentOverlay.visibility = if (isBottomSheetOpen) View.VISIBLE else View.GONE
             }
             override fun onSlide(bottomSheet: View, slideOffset: Float) {
                 // Handle slide offset changes if needed
@@ -224,18 +157,14 @@ class MapFragment : Fragment(),CameraListener {
 
 
 
-        val recyclerView: RecyclerView = binding.recyclerViewBottomSheet
-        val layoutManager = LinearLayoutManager(context)
+        val recyclerView = binding.recyclerViewBottomSheet
+
         val adapter = FlatListOnMap(emptyList())
         viewModel.visibleFlats.observe(viewLifecycleOwner, Observer { visibleFlats ->
             adapter.updateFlats(visibleFlats)
-            binding.countFlatsOnMap.text = "Обнаружено " + getApartmentsString(visibleFlats.size)
+            binding.countFlatsOnMap.text = "Обнаружено " + getRigthStringForCountFlatsOnMap(visibleFlats.size)
+            recyclerView.adapter = adapter
         })
-
-        recyclerView.layoutManager = layoutManager
-        recyclerView.adapter = adapter
-
-
 
 
 
@@ -243,36 +172,36 @@ class MapFragment : Fragment(),CameraListener {
 
 
 
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
-        if (isLocationEnabled(activity as AppCompatActivity)) {
-            if (ActivityCompat.checkSelfPermission(
-                    activity as AppCompatActivity,
-                    Manifest.permission.ACCESS_FINE_LOCATION
-                ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                    activity as AppCompatActivity,
-                    Manifest.permission.ACCESS_COARSE_LOCATION
-                ) != PackageManager.PERMISSION_GRANTED
-            ) {
-                // TODO: Consider calling
-                //    ActivityCompat#requestPermissions
-                // here to request the missing permissions, and then overriding
-                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                //                                          int[] grantResults)
-                // to handle the case where the user grants the permission. See the documentation
-                // for ActivityCompat#requestPermissions for more details.
-
-            }
-            fusedLocationClient.lastLocation
-                .addOnSuccessListener { location ->
-                    if (location != null) { //TODO
-                        showMyLocationIconOnMap(Point(location.latitude, location.longitude))
-                    }
-                }
-                .addOnFailureListener { exception ->
-                    showToast("Failed to get location: ")
-                    // Ошибка получения местоположения
-                }
-        }
+//        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
+//        if (isLocationEnabled(activity as AppCompatActivity)) {
+//            if (ActivityCompat.checkSelfPermission(
+//                    activity as AppCompatActivity,
+//                    Manifest.permission.ACCESS_FINE_LOCATION
+//                ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+//                    activity as AppCompatActivity,
+//                    Manifest.permission.ACCESS_COARSE_LOCATION
+//                ) != PackageManager.PERMISSION_GRANTED
+//            ) {
+//                // TODO: Consider calling
+//                //    ActivityCompat#requestPermissions
+//                // here to request the missing permissions, and then overriding
+//                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+//                //                                          int[] grantResults)
+//                // to handle the case where the user grants the permission. See the documentation
+//                // for ActivityCompat#requestPermissions for more details.
+//
+//            }
+//            fusedLocationClient.lastLocation
+//                .addOnSuccessListener { location ->
+//                    if (location != null) { //TODO
+//                        showMyLocationIconOnMap(Point(location.latitude, location.longitude))
+//                    }
+//                }
+//                .addOnFailureListener { exception ->
+//                    showToast("Failed to get location: ")
+//                    // Ошибка получения местоположения
+//                }
+//        }
         return binding.root
     }
 
@@ -286,46 +215,15 @@ class MapFragment : Fragment(),CameraListener {
         super.onViewCreated(view, savedInstanceState)
         initMap()
 
-
         mapView.map.addCameraListener(this)
-//        val btnOpenPreferences = view.findViewById<Button>(R.id.btnOpenFilterWidget)
-//        btnOpenPreferences.setOnClickListener {
-//            binding.btnOpenFilterWidget.visibility = View.GONE
-//            showPreferencesPopup(it)
-//        }
-        viewModel.visibleFlats.observe(viewLifecycleOwner, Observer { visibleFlats ->
-            // Update your UI with the new list of visible flats
-            // For example, update your RecyclerView adapter
-            
 
-        })
 
         collection = mapView.map.mapObjects.addCollection()
         clasterizedCollection = collection.addClusterizedPlacemarkCollection(clusterListener)
         mapView.mapWindow.addSizeChangedListener(mapWindowSizeChangedListener)
         updateFocusRect()
 
-        flatsContainer.clusterizedPoints.forEachIndexed { index, point ->
-
-            val flat = flats[index]
-            val markerBitmap = createBitmapWithText(flat.price.toInt().toString())
-            val priceMarkerImageProvider = ImageProvider.fromBitmap(markerBitmap)
-
-            clasterizedCollection.addPlacemark(
-                point,
-                priceMarkerImageProvider,
-                IconStyle().apply {
-                    anchor = PointF(0.5f, 1.0f) // установка "якоря" по координатам
-                    scale = 0.65f // размер иконки на карте
-                }
-            )
-                .apply {
-                    // Put any data in MapObject
-                    userData = flats[index]
-                    this.addTapListener(placemarkTapListener)
-                }
-        }
-        clasterizedCollection.clusterPlacemarks(CLUSTER_RADIUS, CLUSTER_MIN_ZOOM)
+        showFlatsOnMap()
 
         //showRostovLocation()//TODO для удобного тестинга
         if (viewModel.latitude != 0.0 && viewModel.longitude != 0.0) {
@@ -342,6 +240,30 @@ class MapFragment : Fragment(),CameraListener {
                 showRostovLocation()
             }
         }
+
+    }
+
+    private fun showFlatsOnMap() {
+        flatsContainer.clusterizedPoints.forEachIndexed { index, point ->
+
+            val flat = flats[index]
+            val markerBitmap = createBitmapWithText(flat.price.toInt().toString())
+            val priceMarkerImageProvider = ImageProvider.fromBitmap(markerBitmap)
+
+            clasterizedCollection.addPlacemark(
+                point,
+                priceMarkerImageProvider,
+                IconStyle().apply {
+                    anchor = PointF(0.5f, 1.0f) // установка "якоря" по координатам
+                    scale = 0.65f // размер иконки на карте
+                }
+            )
+                .apply {
+                    userData = flat // Put any data in MapObject
+                    this.addTapListener(placemarkTapListener)
+                }
+        }
+        clasterizedCollection.clusterPlacemarks(CLUSTER_RADIUS, CLUSTER_MIN_ZOOM)
     }
 
     override fun onDestroyView() {
@@ -352,92 +274,9 @@ class MapFragment : Fragment(),CameraListener {
         viewModel.zoom = cameraPosition.zoom
 
         mapView.map.removeCameraListener(this)
+        
     }
 
-    private fun locationClickListener() {
-        imageLocation.setOnClickListener {
-            checkLocationAndMoveMap()
-        }
-    }
-
-    private fun checkLocationAndMoveMap() {
-        if (isLocationEnabled(activity as AppCompatActivity)) {
-            showMyCurrentLocation()
-            showMyCurrentLocationWithIconOnMap() //TODO косяк, нужно исправлять
-        } else {
-            requestPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
-        }
-    }
-
-    private fun showRostovLocation() {
-        mapView.map.move(
-            GeometryProvider.startPosition,
-            Animation(Animation.Type.SMOOTH, 0f),
-            null
-        )
-    }
-
-    private fun showMyCurrentLocation() {
-        val locationManager = MapKitFactory.getInstance().createLocationManager()
-        locationManager.requestSingleUpdate(object : LocationListener {
-            override fun onLocationUpdated(location: Location) {
-                val currentPosition = Point(location.position.latitude, location.position.longitude)
-                mapView.map.move(
-                    CameraPosition(currentPosition, 14.0f, 0.0f, 0.0f),
-                    Animation(Animation.Type.SMOOTH, 2f),
-                    null
-                )
-            }
-
-            override fun onLocationStatusUpdated(locationStatus: LocationStatus) {
-            }
-        })
-    }
-
-    private fun showMyCurrentLocationWithIconOnMap() {
-        val locationManager = MapKitFactory.getInstance().createLocationManager()
-        locationManager.requestSingleUpdate(object : LocationListener {
-            override fun onLocationUpdated(location: Location) {
-                val currentPosition =
-                    Point(location.position.latitude, location.position.longitude)
-                clasterizedCollection
-                showMyLocationIconOnMap(
-                    Point(
-                        location.position.latitude,
-                        location.position.longitude
-                    )
-                )
-                mapView.map.move(
-                    CameraPosition(currentPosition, 14.0f, 0.0f, 0.0f),
-                    Animation(Animation.Type.SMOOTH, 2f),
-                    null
-                )
-            }
-
-            override fun onLocationStatusUpdated(locationStatus: LocationStatus) {
-            }
-        })
-    }
-
-    private fun showMyLocationIconOnMap(position: Point) {
-        //mapView.map.mapObjects.clear()
-        val icon = mapView.map.mapObjects.addPlacemark(position)
-        //icon.setIcon(ImageProvider.fromResource(activity as AppCompatActivity, R.drawable.location_icon48dp))
-        icon.setIconStyle(IconStyle().setScale(2.0f))
-        icon.setIconStyle(
-            IconStyle().setAnchor(
-                PointF(0.5f, 0.5f)
-            )
-        )
-    }
-
-    private fun initImageLocation() {
-        imageLocation = binding.imageLocation
-    }
-
-    private fun initMap() {
-        mapView = binding.mapview
-    }
 
     override fun onStop() {
         mapView.onStop()
@@ -492,7 +331,7 @@ class MapFragment : Fragment(),CameraListener {
         cluster.addClusterTapListener(clusterTapListener)
 
     }
-    private fun showFlatDetails(flat: Roomtypes) {
+    private fun showFlatDetailsBySheetFragment(flat: Roomtypes) {
         val bottomSheetFragment = FlatBottomSheetFragment()
         val args = Bundle()
         args.putSerializable(KEY_GET_FLAT, flat as Serializable)
@@ -584,8 +423,6 @@ class MapFragment : Fragment(),CameraListener {
         )
     }
 
-
-
     override fun onCameraPositionChanged(
         p0: Map,
         p1: CameraPosition,
@@ -610,4 +447,136 @@ class MapFragment : Fragment(),CameraListener {
         //Log.d("MapFragment", "Visible Flats: ${visibleFlats.size}")
         viewModel.updateVisibleFlats(visibleFlats)
     }
+
+    private fun updateMapViewInteraction(bottomSheetState: Int) {
+        if (bottomSheetState == BottomSheetBehavior.STATE_EXPANDED ||
+            bottomSheetState == BottomSheetBehavior.STATE_HALF_EXPANDED) {
+            // BottomSheet развернут, блокируем карту
+            mapView.map.isScrollGesturesEnabled = false
+            mapView.map.isZoomGesturesEnabled = false
+            mapView.map.isTiltGesturesEnabled = false
+            mapView.map.isRotateGesturesEnabled = false
+            mapView.map.isFastTapEnabled = false
+            mapView.isClickable = false
+            mapView.isEnabled = false
+            mapView.map
+        } else {
+            // BottomSheet свёрнут, разблокируем карту
+            mapView.map.isScrollGesturesEnabled = true
+            mapView.map.isZoomGesturesEnabled = true
+            mapView.map.isTiltGesturesEnabled = true
+            mapView.map.isRotateGesturesEnabled = true
+            mapView.map.isFastTapEnabled = true
+            mapView.isClickable = true
+            mapView.isEnabled = true
+        }
+    }
+    private fun isPointInVisibleRegion(point: Point, topLeft: Point, bottomRight: Point): Boolean {
+        return (point.latitude in bottomRight.latitude..topLeft.latitude) &&
+                (point.longitude in topLeft.longitude..bottomRight.longitude)
+    }
+
+    fun getRigthStringForCountFlatsOnMap(count: Int): String {
+        val lastDigit = count % 10
+        val lastTwoDigits = count % 100
+
+        return when {
+            lastDigit == 1 && lastTwoDigits != 11 -> "$count квартира"
+            (lastDigit in 2..4 && !(lastTwoDigits in 12..14)) -> "$count квартиры"
+            else -> "$count квартир"
+        }
+    }
+
+    override fun onPreDraw(): Boolean {
+        mapView.viewTreeObserver.removeOnPreDrawListener(this)
+        // Здесь вы можете выполнить дополнительные действия после отрисовки карты
+        return true
+
+    }
+
+    private fun locationClickListener() {
+        imageLocation.setOnClickListener {
+            checkLocationAndMoveMap()
+        }
+    }
+
+    private fun checkLocationAndMoveMap() {
+        if (isLocationEnabled(activity as AppCompatActivity)) {
+            showMyCurrentLocation()
+            showMyCurrentLocationWithIconOnMap() //TODO косяк, нужно исправлять
+        } else {
+            requestPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+        }
+    }
+
+    private fun showRostovLocation() {
+        mapView.map.move(
+            GeometryProvider.startPosition,
+            Animation(Animation.Type.SMOOTH, 0f),
+            null
+        )
+    }
+
+    private fun showMyCurrentLocation() {
+        val locationManager = MapKitFactory.getInstance().createLocationManager()
+        locationManager.requestSingleUpdate(object : LocationListener {
+            override fun onLocationUpdated(location: Location) {
+                val currentPosition = Point(location.position.latitude, location.position.longitude)
+                mapView.map.move(
+                    CameraPosition(currentPosition, 14.0f, 0.0f, 0.0f),
+                    Animation(Animation.Type.SMOOTH, 2f),
+                    null
+                )
+            }
+
+            override fun onLocationStatusUpdated(locationStatus: LocationStatus) {
+            }
+        })
+    }
+
+    private fun showMyCurrentLocationWithIconOnMap() {
+        val locationManager = MapKitFactory.getInstance().createLocationManager()
+        locationManager.requestSingleUpdate(object : LocationListener {
+            override fun onLocationUpdated(location: Location) {
+                val currentPosition =
+                    Point(location.position.latitude, location.position.longitude)
+                clasterizedCollection
+                showMyLocationIconOnMap(
+                    Point(
+                        location.position.latitude,
+                        location.position.longitude
+                    )
+                )
+                mapView.map.move(
+                    CameraPosition(currentPosition, 14.0f, 0.0f, 0.0f),
+                    Animation(Animation.Type.SMOOTH, 2f),
+                    null
+                )
+            }
+
+            override fun onLocationStatusUpdated(locationStatus: LocationStatus) {
+            }
+        })
+    }
+
+    private fun showMyLocationIconOnMap(position: Point) {
+        //mapView.map.mapObjects.clear()
+        val icon = mapView.map.mapObjects.addPlacemark(position)
+        //icon.setIcon(ImageProvider.fromResource(activity as AppCompatActivity, R.drawable.location_icon48dp))
+        icon.setIconStyle(IconStyle().setScale(2.0f))
+        icon.setIconStyle(
+            IconStyle().setAnchor(
+                PointF(0.5f, 0.5f)
+            )
+        )
+    }
+
+    private fun initImageLocation() {
+        imageLocation = binding.imageLocation
+    }
+
+    private fun initMap() {
+        mapView = binding.mapview
+    }
+
 }

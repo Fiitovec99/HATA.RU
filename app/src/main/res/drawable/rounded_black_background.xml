@@ -2,5 +2,7 @@
     <corners
         android:topLeftRadius="32dp"
         android:topRightRadius="32dp" />
+    <solid
+        android:color="@color/cardview_dark_background"/>
 
 </shape>
