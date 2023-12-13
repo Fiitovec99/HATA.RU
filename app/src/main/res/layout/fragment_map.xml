@@ -19,6 +19,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+
     <!-- MapView -->
     <com.yandex.mapkit.mapview.MapView
         android:id="@+id/mapview"
@@ -27,6 +28,14 @@
         app:layout_constraintBottom_toTopOf="@+id/coordinatorLayout"
         app:layout_constraintTop_toTopOf="parent"
         tools:layout_editor_absoluteX="0dp" />
+
+    <View
+        android:id="@+id/transparentOverlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#70000000"
+        android:visibility="gone"/>
+
 
     <!-- CoordinatorLayout with BottomSheetBehavior -->
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -43,8 +52,9 @@
             android:id="@+id/persistentBottomSheet"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/rounded_black_background"
+
             android:elevation="4dp"
-            android:background="@drawable/rounded_background"
             android:orientation="vertical"
             app:behavior_peekHeight="40dp"
             app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
@@ -59,6 +69,7 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerViewBottomSheet"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
         </LinearLayout>
