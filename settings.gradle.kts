@@ -15,4 +15,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "HATA.RU"
 include(":app")
- 
+include(":admin")
