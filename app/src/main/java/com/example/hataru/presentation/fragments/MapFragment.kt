@@ -132,9 +132,16 @@ class MapFragment : Fragment(),CameraListener, ViewTreeObserver.OnPreDrawListene
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
         bottomSheetBehavior.isDraggable = true
         bottomSheet.setOnClickListener {
+            val str = binding.countFlatsOnMap.text.toString()
+
+            if(Regex(".*\\b1\\b.*").matches(str)){
+                val flat = viewModel.visibleFlats.value!![0]
+                showFlatDetailsBySheetFragment(flat)
+                return@setOnClickListener
+            }
 
             if(bottomSheetBehavior.state == BottomSheetBehavior.STATE_COLLAPSED &&
-                !binding.countFlatsOnMap.text.toString().contains('0')) {
+                !Regex(".*\\b0\\b.*").matches(str)) {
                 bottomSheetBehavior.state= BottomSheetBehavior.STATE_EXPANDED
             }
             else{
