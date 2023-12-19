@@ -21,7 +21,10 @@ class FlatFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentFlatBinding.inflate(layoutInflater,container,false)
-        flat = arguments?.getSerializable(KEY_GET_FLAT_INTO_FLATFRAGMENT) as Roomtypes
+
+        flat = arguments?.getParcelable(KEY_GET_FLAT_INTO_FLATFRAGMENT) as? Roomtypes
+            ?: throw IllegalArgumentException("Argument is null or has unexpected type")
+
 
         return binding.root
     }

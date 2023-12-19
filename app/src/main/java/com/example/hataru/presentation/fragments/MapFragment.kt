@@ -11,6 +11,7 @@ import android.graphics.PointF
 import android.graphics.Rect
 import android.graphics.RectF
 import android.os.Bundle
+import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -341,7 +342,7 @@ class MapFragment : Fragment(),CameraListener, ViewTreeObserver.OnPreDrawListene
     private fun showFlatDetailsBySheetFragment(flat: Roomtypes) {
         val bottomSheetFragment = FlatBottomSheetFragment()
         val args = Bundle()
-        args.putSerializable(KEY_GET_FLAT, flat as Serializable)
+        args.putParcelable(KEY_GET_FLAT, flat as Parcelable)
         bottomSheetFragment.arguments = args
         bottomSheetFragment.show(childFragmentManager, bottomSheetFragment.tag)
     }

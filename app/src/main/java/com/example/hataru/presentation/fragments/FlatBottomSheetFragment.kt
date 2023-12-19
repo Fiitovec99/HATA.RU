@@ -1,6 +1,7 @@
 package com.example.hataru.presentation.fragments
 
 import android.os.Bundle
+import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,7 +29,11 @@ class FlatBottomSheetFragment : BottomSheetDialogFragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentFlatBottomSheetBinding.inflate(inflater, container, false)
-        flat =  arguments?.getSerializable(KEY_GET_FLAT) as Roomtypes
+
+        flat = (arguments?.getParcelable(KEY_GET_FLAT) as? Roomtypes)!!
+
+
+
 
 
 
@@ -70,7 +75,7 @@ class FlatBottomSheetFragment : BottomSheetDialogFragment() {
             buttonOpeningFlat.setOnClickListener{
 
                 val args = Bundle()
-                args.putSerializable(KEY_GET_FLAT_INTO_FLATFRAGMENT, flat as Serializable)
+                args.putParcelable(KEY_GET_FLAT_INTO_FLATFRAGMENT, flat as Parcelable)
 
                 findNavController().navigate(R.id.flatFragment,args)
             }

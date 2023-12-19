@@ -47,7 +47,7 @@ class ApartmentsViewPagerFragment : Fragment() {
             // Создайте фрагмент для отображения информации о квартире
             val apartmentFragment = FlatFragment()
             val bundle = Bundle()
-            bundle.putSerializable(KEY_GET_FLAT_INTO_FLATFRAGMENT, roomtypesList[position])
+            bundle.putParcelable(KEY_GET_FLAT_INTO_FLATFRAGMENT, roomtypesList[position])
             apartmentFragment.arguments = bundle
             return apartmentFragment
         }
