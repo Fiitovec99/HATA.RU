@@ -14,8 +14,8 @@
             android:id="@+id/action_splashFragment_to_viewPagerFragment"
             app:destination="@id/viewPagerFragment" />
         <action
-            android:id="@+id/action_splashFragment_to_mainActivity"
-            app:destination="@id/mainActivity" />
+            android:id="@+id/action_splashFragment_to_loggingAccountActivity"
+            app:destination="@id/loggingAccountActivity" />
     </fragment>
     <fragment
         android:id="@+id/viewPagerFragment"
@@ -23,12 +23,17 @@
         android:label="fragment_view_pager"
         tools:layout="@layout/fragment_view_pager" >
         <action
-            android:id="@+id/action_viewPagerFragment_to_mainActivity"
-            app:destination="@id/mainActivity" />
+            android:id="@+id/action_viewPagerFragment_to_loggingAccountActivity"
+            app:destination="@id/loggingAccountActivity" />
     </fragment>
     <activity
         android:id="@+id/mainActivity"
         android:name="com.example.hataru.MainActivity"
         android:label="activity_main"
         tools:layout="@layout/activity_main" />
+    <activity
+        android:id="@+id/loggingAccountActivity"
+        android:name="com.example.hataru.LoggingAccountActivity"
+        android:label="activity_logging_account"
+        tools:layout="@layout/activity_logging_account" />
 </navigation>

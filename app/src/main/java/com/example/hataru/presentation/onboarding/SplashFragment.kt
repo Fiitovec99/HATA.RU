@@ -21,7 +21,7 @@ class SplashFragment : Fragment() {
         val mainHandler = Handler(Looper.getMainLooper())
         val runnable = Runnable {
             if (oBoardingFinished()){
-                findNavController().navigate(R.id.action_splashFragment_to_mainActivity)
+                findNavController().navigate(R.id.loggingAccountActivity)
             } else {
                 findNavController().navigate(R.id.action_splashFragment_to_viewPagerFragment)
             }
