@@ -4,13 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@drawable/rounded_background"
     android:padding="16dp">
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/photoRecyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
 
     <TextView
         android:id="@+id/textFlatDetails"
@@ -21,6 +15,10 @@
         android:layout_gravity="center_horizontal"
         android:text="О квартире"/>
 
+    <ImageView
+        android:id="@+id/example_of_flat_imageView"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"/>
 
     <TextView
         android:id="@+id/textFlatPrice"
@@ -53,12 +51,6 @@
         android:textSize="18sp"
         tools:text="Кол-во гостей"/>
 
-    <Button
-        android:id="@+id/buttonOpeningFlat"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:layout_gravity="center_horizontal"
-        android:text="Посмотреть подробнее" />
+
 
 </LinearLayout>
