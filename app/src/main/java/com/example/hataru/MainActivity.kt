@@ -4,12 +4,14 @@ package com.example.hataru
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.navigation.findNavController
 
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI.setupWithNavController
 
 
 import com.example.hataru.data.flatsContainer.roomTypes
+import com.example.hataru.presentation.fragments.ListFlatsFragment
 
 //import com.example.hataru.presentation.migration.flatsContainer.roomTypes TODO
 
@@ -37,6 +39,7 @@ class MainActivity : AppCompatActivity() {
             isMapKitInitialized = true
         }
         setNavigation()
+
 
 
        
@@ -89,7 +92,15 @@ class MainActivity : AppCompatActivity() {
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_main) as NavHostFragment
         val navController = navHostFragment.navController
         setupWithNavController(navView,navController)
-        setupWithNavController(navView, navController)
+
+
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            // Проверяем, если текущий фрагмент - ваш стартовый фрагмент
+            if (destination.id == R.id.listFlatsFragment) {
+                // Удалить предыдущие фрагменты из стека, чтобы предотвратить возврат
+                navController.popBackStack(R.id.listFlatsFragment, false)
+            }
+        }
     }
 
 
