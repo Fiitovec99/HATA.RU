@@ -47,6 +47,9 @@ import com.yandex.mapkit.geometry.Point
 import com.yandex.mapkit.location.Location
 import com.yandex.mapkit.location.LocationListener
 import com.yandex.mapkit.location.LocationStatus
+import com.yandex.mapkit.logo.Alignment
+import com.yandex.mapkit.logo.HorizontalAlignment
+import com.yandex.mapkit.logo.VerticalAlignment
 import com.yandex.mapkit.map.CameraListener
 import com.yandex.mapkit.map.CameraPosition
 import com.yandex.mapkit.map.CameraUpdateReason
@@ -58,6 +61,7 @@ import com.yandex.mapkit.map.IconStyle
 import com.yandex.mapkit.map.Map
 import com.yandex.mapkit.map.MapObjectCollection
 import com.yandex.mapkit.map.MapObjectTapListener
+import com.yandex.mapkit.map.MapType
 import com.yandex.mapkit.map.PlacemarkMapObject
 import com.yandex.mapkit.map.SizeChangedListener
 import com.yandex.mapkit.mapview.MapView
@@ -121,7 +125,9 @@ class MapFragment : Fragment(),CameraListener, ViewTreeObserver.OnPreDrawListene
         initImageLocation()
         viewModel = ViewModelProvider(requireActivity()).get(MapViewModel::class.java)
         mapView = binding.mapview
-
+        mapView.map.logo.setAlignment(Alignment(HorizontalAlignment.RIGHT,VerticalAlignment.TOP))
+        //mapView.map.mapType = MapType.HYBRID
+        //TODO добавить??
 
         ////////////////////////////////////////////////////////////////////////////////
 

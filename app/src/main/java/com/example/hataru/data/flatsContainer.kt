@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.yandex.mapkit.geometry.Point
 import com.example.hataru.domain.entity.ExampleJson2KtKotlin
 import com.example.hataru.domain.entity.Roomtypes
+
 import java.io.File
 
 object flatsContainer {

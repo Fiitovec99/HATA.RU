@@ -15,7 +15,6 @@ import java.net.CookiePolicy
 
 object ApiClient {
 
-
     val BASE_URL = "https://online.bnovo.ru"
 
     val gson: Gson = GsonBuilder().setLenient().create()
