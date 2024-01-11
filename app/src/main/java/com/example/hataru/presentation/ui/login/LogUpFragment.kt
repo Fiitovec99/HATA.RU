@@ -19,6 +19,7 @@ import com.example.hataru.R
 import com.example.hataru.databinding.FragmentLogUpBinding
 import com.example.hataru.databinding.FragmentLoginBinding
 import com.example.hataru.presentation.data.Result
+import com.example.hataru.showToast
 import com.google.firebase.auth.FirebaseAuth
 
 
@@ -112,17 +113,23 @@ class LogUpFragment : Fragment() {
 
 
         _binding!!.textViewForgotPassword.setOnClickListener {
+            if(_binding!!.username.text.toString() == ""){
+                showToast("ПУсто")
+                return@setOnClickListener
+            }
+
             loadingProgressBar.visibility = View.VISIBLE
 
             firebaseAuth.sendPasswordResetEmail(
                 usernameEditText.text.toString()
             ).addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    // Регистрация успешна, вы можете выполнить необходимые действия
+                    // Вход успешен, вы можете выполнить необходимые действия
                     val intent = Intent(context, MainActivity::class.java)
                     startActivity(intent)
+                   //TODO добавить отображение, что придет сообщение
                 } else {
-                    // Регистрация не удалась, отобразить сообщение об ошибке
+                    // Вход не удался, отобразить сообщение об ошибке
                     Toast.makeText(context, task.exception?.message, Toast.LENGTH_SHORT).show()
                     Log.d("TAG", task.exception.toString())
                 }
@@ -140,9 +147,9 @@ class LogUpFragment : Fragment() {
                 passwordEditText.text.toString()
             ).addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-
                     val intent = Intent(context, MainActivity::class.java)
                     startActivity(intent)
+                    activity?.finish()
                 } else {
 
                     Toast.makeText(context, task.exception?.message, Toast.LENGTH_SHORT).show()

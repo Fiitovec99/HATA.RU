@@ -21,16 +21,17 @@ class LoggingAccountActivity : AppCompatActivity() {
 
         val fragmentManager = supportFragmentManager
 
-        val transaction = fragmentManager.beginTransaction()
+        val transaction = fragmentManager.beginTransaction().
+        replace(R.id.fragmentContainer,LoginFragment()).commit()
 
 
 
         if(firebaseAuth.currentUser == null){
 //            val intent = Intent(this,MainActivity::class.java)
 //            startActivity(intent)
-            transaction.replace(R.id.fragmentContainer,LogUpFragment()).commit()
+            //transaction.replace(R.id.fragmentContainer,LoginFragment()).commit()
         }else{
-            transaction.replace(R.id.fragmentContainer,LoginFragment()).commit()
+            //transaction.replace(R.id.fragmentContainer,LogUpFragment()).commit()
         }
 
 

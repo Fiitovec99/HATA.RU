@@ -85,6 +85,7 @@ class LoginFragment : Fragment() {
 
         _binding?.textViewHasAccount?.setOnClickListener {
             fragmentManager?.beginTransaction()?.replace(R.id.fragmentContainer,LogUpFragment())?.commit()
+
         }
 
         val afterTextChangedListener = object : TextWatcher {
@@ -125,6 +126,7 @@ class LoginFragment : Fragment() {
                     // Регистрация успешна, вы можете выполнить необходимые действия
                     val intent = Intent(context, MainActivity::class.java)
                     startActivity(intent)
+                    activity?.finish()
                 } else {
                     // Регистрация не удалась, отобразить сообщение об ошибке
                     Toast.makeText(context, task.exception?.message, Toast.LENGTH_SHORT).show()
