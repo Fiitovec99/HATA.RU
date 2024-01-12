@@ -4,10 +4,6 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 
-
-
+//TODO а что тут должно быть?
 @Parcelize
-data class GeoData (
-    var x: String? = null,
-    var y: String? = null,
-) : Parcelable
+class Subroom : Parcelable
