@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.os.BuildCompat
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI.setupWithNavController
 import com.example.hataru.data.ApiClient.apiService
@@ -50,14 +51,13 @@ class MainActivity : AppCompatActivity() {
 //        MapKitFactory.setApiKey(API_KEY)
 //        MapKitFactory.initialize(this)
 
-        val myCookieJar = MyCookieJar()
+
+
+        val username = BuildConfig.USERNAME_KEY
+        val password = BuildConfig.PASSWORD_KEY
 
         apiService.authenticateUser(
-            credentials = UserCredentials(
-                "",
-                ""
-            )
-        ).enqueue(object : Callback<Void> {
+            credentials = UserCredentials(username, password)).enqueue(object : Callback<Void> {
             override fun onResponse(call: Call<Void>, response: Response<Void>) {
                 if (response.isSuccessful) {
                     Log.d("asdasd", response.body().toString())

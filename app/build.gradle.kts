@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -11,6 +13,14 @@ android {
     compileSdk = 34
 
     defaultConfig {
+        val apikeyPropertiesFile = project.file("apikey.properties")
+        val apikeyProperties = Properties()
+        apikeyProperties.load(apikeyPropertiesFile.inputStream())
+
+        buildConfigField("String", "USERNAME_KEY", apikeyProperties.getProperty("USERNAME_KEY"))
+        buildConfigField("String", "PASSWORD_KEY", apikeyProperties.getProperty("PASSWORD_KEY"))
+
+
         applicationId = "com.example.hataru"
         minSdk = 24
         targetSdk = 33
@@ -37,6 +47,7 @@ android {
         jvmTarget = "1.8"
     }
     buildFeatures {
+        buildConfig = true
         viewBinding = true
     }
 }
