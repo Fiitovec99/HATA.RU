@@ -5,21 +5,23 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import kotlinx.parcelize.Parcelize
 
 
+@Parcelize
 data class MyGeoData (
     var x: String? = null,
     var y: String? = null,
-)
-
+) : Parcelable
+@Parcelize
 data class Room (
     var id: String? = null,
     var hotel_id: String? = null,
     var room_type_id: String? = null,
-    var room_type_name: Any? = null,
+    var room_type_name: String? = null,
     var name: String? = null,
     var tags: String? = null,
     var sort_order: String? = null,
-    )
+    ) : Parcelable
 
+@Parcelize
 data class Roomtype (
     var id: String? = null,
     var hotel_id: String? = null,
@@ -28,27 +30,28 @@ data class Roomtype (
     var type: String? = null,
     var adults: String? = null,
     var children: String? = null,
-    var price: String? = null,
+    var price: String,
     var board: String? = null,
     var description: String? = null,
-    var sort_order: Any? = null,
-    var country: Any? = null,
-    var city: Any? = null,
-    var city_eng: Any? = null,
-    var address: Any? = null,
-    var address_eng: Any? = null,
-    var postcode: Any? = null,
+    var sort_order: String? = null,
+    var country: String? = null,
+    var city: String? = null,
+    var city_eng: String? = null,
+    var address: String? = null,
+    var address_eng: String? = null,
+    var postcode: String? = null,
     var geo_data: MyGeoData? = null,
     var subrooms: ArrayList<Subroom>? = null,
     var rooms: ArrayList<Room>? = null,
-)
+) : Parcelable
 
 data class Root (
     var roomtypes: ArrayList<Roomtype>? = null
 )
 
 //TODO а что тут должно быть?
-class Subroom
+@Parcelize
+class Subroom : Parcelable
 
 
 @Parcelize

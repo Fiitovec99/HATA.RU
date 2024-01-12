@@ -10,12 +10,18 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI.setupWithNavController
 import com.example.hataru.data.ApiClient.apiService
 import com.example.hataru.data.GeometryProvider.listFlats
+import com.example.hataru.data.flatsContainer
+import com.example.hataru.domain.entity.Roomtype
+import com.example.hataru.domain.entity.Roomtypes
 
 import com.example.hataru.domain.entity.Root
 import com.example.hataru.domain.entity.UserCredentials
 import com.example.hataru.migration.MyCookieJar
+import com.example.hataru.presentation.fragments.flats
+import com.example.hataru.presentation.fragments.points
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.yandex.mapkit.MapKitFactory
+import com.yandex.mapkit.geometry.Point
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -48,8 +54,8 @@ class MainActivity : AppCompatActivity() {
 
         apiService.authenticateUser(
             credentials = UserCredentials(
-                "6557acdcf08a9+14325@customapp.bnovo.ru",
-                "f56c2ee76f46fa61"
+                "",
+                ""
             )
         ).enqueue(object : Callback<Void> {
             override fun onResponse(call: Call<Void>, response: Response<Void>) {
@@ -71,7 +77,9 @@ class MainActivity : AppCompatActivity() {
                                     Log.d("flat " +i.toString(), listFlats[i].toString())
                                 }
 
-
+                                flats = flat.roomtypes!!
+                                points = flats.map { x : Roomtype -> Point(x.geo_data!!.x!!.toDouble(),
+                                    x!!.geo_data!!.y!!.toDouble()) }
 
                             }
                         }

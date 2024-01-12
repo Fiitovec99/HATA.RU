@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hataru.R
 import com.example.hataru.databinding.FragmentFlatBottomSheetBinding
+import com.example.hataru.domain.entity.Roomtype
 import com.example.hataru.domain.entity.Roomtypes
 import com.example.hataru.presentation.SpaceItemDecoration
 import com.example.hataru.presentation.adapter.PhotoAdapter
@@ -22,7 +23,7 @@ import java.io.Serializable
 class FlatBottomSheetFragment : BottomSheetDialogFragment() {
 
     private lateinit var binding: FragmentFlatBottomSheetBinding
-    private lateinit var flat : Roomtypes
+    private lateinit var flat : Roomtype
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,7 +31,7 @@ class FlatBottomSheetFragment : BottomSheetDialogFragment() {
     ): View? {
         binding = FragmentFlatBottomSheetBinding.inflate(inflater, container, false)
 
-        flat = (arguments?.getParcelable(KEY_GET_FLAT) as? Roomtypes)!!
+        flat = (arguments?.getParcelable(KEY_GET_FLAT) as? Roomtype)!!
 
 
 
@@ -67,7 +68,7 @@ class FlatBottomSheetFragment : BottomSheetDialogFragment() {
 
 
         binding.apply {
-            textFlatPrice.text = "Цена аренды: " + flat.price!!.toInt().toString() + "р"
+            textFlatPrice.text = "Цена аренды: " + flat.price!!.toDouble().toString() + "р"
             textFlatLocation.text = flat.address
             countAdultsFlatTextView.text = "Количество взрослых: "+ flat.adults.toString()
             countChildrenFlatTextView.text = "Количество детей: " + flat.children.toString()

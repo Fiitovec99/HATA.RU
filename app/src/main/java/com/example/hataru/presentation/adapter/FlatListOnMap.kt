@@ -6,9 +6,10 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hataru.R
+import com.example.hataru.domain.entity.Roomtype
 import com.example.hataru.domain.entity.Roomtypes
 
-class FlatListOnMap(private var flatList: List<Roomtypes>) :
+class FlatListOnMap(private var flatList: List<Roomtype>) :
     RecyclerView.Adapter<FlatListOnMap.FlatViewHolder>() {
 
     inner class FlatViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -35,7 +36,7 @@ class FlatListOnMap(private var flatList: List<Roomtypes>) :
     }
 
     // Method to update the dataset
-    fun updateFlats(newFlatList: List<Roomtypes>) {
+    fun updateFlats(newFlatList: List<Roomtype>) {
         flatList = newFlatList
         notifyDataSetChanged() // Notify the adapter that the data has changed
     }

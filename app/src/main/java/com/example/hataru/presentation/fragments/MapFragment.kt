@@ -12,6 +12,7 @@ import android.graphics.Rect
 import android.graphics.RectF
 import android.os.Bundle
 import android.os.Parcelable
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -29,6 +30,7 @@ import com.example.hataru.R
 import com.example.hataru.data.GeometryProvider
 import com.example.hataru.data.flatsContainer
 import com.example.hataru.databinding.FragmentMapBinding
+import com.example.hataru.domain.entity.Roomtype
 import com.example.hataru.domain.entity.Roomtypes
 import com.example.hataru.isLocationEnabled
 import com.example.hataru.presentation.ClusterView
@@ -73,7 +75,8 @@ import java.io.Serializable
 private const val CLUSTER_RADIUS = 60.0
 private const val CLUSTER_MIN_ZOOM = 18
 
-private var flats = flatsContainer.roomTypes
+ var flats = listOf<Roomtype>()
+var points = listOf<Point>()
 
 class MapFragment : Fragment(),CameraListener, ViewTreeObserver.OnPreDrawListener {
 
@@ -101,7 +104,7 @@ class MapFragment : Fragment(),CameraListener, ViewTreeObserver.OnPreDrawListene
         updateFocusRect()
     }
     private val placemarkTapListener = MapObjectTapListener { mapObject, _ ->
-        showFlatDetailsBySheetFragment(mapObject.userData as Roomtypes)
+        showFlatDetailsBySheetFragment(mapObject.userData as Roomtype)
         true
     }
 
@@ -258,10 +261,10 @@ class MapFragment : Fragment(),CameraListener, ViewTreeObserver.OnPreDrawListene
     }
 
     private fun showFlatsOnMap() {
-        flatsContainer.clusterizedPoints.forEachIndexed { index, point ->
+        points.forEachIndexed { index, point ->
 
             val flat = flats[index]
-            val markerBitmap = createBitmapWithText(flat.price.toInt().toString())
+            val markerBitmap = createBitmapWithText(flat.price!!.toDouble().toString())
             val priceMarkerImageProvider = ImageProvider.fromBitmap(markerBitmap)
 
             clasterizedCollection.addPlacemark(
@@ -306,12 +309,12 @@ class MapFragment : Fragment(),CameraListener, ViewTreeObserver.OnPreDrawListene
     }
     private fun handleMultiClusterTap(it: Cluster) {
         val listPointsOfCluster =
-            it.placemarks.map { x: PlacemarkMapObject? -> x?.userData as Roomtypes }
-                .map { x: Roomtypes -> Point(x.geoData!!.x!!.toDouble(),x.geoData!!.y!!.toDouble()) }
+            it.placemarks.map { x: PlacemarkMapObject? -> x?.userData as Roomtype }
+                .map { x: Roomtype -> Point(x.geo_data!!.x!!.toDouble(),x.geo_data!!.y!!.toDouble()) }
 
         if (flatsLocateNearByAnother(listPointsOfCluster, 0.00001)) { // расстояние в меридиане
             showToast("Квартиры находятся в одном здании, реализация впереди!")
-            val flats = it.placemarks?.mapNotNull { it.userData as? Roomtypes }
+            val flats = it.placemarks?.mapNotNull { it.userData as? Roomtype }
             val args = Bundle()
             args.putSerializable(KEY_GET_FLAT_INTO_ADAPTER, flats as? Serializable)
             val viewPagerFragment = ApartmentsViewPagerFragment()
@@ -330,9 +333,9 @@ class MapFragment : Fragment(),CameraListener, ViewTreeObserver.OnPreDrawListene
         }
     }
     private fun handleClusterTap(cluster: Cluster) {
-        val flatsInCluster = cluster.placemarks.mapNotNull { it.userData as? Roomtypes }
-        val minValue = flatsInCluster.minByOrNull { it.price }?.price ?: 0.0
-        val maxValue = flatsInCluster.maxByOrNull { it.price }?.price ?: 0.0
+        val flatsInCluster = cluster.placemarks.mapNotNull { it.userData as? Roomtype }
+        val minValue = (flatsInCluster.minByOrNull { it.price }?.price)!!.toDouble()
+        val maxValue = (flatsInCluster.maxByOrNull { it.price }?.price)!!.toDouble()
 
         cluster.appearance.setView(
             ViewProvider(
@@ -345,7 +348,8 @@ class MapFragment : Fragment(),CameraListener, ViewTreeObserver.OnPreDrawListene
         cluster.addClusterTapListener(clusterTapListener)
 
     }
-    private fun showFlatDetailsBySheetFragment(flat: Roomtypes) {
+    private fun showFlatDetailsBySheetFragment(flat: Roomtype) {
+        Log.d("asdasd",flat.toString())
         val bottomSheetFragment = FlatBottomSheetFragment()
         val args = Bundle()
         args.putParcelable(KEY_GET_FLAT, flat as Parcelable)
@@ -445,22 +449,27 @@ class MapFragment : Fragment(),CameraListener, ViewTreeObserver.OnPreDrawListene
     ) {
         val visibleRegion = mapView.map.visibleRegion
         val visibleFlats = flats.filter { flat ->
-            flat.geoData?.let { geoData ->
+            flat.geo_data?.let { geoData ->
                 val x = geoData.x?.toDoubleOrNull()
                 val y = geoData.y?.toDoubleOrNull()
 
                 if (x != null && y != null) {
                     val flatPoint = Point(x, y)
-                    isPointInVisibleRegion(flatPoint, visibleRegion.topLeft, visibleRegion.bottomRight)
+                    isPointInVisibleRegion(
+                        flatPoint,
+                        visibleRegion.topLeft,
+                        visibleRegion.bottomRight
+                    )
                 } else {
                     false
                 }
             } ?: false
         }
 
-        //Log.d("MapFragment", "Visible Flats: ${visibleFlats.size}")
+        Log.d("MapFragment", "Visible Flats: ${visibleFlats.size}")
         viewModel.updateVisibleFlats(visibleFlats)
     }
+
 
     private fun updateMapViewInteraction(bottomSheetState: Int) {
         if (bottomSheetState == BottomSheetBehavior.STATE_EXPANDED ||
