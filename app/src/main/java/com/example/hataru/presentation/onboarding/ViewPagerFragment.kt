@@ -10,6 +10,7 @@ import com.example.hataru.databinding.FragmentViewPagerBinding
 import com.example.hataru.presentation.onboarding.screens.FirstScreen
 import com.example.hataru.presentation.onboarding.screens.SecondScreen
 import com.example.hataru.presentation.onboarding.screens.ThirdScreen
+import com.tbuonomo.viewpagerdotsindicator.SpringDotsIndicator
 
 class ViewPagerFragment : Fragment() {
 
@@ -36,6 +37,9 @@ class ViewPagerFragment : Fragment() {
         )
 
         binding.viewPager.adapter = adapter
+
+        val springDotsIndicator = binding.wormDotsIndicator
+        springDotsIndicator.attachTo(binding.viewPager)
 
 
         return view

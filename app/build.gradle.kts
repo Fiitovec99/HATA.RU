@@ -54,6 +54,7 @@ android {
 }
 
 dependencies {
+    implementation("com.tbuonomo:dotsindicator:5.0")
 
     implementation("com.yandex.android:maps.mobile:4.4.0-full")
 
