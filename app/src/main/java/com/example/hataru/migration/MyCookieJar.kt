@@ -11,12 +11,10 @@ class MyCookieJar : CookieJar {
     private var cookies: List<Cookie>? = null
 
     override fun loadForRequest(url: HttpUrl): List<Cookie> {
-        Log.d("BNOVO", "load: ${url}: ${cookies?.joinToString(", ")}")
         return cookies ?: ArrayList()
     }
 
     override fun saveFromResponse(url: HttpUrl, cookies1: List<Cookie>) {
-        Log.d("BNOVO", "save: ${url}: ${cookies1.joinToString(", ")}")
         cookies =  cookies1;
     }
 }

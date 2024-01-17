@@ -349,7 +349,6 @@ class MapFragment : Fragment(),CameraListener, ViewTreeObserver.OnPreDrawListene
 
     }
     private fun showFlatDetailsBySheetFragment(flat: Roomtype) {
-        Log.d("asdasd",flat.toString())
         val bottomSheetFragment = FlatBottomSheetFragment()
         val args = Bundle()
         args.putParcelable(KEY_GET_FLAT, flat as Parcelable)
@@ -466,7 +465,6 @@ class MapFragment : Fragment(),CameraListener, ViewTreeObserver.OnPreDrawListene
             } ?: false
         }
 
-        Log.d("MapFragment", "Visible Flats: ${visibleFlats.size}")
         viewModel.updateVisibleFlats(visibleFlats)
     }
 

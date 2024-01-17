@@ -19,6 +19,7 @@ android {
 
         buildConfigField("String", "USERNAME_KEY", apikeyProperties.getProperty("USERNAME_KEY"))
         buildConfigField("String", "PASSWORD_KEY", apikeyProperties.getProperty("PASSWORD_KEY"))
+        buildConfigField("String", "MAP_API_KEY", apikeyProperties.getProperty("MAP_API_KEY"))
 
 
         applicationId = "com.example.hataru"

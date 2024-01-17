@@ -30,14 +30,14 @@ import retrofit2.Response
 
 class MainActivity : AppCompatActivity() {
 
-    private val API_KEY = "0fbc6a26-ede5-4bec-8b40-ec2e3ea8b780"
+     val API_KEY = BuildConfig.MAP_API_KEY
     private var isMapKitInitialized = false
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
+        setNavigation()
 
 
         MapKitFactory.setApiKey(API_KEY)
@@ -45,12 +45,6 @@ class MainActivity : AppCompatActivity() {
             MapKitFactory.initialize(this)
             isMapKitInitialized = true
         }
-        setNavigation()
-
-
-//        MapKitFactory.setApiKey(API_KEY)
-//        MapKitFactory.initialize(this)
-
 
 
         val username = BuildConfig.USERNAME_KEY
@@ -61,7 +55,6 @@ class MainActivity : AppCompatActivity() {
             override fun onResponse(call: Call<Void>, response: Response<Void>) {
                 if (response.isSuccessful) {
                     Log.d("asdasd", response.body().toString())
-
 
                     apiService.getRoomTypes().enqueue(object : Callback<Root> {
                         override fun onResponse(call: Call<Root>, roomTypeResponse: Response<Root>) {
@@ -83,7 +76,6 @@ class MainActivity : AppCompatActivity() {
 
                             }
                         }
-
                         override fun onFailure(call: Call<Root>, t: Throwable) {
                             Log.e("API_FAILURE", "Error: ${t.message}", t)
                             Toast.makeText(
@@ -91,34 +83,19 @@ class MainActivity : AppCompatActivity() {
                                 "Ошибка: ${t.message}",
                                 Toast.LENGTH_LONG
                             ).show()
-
                         }
                     })
-
-
                 }
-
             }
 
             override fun onFailure(call: Call<Void>, t: Throwable) {
                 Log.e("API_RESPONSE", "Authentication failed")
-
-
             }
         })
 
 
-
-
-
-
-
     }
 
-    override fun onResume() {
-        //Log.d("TAG",roomTypes.size.toString())
-        super.onResume()
-    }
 
     private fun setNavigation() {
         val navView: BottomNavigationView = findViewById(R.id.bottom_navigation_view)
