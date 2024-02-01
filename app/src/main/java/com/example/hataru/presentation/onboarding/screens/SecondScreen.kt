@@ -24,7 +24,7 @@ class SecondScreen : Fragment() {
         val view = binding.root
 
         binding.continue2.setOnClickListener {
-            findNavController().navigate(R.id.mainActivity)
+            findNavController().navigate(R.id.loggingAccountActivity)
             onBoardingFinished()
         }
 

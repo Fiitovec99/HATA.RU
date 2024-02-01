@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.hataru.R
 import com.example.hataru.databinding.FragmentFlatBinding
+import com.example.hataru.domain.entity.Roomtype
 import com.example.hataru.domain.entity.Roomtypes
 import com.example.hataru.presentation.fragments.FlatBottomSheetFragment.Companion.KEY_GET_FLAT
 
@@ -14,7 +15,7 @@ class FlatFragment : Fragment() {
 
 
     private lateinit var binding : FragmentFlatBinding
-    private lateinit var flat : Roomtypes
+    private lateinit var flat : Roomtype
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -22,7 +23,7 @@ class FlatFragment : Fragment() {
     ): View? {
         binding = FragmentFlatBinding.inflate(layoutInflater,container,false)
 
-        flat = arguments?.getParcelable(KEY_GET_FLAT_INTO_FLATFRAGMENT) as? Roomtypes
+        flat = arguments?.getParcelable(KEY_GET_FLAT_INTO_FLATFRAGMENT) as? Roomtype
             ?: throw IllegalArgumentException("Argument is null or has unexpected type")
 
 
@@ -32,11 +33,12 @@ class FlatFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.apply {
-            textFlatPrice.text = "Цена аренды: " + flat.price!!.toInt().toString() + "р"
+            textFlatPrice.text = "Цена аренды: " + flat.price!!.toDouble().toString() + "р"
             textFlatLocation.text = flat.address
             exampleOfFlatImageView.setImageResource(R.drawable.example_of_flat_bottom_fragment)
             countAdultsFlatTextView.text = "Количество взрослых: "+ flat.adults.toString()
             countChildrenFlatTextView.text = "Количество детей: " + flat.children.toString()
+            description.text = flat.description
 
 
         }

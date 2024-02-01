@@ -28,3 +28,7 @@ class PhotoAdapter(private val photos: List<Int>) : RecyclerView.Adapter<PhotoAd
         return photos.size
     }
 }
+
+
+
+

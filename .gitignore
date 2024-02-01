@@ -8,6 +8,8 @@
 *.ap_
 *.aab
 
+apikey.properties
+
 # Files for the ART/Dalvik VM
 *.dex
 

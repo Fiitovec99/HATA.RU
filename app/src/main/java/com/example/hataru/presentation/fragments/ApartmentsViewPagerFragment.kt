@@ -7,14 +7,18 @@ import androidx.fragment.app.FragmentManager
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.example.hataru.R
+import com.example.hataru.domain.entity.Roomtype
 import com.example.hataru.domain.entity.Roomtypes
 import com.example.hataru.presentation.fragments.FlatFragment
 import com.example.hataru.presentation.fragments.FlatFragment.Companion.KEY_GET_FLAT_INTO_FLATFRAGMENT
+import com.tbuonomo.viewpagerdotsindicator.SpringDotsIndicator
+import com.tbuonomo.viewpagerdotsindicator.WormDotsIndicator
 
 class ApartmentsViewPagerFragment : Fragment() {
 
     private lateinit var viewPager: ViewPager2
-    private lateinit var roomtypesList: List<Roomtypes>
+    private lateinit var roomtypesList: List<Roomtype>
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -24,19 +28,24 @@ class ApartmentsViewPagerFragment : Fragment() {
 
         viewPager = view.findViewById(R.id.viewPager)
 
-        roomtypesList = arguments?.getSerializable(KEY_GET_FLAT_INTO_ADAPTER) as List<Roomtypes>
+
+
+
+        roomtypesList = arguments?.getSerializable(KEY_GET_FLAT_INTO_ADAPTER) as List<Roomtype>
 
         if (roomtypesList.isNotEmpty()) {
             viewPager.adapter = ApartmentsPagerAdapter(this, roomtypesList)
         }
+        val springDotsIndicator = view.findViewById<WormDotsIndicator>(R.id.worm_dots_indicator)
 
+        springDotsIndicator.attachTo(viewPager)
         return view
     }
 
     // Адаптер для ViewPager
     private inner class ApartmentsPagerAdapter(
         fragment: Fragment,
-        private val roomtypesList: List<Roomtypes>
+        private val roomtypesList: List<Roomtype>
     ) : FragmentStateAdapter(fragment) {
 
         override fun getItemCount(): Int {
@@ -44,7 +53,7 @@ class ApartmentsViewPagerFragment : Fragment() {
         }
 
         override fun createFragment(position: Int): Fragment {
-            // Создайте фрагмент для отображения информации о квартире
+            // отображения информации о квартире
             val apartmentFragment = FlatFragment()
             val bundle = Bundle()
             bundle.putParcelable(KEY_GET_FLAT_INTO_FLATFRAGMENT, roomtypesList[position])
