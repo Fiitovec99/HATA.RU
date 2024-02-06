@@ -12,7 +12,6 @@ import android.graphics.Rect
 import android.graphics.RectF
 import android.os.Bundle
 import android.os.Parcelable
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,16 +21,12 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.hataru.MainActivity
 import com.example.hataru.R
 import com.example.hataru.data.GeometryProvider
-import com.example.hataru.data.flatsContainer
 import com.example.hataru.databinding.FragmentMapBinding
 import com.example.hataru.domain.entity.Roomtype
-import com.example.hataru.domain.entity.Roomtypes
 import com.example.hataru.isLocationEnabled
 import com.example.hataru.presentation.ClusterView
 import com.example.hataru.presentation.adapter.FlatListOnMap
@@ -63,27 +58,27 @@ import com.yandex.mapkit.map.IconStyle
 import com.yandex.mapkit.map.Map
 import com.yandex.mapkit.map.MapObjectCollection
 import com.yandex.mapkit.map.MapObjectTapListener
-import com.yandex.mapkit.map.MapType
 import com.yandex.mapkit.map.PlacemarkMapObject
 import com.yandex.mapkit.map.SizeChangedListener
 import com.yandex.mapkit.mapview.MapView
 import com.yandex.runtime.image.ImageProvider
 import com.yandex.runtime.ui_view.ViewProvider
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.Serializable
 
 
 private const val CLUSTER_RADIUS = 60.0
 private const val CLUSTER_MIN_ZOOM = 18
 
- var flats = listOf<Roomtype>()
-var points = listOf<Point>()
+
 
 class MapFragment : Fragment(),CameraListener, ViewTreeObserver.OnPreDrawListener {
 
-    private lateinit var viewModel: MapViewModel
+    private val viewModel by viewModel<MapViewModel>()
     private lateinit var binding: FragmentMapBinding
     private lateinit var mapView: MapView
     private lateinit var imageLocation: ImageView
+    private var flats :List<Roomtype>? = null
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private val requestPermissionLauncher =
@@ -126,66 +121,22 @@ class MapFragment : Fragment(),CameraListener, ViewTreeObserver.OnPreDrawListene
         binding = FragmentMapBinding.inflate(inflater, container, false)
         initializeMap()
         initImageLocation()
-        viewModel = ViewModelProvider(requireActivity()).get(MapViewModel::class.java)
+
         mapView = binding.mapview
         mapView.map.logo.setAlignment(Alignment(HorizontalAlignment.RIGHT,VerticalAlignment.TOP))
-        //mapView.map.mapType = MapType.HYBRID
-        //TODO добавить??
 
-        ////////////////////////////////////////////////////////////////////////////////
-
-
-
-        val bottomSheet = binding.persistentBottomSheet
-        val bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet)
-        bottomSheetBehavior.isHideable = false
-        bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
-        bottomSheetBehavior.isDraggable = true
-        bottomSheet.setOnClickListener {
-            val str = binding.countFlatsOnMap.text.toString()
-
-            if(Regex(".*\\b1\\b.*").matches(str)){
-                val flat = viewModel.visibleFlats.value!![0]
-                showFlatDetailsBySheetFragment(flat)
-                return@setOnClickListener
-            }
-
-            if(bottomSheetBehavior.state == BottomSheetBehavior.STATE_COLLAPSED &&
-                !Regex(".*\\b0\\b.*").matches(str)) {
-                bottomSheetBehavior.state= BottomSheetBehavior.STATE_EXPANDED
-            }
-            else{
-                bottomSheetBehavior.state= BottomSheetBehavior.STATE_COLLAPSED
-            }
-
-        }
-
-        bottomSheetBehavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
-            override fun onStateChanged(bottomSheet: View, newState: Int) {
-                updateMapViewInteraction(newState)
-
-                val isBottomSheetOpen = newState == BottomSheetBehavior.STATE_EXPANDED
-                binding.transparentOverlay.visibility = if (isBottomSheetOpen) View.VISIBLE else View.GONE
-            }
-            override fun onSlide(bottomSheet: View, slideOffset: Float) {
-                // Handle slide offset changes if needed
-            }
-        })
-
-
+        setBottomSheetWithSetting()
 
         val recyclerView = binding.recyclerViewBottomSheet
 
         val adapter = FlatListOnMap(emptyList())
-        viewModel.visibleFlats.observe(viewLifecycleOwner, Observer { visibleFlats ->
-            adapter.updateFlats(visibleFlats)
-            binding.countFlatsOnMap.text = "Обнаружено " + getRigthStringForCountFlatsOnMap(visibleFlats.size)
+        viewModel.visibleFlats.observe(viewLifecycleOwner) { visibleFlats ->
+            if (visibleFlats != null) {
+                adapter.updateFlats(visibleFlats)
+            }
+            binding.countFlatsOnMap.text = "Обнаружено " + getRigthStringForCountFlatsOnMap(visibleFlats?.size ?: 3)
             recyclerView.adapter = adapter
-        })
-
-
-
-        ///////////////////////////////////////////////////////////////////////
+        }
 
 
 
@@ -222,6 +173,44 @@ class MapFragment : Fragment(),CameraListener, ViewTreeObserver.OnPreDrawListene
         return binding.root
     }
 
+    private fun setBottomSheetWithSetting() {
+        val bottomSheet = binding.persistentBottomSheet
+        val bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet)
+        bottomSheetBehavior.isHideable = false
+        bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+        bottomSheetBehavior.isDraggable = true
+        bottomSheet.setOnClickListener {
+            val str = binding.countFlatsOnMap.text.toString()
+
+            if(Regex(".*\\b1\\b.*").matches(str)){
+                val flat = viewModel.visibleFlats.value!![0]
+                showFlatDetailsBySheetFragment(flat)
+                return@setOnClickListener
+            }
+
+            if(bottomSheetBehavior.state == BottomSheetBehavior.STATE_COLLAPSED &&
+                !Regex(".*\\b0\\b.*").matches(str)) {
+                bottomSheetBehavior.state= BottomSheetBehavior.STATE_EXPANDED
+            }
+            else{
+                bottomSheetBehavior.state= BottomSheetBehavior.STATE_COLLAPSED
+            }
+
+        }
+
+        bottomSheetBehavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
+            override fun onStateChanged(bottomSheet: View, newState: Int) {
+                updateMapViewInteraction(newState)
+
+                val isBottomSheetOpen = newState == BottomSheetBehavior.STATE_EXPANDED
+                binding.transparentOverlay.visibility = if (isBottomSheetOpen) View.VISIBLE else View.GONE
+            }
+            override fun onSlide(bottomSheet: View, slideOffset: Float) {
+                // Handle slide offset changes if needed
+            }
+        })
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         //TODO fusedLocationClient.lastLocation
@@ -240,7 +229,13 @@ class MapFragment : Fragment(),CameraListener, ViewTreeObserver.OnPreDrawListene
         mapView.mapWindow.addSizeChangedListener(mapWindowSizeChangedListener)
         updateFocusRect()
 
-        showFlatsOnMap()
+        viewModel.flats.observe(viewLifecycleOwner){
+
+            flats = it
+            showFlatsOnMap(it)
+        }
+
+
 
         //showRostovLocation()//TODO для удобного тестинга
         if (viewModel.latitude != 0.0 && viewModel.longitude != 0.0) {
@@ -260,10 +255,11 @@ class MapFragment : Fragment(),CameraListener, ViewTreeObserver.OnPreDrawListene
 
     }
 
-    private fun showFlatsOnMap() {
-        points.forEachIndexed { index, point ->
+    private fun showFlatsOnMap(lst : List<Roomtype>) {
+        lst.map { x : Roomtype -> Point(x.geo_data!!.x!!.toDouble(),
+            x!!.geo_data!!.y!!.toDouble()) }?.forEachIndexed { index, point ->
 
-            val flat = flats[index]
+            val flat = flats!![index]
             val markerBitmap = createBitmapWithText(flat.price!!.toDouble().toString())
             val priceMarkerImageProvider = ImageProvider.fromBitmap(markerBitmap)
 
@@ -444,10 +440,10 @@ class MapFragment : Fragment(),CameraListener, ViewTreeObserver.OnPreDrawListene
         p0: Map,
         p1: CameraPosition,
         p2: CameraUpdateReason,
-        p3: Boolean
+        p3: Boolean,
     ) {
         val visibleRegion = mapView.map.visibleRegion
-        val visibleFlats = flats.filter { flat ->
+        val visibleFlats = flats?.filter { flat ->
             flat.geo_data?.let { geoData ->
                 val x = geoData.x?.toDoubleOrNull()
                 val y = geoData.y?.toDoubleOrNull()

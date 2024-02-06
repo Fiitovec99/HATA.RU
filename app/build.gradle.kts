@@ -54,6 +54,9 @@ android {
 }
 
 dependencies {
+
+    implementation ("io.insert-koin:koin-android:3.2.0")
+
     implementation("com.tbuonomo:dotsindicator:5.0")
 
     implementation("com.yandex.android:maps.mobile:4.4.0-full")

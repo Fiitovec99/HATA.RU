@@ -1,5 +1,6 @@
 package com.example.hataru.migration
 
+import com.example.hataru.domain.entity.Roomtype
 import com.example.hataru.domain.entity.Roomtypes
 import com.example.hataru.domain.entity.Root
 import com.example.hataru.domain.entity.UserCredentials
