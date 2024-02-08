@@ -63,7 +63,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
 
-    <!— MapView —>
+
     <com.yandex.mapkit.mapview.MapView
         android:id="@+id/mapview"
         android:layout_width="match_parent"
@@ -81,7 +81,7 @@
         android:visibility="gone"/>
 
 
-    <!— CoordinatorLayout with BottomSheetBehavior —>
+
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/coordinatorLayout"
         android:layout_width="match_parent"
@@ -91,7 +91,7 @@
         app:layout_constraintStart_toStartOf="parent">
 
 
-        <!— Persistent Bottom Sheet —>
+
         <LinearLayout
 
             android:id="@+id/persistentBottomSheet"
