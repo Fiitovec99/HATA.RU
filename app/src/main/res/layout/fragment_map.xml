@@ -4,6 +4,49 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:elevation="4dp"
+        android:orientation="horizontal"
+        app:behavior_peekHeight="40dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Button" />
+
+        <Button
+            android:id="@+id/button1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Button" />
+
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Button" />
+
+        <Button
+            android:id="@+id/button3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Button" />
+
+
+    </LinearLayout>
+
+
     <ImageView
         android:id="@+id/imageLocation"
         android:layout_width="8dp"
@@ -20,7 +63,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
 
-    <!-- MapView -->
+    <!— MapView —>
     <com.yandex.mapkit.mapview.MapView
         android:id="@+id/mapview"
         android:layout_width="match_parent"
@@ -28,6 +71,7 @@
         app:layout_constraintBottom_toTopOf="@+id/coordinatorLayout"
         app:layout_constraintTop_toTopOf="parent"
         tools:layout_editor_absoluteX="0dp" />
+
 
     <View
         android:id="@+id/transparentOverlay"
@@ -37,18 +81,19 @@
         android:visibility="gone"/>
 
 
-    <!-- CoordinatorLayout with BottomSheetBehavior -->
+    <!— CoordinatorLayout with BottomSheetBehavior —>
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/coordinatorLayout"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
 
-        <!-- Persistent Bottom Sheet -->
+        <!— Persistent Bottom Sheet —>
         <LinearLayout
+
             android:id="@+id/persistentBottomSheet"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -58,6 +103,7 @@
             android:orientation="vertical"
             app:behavior_peekHeight="40dp"
             app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
 
             <TextView
                 android:id="@+id/countFlatsOnMap"
@@ -69,9 +115,9 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerViewBottomSheet"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
         </LinearLayout>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

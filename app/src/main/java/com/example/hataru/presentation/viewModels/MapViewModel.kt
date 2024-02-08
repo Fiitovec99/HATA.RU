@@ -33,7 +33,7 @@ class MapViewModel(private val useCase : GetFlatsUseCase) : ViewModel() {
     init {
         viewModelScope.launch {
             _flats.value = useCase.getFlats()
-            Log.d("FLATTTTTTTTTS",useCase.getFlats().toString())
+
 
         }
     }
