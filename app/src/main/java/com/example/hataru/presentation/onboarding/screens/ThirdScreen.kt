@@ -30,7 +30,7 @@ class ThirdScreen : Fragment() {
         val view = binding.root
 
         binding.continue3.setOnClickListener {
-            findNavController().navigate(R.id.loggingAccountActivity)
+            findNavController().navigate(R.id.logInFragment)
             onBoardingFinished()
         }
 

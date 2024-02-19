@@ -14,6 +14,7 @@ import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.example.hataru.MainActivity
 import com.example.hataru.R
 import com.example.hataru.databinding.FragmentLoginBinding
@@ -84,9 +85,10 @@ class LoginFragment : Fragment() {
 
 
         _binding?.textViewHasAccount?.setOnClickListener {
-            fragmentManager?.beginTransaction()?.replace(R.id.fragmentContainer,LogUpFragment())?.commit()
-
+            findNavController().navigate(R.id.action_logInFragment_to_logUpFragment)
         }
+
+
 
         val afterTextChangedListener = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {

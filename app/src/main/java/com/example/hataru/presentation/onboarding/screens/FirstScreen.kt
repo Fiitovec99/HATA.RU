@@ -28,7 +28,7 @@ class FirstScreen : Fragment() {
         val view = binding.root
 
         binding.continue1.setOnClickListener {
-            findNavController().navigate(R.id.loggingAccountActivity)
+            findNavController().navigate(R.id.logInFragment)
             onBoardingFinished()
         }
 

@@ -14,8 +14,8 @@
             android:id="@+id/action_splashFragment_to_viewPagerFragment"
             app:destination="@id/viewPagerFragment" />
         <action
-            android:id="@+id/action_splashFragment_to_loggingAccountActivity"
-            app:destination="@id/loggingAccountActivity" />
+            android:id="@+id/action_splashFragment_to_logInFragment"
+            app:destination="@id/logInFragment" />
     </fragment>
     <fragment
         android:id="@+id/viewPagerFragment"
@@ -23,17 +23,29 @@
         android:label="fragment_view_pager"
         tools:layout="@layout/fragment_view_pager" >
         <action
-            android:id="@+id/action_viewPagerFragment_to_loggingAccountActivity"
-            app:destination="@id/loggingAccountActivity" />
+            android:id="@+id/action_viewPagerFragment_to_logInFragment"
+            app:destination="@id/logInFragment" />
     </fragment>
     <activity
         android:id="@+id/mainActivity"
         android:name="com.example.hataru.MainActivity"
         android:label="activity_main"
         tools:layout="@layout/activity_main" />
-    <activity
-        android:id="@+id/loggingAccountActivity"
-        android:name="com.example.hataru.LoggingAccountActivity"
-        android:label="activity_logging_account"
-        tools:layout="@layout/activity_logging_account" />
+    <fragment
+        android:id="@+id/logUpFragment"
+        android:name="com.example.hataru.presentation.ui.login.LogUpFragment"
+        android:label="LogUpFragment" >
+        <action
+            android:id="@+id/action_logUpFragment_to_mainActivity2"
+            app:destination="@id/mainActivity" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/logInFragment"
+        android:name="com.example.hataru.presentation.ui.login.LoginFragment"
+        android:label="LoginFragment" >
+        <action
+            android:id="@+id/action_logInFragment_to_logUpFragment"
+            app:destination="@id/logUpFragment" />
+    </fragment>
 </navigation>

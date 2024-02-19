@@ -11,6 +11,17 @@
     android:paddingBottom="@dimen/fragment_vertical_margin"
     tools:context=".presentation.ui.login.LoginFragment">
 
+
+    <TextView
+        android:text="Регистрация"
+        android:textSize="30sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/username"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <EditText
         android:id="@+id/username"
         android:layout_width="0dp"

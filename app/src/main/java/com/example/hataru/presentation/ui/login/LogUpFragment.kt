@@ -140,6 +140,7 @@ class LogUpFragment : Fragment() {
 
 
 
+
         _binding!!.login.setOnClickListener {
             loadingProgressBar.visibility = View.VISIBLE
             firebaseAuth.signInWithEmailAndPassword(
@@ -147,6 +148,7 @@ class LogUpFragment : Fragment() {
                 passwordEditText.text.toString()
             ).addOnCompleteListener { task ->
                 if (task.isSuccessful) {
+                    //TODO
                     val intent = Intent(context, MainActivity::class.java)
                     startActivity(intent)
                     activity?.finish()
@@ -160,6 +162,9 @@ class LogUpFragment : Fragment() {
         }
 
     }
+
+
+
 
 
     private fun updateUiWithUser(model: LoggedInUserView) {
