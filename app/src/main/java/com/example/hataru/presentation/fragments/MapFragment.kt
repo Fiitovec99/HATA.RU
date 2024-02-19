@@ -10,14 +10,23 @@ import android.graphics.Paint
 import android.graphics.PointF
 import android.graphics.Rect
 import android.graphics.RectF
+import android.graphics.drawable.ColorDrawable
+import android.os.Build
 import android.os.Bundle
 import android.os.Parcelable
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
+import android.widget.Button
+import android.widget.EditText
 import android.widget.ImageView
+import android.widget.PopupWindow
+import android.widget.SeekBar
+import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -36,6 +45,7 @@ import com.example.hataru.showAlertDialog
 import com.example.hataru.showToast
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.slider.RangeSlider
 import com.yandex.mapkit.Animation
 import com.yandex.mapkit.MapKitFactory
 import com.yandex.mapkit.ScreenPoint
@@ -179,6 +189,7 @@ class MapFragment : Fragment(),CameraListener, ViewTreeObserver.OnPreDrawListene
         bottomSheetBehavior.isHideable = false
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
         bottomSheetBehavior.isDraggable = true
+
         bottomSheet.setOnClickListener {
             val str = binding.countFlatsOnMap.text.toString()
 
@@ -217,12 +228,14 @@ class MapFragment : Fragment(),CameraListener, ViewTreeObserver.OnPreDrawListene
         // Освобождение других ресурсов, связанных с местоположением, если они есть
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initMap()
 
         mapView.map.addCameraListener(this)
 
+        setFiltersClickListener()
 
         collection = mapView.map.mapObjects.addCollection()
         clasterizedCollection = collection.addClusterizedPlacemarkCollection(clusterListener)
@@ -255,12 +268,125 @@ class MapFragment : Fragment(),CameraListener, ViewTreeObserver.OnPreDrawListene
 
     }
 
+    fun getFlatsWithFilter(price : Double) : List<Roomtype>{
+        val flats = viewModel.flats.value
+        if(flats!=null)
+            return flats.filter { flat : Roomtype -> flat.price.toDouble() >= price }
+        else
+            return listOf()
+    }
+
+    fun getFlatsWithFilter(price_min : Double,price_max: Double) : List<Roomtype>{
+        val flats = viewModel.flats.value
+        if(flats!=null)
+            return flats.filter { flat : Roomtype -> flat.price.toDouble() >= price_min && flat.price.toDouble() <= price_max}
+        else
+            return listOf()
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun setFiltersClickListener() {
+        binding.apply {
+
+            deleteFilter.setOnClickListener {
+                binding.persistentBottomSheet.visibility = View.VISIBLE
+                clasterizedCollection.clear()
+                showFlatsOnMap(viewModel.flats.value!!.toList())
+                currentCostTextView.visibility = View.GONE
+            }
+
+            buttonFilterFlats.setOnClickListener {
+                showPreferencesPopup(it)
+//                clasterizedCollection.clear()
+//                showFlatsOnMap(viewModel.flats.value!!)
+            }
+
+            //TODO ??????????
+//            buttonShowFLatsMore2500Cost.setOnClickListener {
+//                val flats = getFlatsWithFilter(2500.0)
+//                clasterizedCollection.clear()
+//                showFlatsOnMap(flats)
+//            }
+//
+//            buttonShowFLatsMore3000Cost.setOnClickListener {
+//                val flats = getFlatsWithFilter(3000.0)
+//                clasterizedCollection.clear()
+//                showFlatsOnMap(flats)
+//            }
+//
+//            buttonShowFLatsMore3500Cost.setOnClickListener {
+//                val flats = getFlatsWithFilter(3500.0)
+//                clasterizedCollection.clear()
+//                showFlatsOnMap(flats)
+//            }
+
+
+
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun showPreferencesPopup(anchorView: View) {
+
+        val inflater = LayoutInflater.from(requireContext())
+        val popupView = inflater.inflate(R.layout.layout_filter_preferences, null)
+
+        val popupWindow = PopupWindow(
+            popupView,
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
+        popupWindow.isFocusable = true
+        popupWindow.isTouchable = true
+        popupWindow.isOutsideTouchable = true
+        popupWindow.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+
+        val btnApplyPreferences = popupView.findViewById<Button>(R.id.btnApplyPreferences)
+        val rangeSlider = popupView.findViewById<RangeSlider>(R.id.rangeSlider)
+
+
+            // Установка пределов для RangeSlider
+        rangeSlider.valueFrom = 1000f
+        rangeSlider.valueTo = 5000f
+        rangeSlider.values = listOf(1000f, 5000f) // Устанавливаем начальные значения
+        rangeSlider.stepSize = 1f
+
+        popupView.findViewById<TextView>(R.id.tvSelectedPrice).text = "От 1000 до 5000"
+        // Обработчик изменения значения RangeSlider
+        rangeSlider.addOnChangeListener { slider, _, _ ->
+            val startPrice = slider.values[0].toInt()
+            val endPrice = slider.values[1].toInt()
+            // Обновляем текстовое представление с выбранным диапазоном цен
+            val tvSelectedPrice = popupView.findViewById<TextView>(R.id.tvSelectedPrice)
+            tvSelectedPrice.text = "От $startPrice до $endPrice"
+        }
+
+        btnApplyPreferences.setOnClickListener {
+            val currentsFlatWithDiapozon = getFlatsWithFilter(rangeSlider.values[0].toDouble(),rangeSlider.values[1].toDouble())
+            clasterizedCollection.clear()
+            showFlatsOnMap(currentsFlatWithDiapozon)
+            binding.persistentBottomSheet.visibility = View.GONE
+
+            binding.currentCostTextView.visibility = View.VISIBLE
+            binding.currentCostTextView.text = "текущий диапозон цены: " +rangeSlider.values[0].toInt().toString() + " до " +rangeSlider.values[1].toInt().toString()
+
+        }
+
+        popupWindow.showAtLocation(anchorView, Gravity.TOP, 0, 0)
+    }
+
+
+
+
+
+
     private fun showFlatsOnMap(lst : List<Roomtype>) {
         lst.map { x : Roomtype -> Point(x.geo_data!!.x!!.toDouble(),
             x!!.geo_data!!.y!!.toDouble()) }?.forEachIndexed { index, point ->
 
-            val flat = flats!![index]
-            val markerBitmap = createBitmapWithText(flat.price!!.toDouble().toString())
+            val flat = lst!![index]
+            val markerBitmap = createBitmapWithText(flat.price!!.toDouble().toInt().toString())
             val priceMarkerImageProvider = ImageProvider.fromBitmap(markerBitmap)
 
             clasterizedCollection.addPlacemark(

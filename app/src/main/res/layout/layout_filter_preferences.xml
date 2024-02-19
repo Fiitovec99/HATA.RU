@@ -1,43 +1,26 @@
-<!-- layout_filter_preferences.xml -->
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/black"
     android:orientation="vertical"
-    android:background="@color/cardview_dark_background"
     android:padding="16dp">
 
-    <!-- EditText для ввода предпочтений -->
-    <EditText
-        android:id="@+id/editTextPreference"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Введите предпочтение"/>
+    <TextView
+        android:id="@+id/tvSelectedPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
 
-    <!-- Spinner для выбора опций -->
-    <Spinner
-        android:id="@+id/spinnerOptions"
+    <com.google.android.material.slider.RangeSlider
+        android:id="@+id/rangeSlider"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-       />
+        android:layout_height="wrap_content" />
 
-    <!-- CheckBox для установки флажка -->
-    <CheckBox
-        android:id="@+id/checkBoxPreference"
+
+    <Button
+        android:layout_gravity="center"
+        android:id="@+id/btnApplyPreferences"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Применить дополнительную опцию"/>
+        android:text="Применить" />
 
-    <!-- Кнопка применить предпочтения -->
-    <Button
-        android:id="@+id/btnApplyPreferences"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Применить предпочтения"
-        android:textSize="16sp"
-        android:background="?attr/colorPrimary"
-        android:textColor="#FFFFFF"
-        android:padding="16dp"
-        android:gravity="center"/>
 </LinearLayout>
