@@ -1,0 +1,31 @@
+package com.example.hataru.domain.entity
+
+data class Amenities(
+    val `1`: X1,
+    val `2`: X1,
+    val `8`: X1,
+    val `9`: X1,
+    val `10`: X1,
+    val `11`: X1,
+    val `12`: X1,
+    val `13`: X1,
+    val `15`: X1,
+    val `16`: X1,
+    val `21`: X1,
+    val `23`: X1,
+    val `25`: X1,
+    val `27`: X1,
+    val `29`: X1,
+    val `30`: X1,
+    val `32`: X1,
+    val `33`: X1,
+    val `34`: X1,
+    val `36`: X1,
+    val `37`: X1,
+    val `39`: X1,
+    val `40`: X1,
+    val `41`: X1,
+    val `42`: X1,
+    val `44`: X1,
+    val `50`: X1
+)

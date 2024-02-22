@@ -2,6 +2,7 @@ package com.example.hataru.data
 
 import com.example.hataru.BuildConfig
 import com.example.hataru.domain.FlatsRep
+import com.example.hataru.domain.entity.Photos
 import com.example.hataru.domain.entity.Roomtype
 import com.example.hataru.domain.entity.Root
 import com.example.hataru.domain.entity.UserCredentials
@@ -36,6 +37,8 @@ class FlatsImpl(private val ser: ApiService) : FlatsRep {
             }
         }
     }
+
+
 }
 
 

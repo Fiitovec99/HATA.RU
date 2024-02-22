@@ -112,30 +112,30 @@ class LogUpFragment : Fragment() {
         }
 
 
-        _binding!!.textViewForgotPassword.setOnClickListener {
-            if(_binding!!.username.text.toString() == ""){
-                showToast("ПУсто")
-                return@setOnClickListener
-            }
-
-            loadingProgressBar.visibility = View.VISIBLE
-
-            firebaseAuth.sendPasswordResetEmail(
-                usernameEditText.text.toString()
-            ).addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    // Вход успешен, вы можете выполнить необходимые действия
-                    val intent = Intent(context, MainActivity::class.java)
-                    startActivity(intent)
-                   //TODO добавить отображение, что придет сообщение
-                } else {
-                    // Вход не удался, отобразить сообщение об ошибке
-                    Toast.makeText(context, task.exception?.message, Toast.LENGTH_SHORT).show()
-                    Log.d("TAG", task.exception.toString())
-                }
-                loadingProgressBar.visibility = View.GONE
-            }
-        }
+//        _binding!!.textViewForgotPassword.setOnClickListener { TODO возобновить пароль аккаунта
+//            if(_binding!!.username.text.toString() == ""){
+//                showToast("ПУсто")
+//                return@setOnClickListener
+//            }
+//
+//            loadingProgressBar.visibility = View.VISIBLE
+//
+//            firebaseAuth.sendPasswordResetEmail(
+//                usernameEditText.text.toString()
+//            ).addOnCompleteListener { task ->
+//                if (task.isSuccessful) {
+//                    // Вход успешен, вы можете выполнить необходимые действия
+//                    val intent = Intent(context, MainActivity::class.java)
+//                    startActivity(intent)
+//                   //TODO добавить отображение, что придет сообщение
+//                } else {
+//                    // Вход не удался, отобразить сообщение об ошибке
+//                    Toast.makeText(context, task.exception?.message, Toast.LENGTH_SHORT).show()
+//                    Log.d("TAG", task.exception.toString())
+//                }
+//                loadingProgressBar.visibility = View.GONE
+//            }
+//        }
 
 
 

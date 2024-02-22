@@ -1,5 +1,6 @@
 package com.example.hataru.migration
 
+import com.example.hataru.domain.entity.Photos
 import com.example.hataru.domain.entity.Roomtype
 import com.example.hataru.domain.entity.Roomtypes
 import com.example.hataru.domain.entity.Root
@@ -27,5 +28,10 @@ interface ApiService {
         @Header("Content-Type") contentTypeHeader: String = "application/json",
         @Header("Accept") acceptHeader: String = "application/json",
     ): Call<Root>
+
+
+
+
+
 
 }

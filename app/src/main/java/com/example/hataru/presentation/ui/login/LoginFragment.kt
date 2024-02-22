@@ -45,6 +45,12 @@ class LoginFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        if(firebaseAuth.currentUser!=null){
+            val intent = Intent(requireContext(),MainActivity::class.java)
+            startActivity(intent)
+        }
+        
         loginViewModel = ViewModelProvider(this, LoginViewModelFactory())
             .get(LoginViewModel::class.java)
 
