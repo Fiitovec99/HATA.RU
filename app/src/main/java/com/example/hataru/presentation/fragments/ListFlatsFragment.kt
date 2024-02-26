@@ -1,21 +1,27 @@
 package com.example.hataru.presentation.fragments
 
 import android.os.Bundle
+import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentContainerView
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hataru.R
+import com.example.hataru.domain.entity.Roomtype
 import com.example.hataru.presentation.ApartmentActivity
 import com.example.hataru.presentation.adapter.ApartmentListAdapter
 import com.example.hataru.presentation.viewModels.ListFlatsViewModel
+import com.example.hataru.presentation.viewModels.MapViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ListFlatsFragment : Fragment() {
 
-    private lateinit var viewModel: ListFlatsViewModel
+    private val viewModel by viewModel<ListFlatsViewModel>()
+
     private lateinit var apartmentListAdapter: ApartmentListAdapter
     private var apartmentContainer: FragmentContainerView? = null
 
@@ -30,8 +36,8 @@ class ListFlatsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         apartmentContainer = view.findViewById(R.id.apartment_container)
         setupRecyclerView()
-        viewModel = ViewModelProvider(this)[ListFlatsViewModel::class.java]
-        viewModel.apartmentList.observe(viewLifecycleOwner) {
+
+        viewModel.flats.observe(viewLifecycleOwner) {
             apartmentListAdapter.submitList(it)
         }
     }
@@ -64,24 +70,32 @@ class ListFlatsFragment : Fragment() {
             )
         }
 
-        setupLikeButtonClickListener()
+//        setupLikeButtonClickListener()
         setupApartmentClickListener()
     }
 
     private fun setupApartmentClickListener() {
         apartmentListAdapter.onApartmentClickListener = {
-            if (isOnePaneMode()) {
-                val intent = ApartmentActivity.newIntent(requireContext(), it.id)
-                startActivity(intent)
-            } else {
-                launchFragment(ApartmentFragment.newInstanceItem(it.id))
-            }
-        }
-    }
 
-    private fun setupLikeButtonClickListener() {
-        apartmentListAdapter.onLikeButtonClickListener = {
-            viewModel.changeLikedStage(it)
+            val args = Bundle()
+            args.putParcelable(FlatFragment.KEY_GET_FLAT_INTO_FLATFRAGMENT, it as Parcelable)
+
+            findNavController().navigate(R.id.flatFragment,args)
+            
         }
+//        apartmentListAdapter.onApartmentClickListener = {
+//            if (isOnePaneMode()) {
+//                val intent = ApartmentActivity.newIntent(requireContext(), it.id)
+//                startActivity(intent)
+//            } else {
+//                launchFragment(ApartmentFragment.newInstanceItem(it.id))
+//            }
+//        }
     }
+//
+//    private fun setupLikeButtonClickListener() {
+//        apartmentListAdapter.onLikeButtonClickListener = {
+//            viewModel.changeLikedStage(it)
+//        }
+//    }
 }

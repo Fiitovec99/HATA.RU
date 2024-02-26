@@ -5,11 +5,12 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import com.example.hataru.R
 import com.example.hataru.domain.Apartment
+import com.example.hataru.domain.entity.Roomtype
 
-class ApartmentListAdapter : ListAdapter<Apartment, ApartmentViewHolder>(ApartmentDiffCallback()) {
+class ApartmentListAdapter : ListAdapter<Roomtype, ApartmentViewHolder>(ApartmentDiffCallback()) {
 
-    var onLikeButtonClickListener: ((Apartment) -> Unit)? = null
-    var onApartmentClickListener: ((Apartment) -> Unit)? = null
+    var onLikeButtonClickListener: ((Roomtype) -> Unit)? = null
+    var onApartmentClickListener: ((Roomtype) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ApartmentViewHolder {
         val layout = when (viewType) {
@@ -30,19 +31,17 @@ class ApartmentListAdapter : ListAdapter<Apartment, ApartmentViewHolder>(Apartme
             onApartmentClickListener?.invoke(apartment)
         }
         viewHolder.twAddress.text = apartment.address
-        viewHolder.twArea.text = "Площадь: " + apartment.area.toString()
-        viewHolder.twGuests.text = "Кол-во гостей: " + apartment.people.toString()
         viewHolder.twPrice.text = "Цена: " + apartment.price.toString() + "руб"
     }
 
-    override fun getItemViewType(position: Int): Int {
-        val item = getItem(position)
-        return if (item.liked) {
-            VIEW_TYPE_LIKED
-        } else {
-            VIEW_TYPE_NOLIKED
-        }
-    }
+//    override fun getItemViewType(position: Int): Int {
+//        val item = getItem(position)
+//        return if (item.liked) {
+//            VIEW_TYPE_LIKED
+//        } else {
+//            VIEW_TYPE_NOLIKED
+//        }
+//    }
 
     companion object {
 

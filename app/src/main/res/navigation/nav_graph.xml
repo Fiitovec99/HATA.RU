@@ -9,7 +9,11 @@
         android:id="@+id/listFlatsFragment"
         android:name="com.example.hataru.presentation.fragments.ListFlatsFragment"
         android:label="fragment_list_flats"
-        tools:layout="@layout/fragment_list_flats" />
+        tools:layout="@layout/fragment_list_flats" >
+        <action
+            android:id="@+id/action_listFlatsFragment_to_flatFragment"
+            app:destination="@id/flatFragment" />
+    </fragment>
     <fragment
         android:id="@+id/mapFragment"
         android:name="com.example.hataru.presentation.fragments.MapFragment"
@@ -17,11 +21,11 @@
         tools:layout="@layout/fragment_map" >
 
     </fragment>
-    <fragment
-        android:id="@+id/favoriteFlatFragment"
-        android:name="com.example.hataru.presentation.fragments.FavoriteFlatFragment"
-        android:label="fragment_favorite_flat"
-        tools:layout="@layout/fragment_favorite_flat" />
+<!--    <fragment-->
+<!--        android:id="@+id/favoriteFlatFragment"-->
+<!--        android:name="com.example.hataru.presentation.fragments.FavoriteFlatFragment"-->
+<!--        android:label="fragment_favorite_flat"-->
+<!--        tools:layout="@layout/fragment_favorite_flat" />-->
     <fragment
         android:id="@+id/menuFragment"
         android:name="com.example.hataru.presentation.fragments.MenuFragment"

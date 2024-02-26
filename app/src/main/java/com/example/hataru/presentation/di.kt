@@ -9,6 +9,7 @@ import com.example.hataru.domain.GetPhotosUseCase
 import com.example.hataru.domain.PhotosRep
 import com.example.hataru.migration.ApiService
 import com.example.hataru.migration.MyCookieJar
+import com.example.hataru.presentation.viewModels.ListFlatsViewModel
 import com.example.hataru.presentation.viewModels.MapViewModel
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
@@ -50,6 +51,7 @@ var appModule = module {
 
 val appMod = module {
     viewModel<MapViewModel> { MapViewModel(useCase = get(), photosCase = get()) }
+    viewModel<ListFlatsViewModel> { ListFlatsViewModel(rep = get()) }
 }
 
 
