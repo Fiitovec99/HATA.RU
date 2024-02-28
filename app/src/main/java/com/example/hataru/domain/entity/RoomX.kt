@@ -8,7 +8,7 @@ data class RoomX(
     val description: String,
     val adults: Int,
     val children: Int,
-    val photos: Any?, // Можете заменить на конкретный тип данных, если он известен
+    val photos: List<Photo>?, // Можете заменить на конкретный тип данных, если он известен
     val order: Int,
     val accommodation_type: Int,
     val bed_variant: Any?, // Можете заменить на конкретный тип данных, если он известен

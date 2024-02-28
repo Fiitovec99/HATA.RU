@@ -55,6 +55,8 @@ android {
 
 dependencies {
 
+    implementation ("com.github.denzcoskun:ImageSlideshow:0.1.2")
+
     implementation ("io.insert-koin:koin-android:3.2.0")
 
     implementation("com.tbuonomo:dotsindicator:5.0")
