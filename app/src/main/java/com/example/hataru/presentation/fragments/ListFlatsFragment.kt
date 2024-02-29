@@ -12,8 +12,10 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hataru.R
 import com.example.hataru.domain.entity.Roomtype
+import com.example.hataru.domain.entity.RoomtypeWithPhotos
 import com.example.hataru.presentation.ApartmentActivity
-import com.example.hataru.presentation.adapter.ApartmentListAdapter
+
+import com.example.hataru.presentation.adapter.RoomtypeAdapter
 import com.example.hataru.presentation.viewModels.ListFlatsViewModel
 import com.example.hataru.presentation.viewModels.MapViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -22,7 +24,7 @@ class ListFlatsFragment : Fragment() {
 
     private val viewModel by viewModel<ListFlatsViewModel>()
 
-    private lateinit var apartmentListAdapter: ApartmentListAdapter
+    private lateinit var apartmentListAdapter: RoomtypeAdapter
     private var apartmentContainer: FragmentContainerView? = null
 
     override fun onCreateView(
@@ -38,8 +40,23 @@ class ListFlatsFragment : Fragment() {
         setupRecyclerView()
 
         viewModel.flats.observe(viewLifecycleOwner) {
-            apartmentListAdapter.submitList(it)
+
+
         }
+        viewModel.apply {
+            flats.observe(viewLifecycleOwner) { roomtypes ->
+                url.observe(viewLifecycleOwner) { roomxList ->
+                    val roomtypeWithPhotosList = roomtypes?.map { roomtype ->
+                        val matchingPhoto = roomxList?.firstOrNull { roomx ->
+                            roomx.name == roomtype.name
+                        }?.photos ?: emptyList()
+                        RoomtypeWithPhotos(roomtype, matchingPhoto)
+                    }
+                    apartmentListAdapter.submitList(roomtypeWithPhotosList)
+                }
+            }
+        }
+
     }
 
     private fun isOnePaneMode(): Boolean {
@@ -58,16 +75,10 @@ class ListFlatsFragment : Fragment() {
     private fun setupRecyclerView() {
         val rvApartmentList = view?.findViewById<RecyclerView>(R.id.rv_apartment_list)
         with(rvApartmentList) {
-            apartmentListAdapter = ApartmentListAdapter()
+            apartmentListAdapter = RoomtypeAdapter()
             this?.adapter = apartmentListAdapter
-            rvApartmentList?.recycledViewPool?.setMaxRecycledViews(
-                ApartmentListAdapter.VIEW_TYPE_LIKED,
-                ApartmentListAdapter.MAX_POOL_SIZE
-            )
-            rvApartmentList?.recycledViewPool?.setMaxRecycledViews(
-                ApartmentListAdapter.VIEW_TYPE_NOLIKED,
-                ApartmentListAdapter.MAX_POOL_SIZE
-            )
+
+
         }
 
 //        setupLikeButtonClickListener()
@@ -78,7 +89,7 @@ class ListFlatsFragment : Fragment() {
         apartmentListAdapter.onApartmentClickListener = {
 
             val args = Bundle()
-            args.putParcelable(FlatFragment.KEY_GET_FLAT_INTO_FLATFRAGMENT, it as Parcelable)
+            args.putParcelable(FlatFragment.KEY_GET_FLAT_INTO_FLATFRAGMENT, it.roomtype as Parcelable)
 
             findNavController().navigate(R.id.flatFragment,args)
             

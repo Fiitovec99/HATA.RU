@@ -19,12 +19,11 @@
         tools:ignore="MissingConstraints">
 
         <!-- Изображение квартиры -->
-        <ImageView
-            android:id="@+id/image_View_Apartment"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/kvartira_vypolnennaya_v_stile_xajtek" />
+        <com.denzcoskun.imageslider.ImageSlider
+            android:id="@+id/image_slider"
+            android:layout_width="wrap_content"
+            android:layout_height="300dp" />
+
 
         <!-- Кнопка "Нравится" (Like) -->
         <ImageButton
@@ -44,7 +43,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_below="@id/image_View_Apartment"
+            android:layout_below="@id/image_slider"
             android:layout_marginTop="16dp">
 
             <TextView
