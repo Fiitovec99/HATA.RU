@@ -18,6 +18,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.hataru.MainActivity
 import com.example.hataru.R
 import com.example.hataru.databinding.FragmentLoginBinding
+import com.example.hataru.showToast
 import com.google.firebase.auth.FirebaseAuth
 
 
@@ -125,7 +126,12 @@ class LoginFragment : Fragment() {
         }
 
             _binding!!.login.setOnClickListener {
-            loadingProgressBar.visibility = View.VISIBLE
+
+            if(usernameEditText.text.toString()=="" || passwordEditText.text.toString()==""){
+                showToast("Вы не заполнили одно из полей")
+                return@setOnClickListener
+            }
+                loadingProgressBar.visibility = View.VISIBLE
             firebaseAuth.createUserWithEmailAndPassword(
                 usernameEditText.text.toString(),
                 passwordEditText.text.toString()
