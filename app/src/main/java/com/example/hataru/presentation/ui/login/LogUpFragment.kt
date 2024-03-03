@@ -142,6 +142,10 @@ class LogUpFragment : Fragment() {
 
 
         _binding!!.login.setOnClickListener {
+            if(usernameEditText.text.toString()=="" || passwordEditText.text.toString()==""){
+                showToast("Вы не заполнили одно из полей")
+                return@setOnClickListener
+            }
             loadingProgressBar.visibility = View.VISIBLE
             firebaseAuth.signInWithEmailAndPassword(
                 usernameEditText.text.toString(),
