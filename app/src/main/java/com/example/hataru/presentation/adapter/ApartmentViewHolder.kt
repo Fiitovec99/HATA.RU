@@ -8,9 +8,9 @@ import com.denzcoskun.imageslider.ImageSlider
 import com.example.hataru.R
 
 class ApartmentViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
-    val twAddress = view.findViewById<TextView>(R.id.text_View_Address)
+    val twShortDescription = view.findViewById<TextView>(R.id.text_short_description)
     val twArea = view.findViewById<TextView>(R.id.text_View_Area)
-    val twGuests = view.findViewById<TextView>(R.id.text_View_Guests)
+//    val twGuests = view.findViewById<TextView>(R.id.text_View_Guests)
     val twPrice = view.findViewById<TextView>(R.id.text_View_Price)
     val image_slider = view.findViewById<ImageSlider>(R.id.image_slider)
 //    val twDescription = view.findViewById<TextView>(R.id.text_View_Description)

@@ -37,8 +37,8 @@ class RoomtypeAdapter : ListAdapter<RoomtypeWithPhotos, ApartmentViewHolder>(Apa
         viewHolder.view.setOnClickListener {
             onApartmentClickListener?.invoke(apartment)
         }
-        viewHolder.twAddress.text = apartment.roomtype.address
-        viewHolder.twPrice.text = "Цена: " + apartment.roomtype.price + "руб"
+        viewHolder.twShortDescription.text = apartment.roomtype.address
+        viewHolder.twPrice.text = apartment.roomtype.price + "₽" // "Цена: " +
 
 
 
