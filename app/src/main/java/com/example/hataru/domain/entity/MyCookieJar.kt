@@ -1,4 +1,4 @@
-package com.example.hataru.migration
+package com.example.hataru.domain.entity
 
 import android.util.Log
 import okhttp3.Cookie

@@ -1,4 +1,4 @@
-package com.example.hataru.presentation.fragments
+package com.example.hataru.presentation.viewModels
 
 import androidx.lifecycle.ViewModel
 

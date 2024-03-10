@@ -1,4 +1,4 @@
-package com.example.hataru.migration
+package com.example.hataru.domain.entity
 
 import android.content.Context
 import okhttp3.Interceptor

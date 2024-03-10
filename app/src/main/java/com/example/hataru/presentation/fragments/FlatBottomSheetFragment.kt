@@ -11,8 +11,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.hataru.R
 import com.example.hataru.databinding.FragmentFlatBottomSheetBinding
 import com.example.hataru.domain.entity.Roomtype
-
-import com.example.hataru.presentation.SpaceItemDecoration
 import com.example.hataru.presentation.adapter.PhotoAdapter
 import com.example.hataru.presentation.fragments.FlatFragment.Companion.KEY_GET_FLAT_INTO_FLATFRAGMENT
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -56,7 +54,6 @@ class FlatBottomSheetFragment : BottomSheetDialogFragment() {
         // Настройте LayoutManager для RecyclerView (например, LinearLayoutManager)
         val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         val spaceInPixels = resources.getDimensionPixelSize(R.dimen.space_between_photos)
-        photoRecyclerView.addItemDecoration(SpaceItemDecoration(spaceInPixels))
         photoRecyclerView.layoutManager = layoutManager
         ///////////////////////////////////
 

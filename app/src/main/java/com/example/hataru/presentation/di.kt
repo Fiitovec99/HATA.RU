@@ -7,8 +7,8 @@ import com.example.hataru.domain.FlatsRep
 import com.example.hataru.domain.GetFlatsUseCase
 import com.example.hataru.domain.GetPhotosUseCase
 import com.example.hataru.domain.PhotosRep
-import com.example.hataru.migration.ApiService
-import com.example.hataru.migration.MyCookieJar
+import com.example.hataru.domain.ApiService
+import com.example.hataru.domain.entity.MyCookieJar
 import com.example.hataru.presentation.viewModels.FlatViewModel
 import com.example.hataru.presentation.viewModels.ListFlatsViewModel
 import com.example.hataru.presentation.viewModels.MapViewModel

@@ -1,4 +1,4 @@
-package com.example.hataru.migration
+package com.example.hataru.domain
 
 import com.example.hataru.domain.entity.Root
 import com.example.hataru.domain.entity.UserCredentials
