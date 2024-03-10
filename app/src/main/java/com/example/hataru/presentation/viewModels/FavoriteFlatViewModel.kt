@@ -3,9 +3,9 @@ package com.example.hataru.presentation.viewModels
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModel
 import com.example.hataru.data.ApartmentListRepositoryImpl
-import com.example.hataru.domain.Apartment
-import com.example.hataru.domain.EditApartmentUseCase
-import com.example.hataru.domain.GetApartmentListUseCase
+import com.example.hataru.domain.uselessUseCase.Apartment
+import com.example.hataru.domain.uselessUseCase.EditApartmentUseCase
+import com.example.hataru.domain.uselessUseCase.GetApartmentListUseCase
 
 class FavoriteFlatViewModel : ViewModel() {
 

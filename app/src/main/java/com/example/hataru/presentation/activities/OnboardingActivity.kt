@@ -1,7 +1,8 @@
-package com.example.hataru
+package com.example.hataru.presentation.activities
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.example.hataru.R
 
 class OnboardingActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -1,4 +1,4 @@
-package com.example.hataru
+package com.example.hataru.presentation.activities
 
 
 
@@ -6,6 +6,8 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI.setupWithNavController
+import com.example.hataru.BuildConfig
+import com.example.hataru.R
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.yandex.mapkit.MapKitFactory
 

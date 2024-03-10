@@ -1,4 +1,4 @@
-package com.example.hataru.domain
+package com.example.hataru.domain.uselessUseCase
 
 data class Apartment(
     val address: String,

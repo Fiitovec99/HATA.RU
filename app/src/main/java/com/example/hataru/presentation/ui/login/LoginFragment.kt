@@ -15,7 +15,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import com.example.hataru.MainActivity
+import com.example.hataru.presentation.activities.MainActivity
 import com.example.hataru.R
 import com.example.hataru.databinding.FragmentLoginBinding
 import com.example.hataru.showToast
@@ -48,7 +48,7 @@ class LoginFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         if(firebaseAuth.currentUser!=null){
-            val intent = Intent(requireContext(),MainActivity::class.java)
+            val intent = Intent(requireContext(), MainActivity::class.java)
             startActivity(intent)
         }
         

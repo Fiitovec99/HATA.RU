@@ -1,4 +1,4 @@
-package com.example.hataru.presentation.data
+package com.example.hataru.presentation.ui.login.data
 
 /**
  * A generic class that holds a value with its loading status.

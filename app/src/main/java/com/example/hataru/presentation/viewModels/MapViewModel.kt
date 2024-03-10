@@ -3,13 +3,11 @@ package com.example.hataru.presentation.viewModels
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.hataru.domain.GetFlatsUseCase
 import com.example.hataru.domain.GetPhotosUseCase
 import com.example.hataru.domain.entity.Roomtype
-import com.example.hataru.domain.entity.Roomtypes
 import kotlinx.coroutines.launch
 
 

@@ -1,4 +1,4 @@
-package com.example.hataru.domain
+package com.example.hataru.domain.uselessUseCase
 
 class AddApartmentUseCase(private val apartmentListRepository: ApartmentListRepository) {
 

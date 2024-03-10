@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.hataru.R
 import com.example.hataru.databinding.FragmentFlatBottomSheetBinding
 import com.example.hataru.domain.entity.Roomtype
-import com.example.hataru.domain.entity.Roomtypes
+
 import com.example.hataru.presentation.SpaceItemDecoration
 import com.example.hataru.presentation.adapter.PhotoAdapter
 import com.example.hataru.presentation.fragments.FlatFragment.Companion.KEY_GET_FLAT_INTO_FLATFRAGMENT

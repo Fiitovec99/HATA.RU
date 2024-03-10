@@ -14,11 +14,9 @@ import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.example.hataru.MainActivity
+import com.example.hataru.presentation.activities.MainActivity
 import com.example.hataru.R
 import com.example.hataru.databinding.FragmentLogUpBinding
-import com.example.hataru.databinding.FragmentLoginBinding
-import com.example.hataru.presentation.data.Result
 import com.example.hataru.showToast
 import com.google.firebase.auth.FirebaseAuth
 

@@ -7,7 +7,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hataru.R
 import com.example.hataru.domain.entity.Roomtype
-import com.example.hataru.domain.entity.Roomtypes
+
 
 class FlatListOnMap(private var flatList: List<Roomtype>) :
     RecyclerView.Adapter<FlatListOnMap.FlatViewHolder>() {

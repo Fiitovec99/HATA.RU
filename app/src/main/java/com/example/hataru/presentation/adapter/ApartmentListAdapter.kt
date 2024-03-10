@@ -1,12 +1,5 @@
 package com.example.hataru.presentation.adapter
 
-import android.view.LayoutInflater
-import android.view.ViewGroup
-import androidx.recyclerview.widget.ListAdapter
-import com.example.hataru.R
-import com.example.hataru.domain.Apartment
-import com.example.hataru.domain.entity.Roomtype
-
 //class ApartmentListAdapter : ListAdapter<Roomtype> {
 //
 //    var onLikeButtonClickListener: ((Roomtype) -> Unit)? = null

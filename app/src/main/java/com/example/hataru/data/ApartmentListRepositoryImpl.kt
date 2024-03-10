@@ -2,11 +2,9 @@ package com.example.hataru.data
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.hataru.data.flatsContainer.roomTypes
-import com.example.hataru.domain.Apartment
-import com.example.hataru.domain.ApartmentListRepository
-import kotlin.math.roundToInt
-import kotlin.random.Random
+
+import com.example.hataru.domain.uselessUseCase.Apartment
+import com.example.hataru.domain.uselessUseCase.ApartmentListRepository
 
 object ApartmentListRepositoryImpl: ApartmentListRepository {
 
@@ -15,14 +13,14 @@ object ApartmentListRepositoryImpl: ApartmentListRepository {
 
     private var autoIncrementId = 0
 
-    init{
-        for (ap in roomTypes){
-            val item = Apartment("Адрес: " + ap.address!!, ap.description!!, ap.adults!!,
-                ap.price.toInt()!!,(Random.nextDouble(10.0,30.0)*10).roundToInt()/10.0, false, ap.id!!.toInt()
-            )
-            addApartment(item)
-        }
-    }
+//    init{
+//        for (ap in roomTypes){
+//            val item = Apartment("Адрес: " + ap.address!!, ap.description!!, ap.adults!!,
+//                ap.price.toInt()!!,(Random.nextDouble(10.0,30.0)*10).roundToInt()/10.0, false, ap.id!!.toInt()
+//            )
+//            addApartment(item)
+//        }
+//    }
 
     override fun addApartment(apartment: Apartment) {
         if (apartment.id == Apartment.UNDEFIND_ID){

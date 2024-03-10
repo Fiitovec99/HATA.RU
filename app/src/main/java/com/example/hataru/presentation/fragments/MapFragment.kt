@@ -20,10 +20,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
 import android.widget.Button
-import android.widget.EditText
 import android.widget.ImageView
 import android.widget.PopupWindow
-import android.widget.SeekBar
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
@@ -31,9 +29,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.example.hataru.MainActivity
+import com.example.hataru.presentation.activities.MainActivity
 import com.example.hataru.R
-import com.example.hataru.data.GeometryProvider
 import com.example.hataru.databinding.FragmentMapBinding
 import com.example.hataru.domain.entity.Roomtype
 import com.example.hataru.isLocationEnabled
@@ -80,9 +77,10 @@ import java.io.Serializable
 private const val CLUSTER_RADIUS = 60.0
 private const val CLUSTER_MIN_ZOOM = 18
 
-
+val startPosition =  CameraPosition(Point(47.222078, 39.720358), 14.0f, 0.0f, 0.0f)
 
 class MapFragment : Fragment(),CameraListener, ViewTreeObserver.OnPreDrawListener {
+
 
     private val viewModel by viewModel<MapViewModel>()
     private lateinit var binding: FragmentMapBinding
@@ -654,7 +652,7 @@ class MapFragment : Fragment(),CameraListener, ViewTreeObserver.OnPreDrawListene
 
     private fun showRostovLocation() {
         mapView.map.move(
-            GeometryProvider.startPosition,
+            startPosition,
             Animation(Animation.Type.SMOOTH, 0f),
             null
         )

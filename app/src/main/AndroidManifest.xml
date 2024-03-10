@@ -18,14 +18,14 @@
         android:theme="@style/Theme.HATARU"
         tools:targetApi="31">
         <activity
-            android:name=".LoggingAccountActivity"
+            android:name=".presentation.activities.LoggingAccountActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".presentation.activities.MainActivity"
             android:exported="true"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".OnboardingActivity"
+            android:name=".presentation.activities.OnboardingActivity"
             android:exported="true"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -35,7 +35,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".presentation.ApartmentActivity">
+        <activity android:name=".presentation.activities.ApartmentActivity">
 
             <!-- дополнительные настройки, если есть -->
         </activity>

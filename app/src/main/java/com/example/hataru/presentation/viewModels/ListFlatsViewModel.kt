@@ -1,20 +1,14 @@
 package com.example.hataru.presentation.viewModels
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.hataru.data.ApartmentListRepositoryImpl
-import com.example.hataru.domain.Apartment
-import com.example.hataru.domain.EditApartmentUseCase
-import com.example.hataru.domain.GetApartmentListUseCase
 import com.example.hataru.domain.GetFlatsUseCase
 import com.example.hataru.domain.GetPhotosUseCase
 import com.example.hataru.domain.entity.RoomX
 import com.example.hataru.domain.entity.Roomtype
-import com.example.hataru.domain.entity.RoomtypeWithPhotos
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
@@ -27,7 +21,7 @@ class ListFlatsViewModel(private val rep: GetFlatsUseCase, private val photos: G
     val url: LiveData<List<RoomX>?> get() = _url
 
     private val combinedLiveData = MediatorLiveData<Pair<List<Roomtype>?, List<RoomX>?>>()
-    
+
     val combinedData: LiveData<Pair<List<Roomtype>?, List<RoomX>?>> = combinedLiveData
 
     init {

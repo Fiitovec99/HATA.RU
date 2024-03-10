@@ -1,8 +1,5 @@
 package com.example.hataru.migration
 
-import com.example.hataru.domain.entity.Photos
-import com.example.hataru.domain.entity.Roomtype
-import com.example.hataru.domain.entity.Roomtypes
 import com.example.hataru.domain.entity.Root
 import com.example.hataru.domain.entity.UserCredentials
 import retrofit2.Call

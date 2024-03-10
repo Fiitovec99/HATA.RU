@@ -2,23 +2,17 @@ package com.example.hataru.presentation.fragments
 
 import android.os.Bundle
 import android.os.Parcelable
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentContainerView
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hataru.R
-import com.example.hataru.domain.entity.Roomtype
 import com.example.hataru.domain.entity.RoomtypeWithPhotos
-import com.example.hataru.presentation.ApartmentActivity
-
 import com.example.hataru.presentation.adapter.RoomtypeAdapter
 import com.example.hataru.presentation.viewModels.ListFlatsViewModel
-import com.example.hataru.presentation.viewModels.MapViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ListFlatsFragment : Fragment() {

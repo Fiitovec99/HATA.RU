@@ -9,7 +9,7 @@
 //import androidx.lifecycle.ViewModelProvider
 //import androidx.recyclerview.widget.RecyclerView
 //import com.example.hataru.R
-//import com.example.hataru.presentation.ApartmentActivity
+//import com.example.hataru.presentation.activities.ApartmentActivity
 //import com.example.hataru.presentation.adapter.ApartmentListAdapter
 //import com.example.hataru.presentation.viewModels.FavoriteFlatViewModel
 //

@@ -1,7 +1,7 @@
 package com.example.hataru.presentation.adapter
 
 import androidx.recyclerview.widget.DiffUtil
-import com.example.hataru.domain.Apartment
+import com.example.hataru.domain.uselessUseCase.Apartment
 
 class ApartmentListDiffCallback(
     private val oldList: List<Apartment>,

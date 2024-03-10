@@ -1,11 +1,11 @@
-package com.example.hataru.presentation
+package com.example.hataru.presentation.activities
 
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.FragmentActivity
 import com.example.hataru.R
-import com.example.hataru.domain.Apartment
+import com.example.hataru.domain.uselessUseCase.Apartment
 import com.example.hataru.presentation.fragments.ApartmentFragment
 
 class ApartmentActivity : FragmentActivity() {

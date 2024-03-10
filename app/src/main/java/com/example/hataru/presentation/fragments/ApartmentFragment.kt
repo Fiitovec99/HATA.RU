@@ -8,7 +8,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.hataru.R
-import com.example.hataru.domain.Apartment
+import com.example.hataru.domain.uselessUseCase.Apartment
 import com.example.hataru.presentation.viewModels.ApartmentViewModel
 
 class ApartmentFragment : Fragment() {

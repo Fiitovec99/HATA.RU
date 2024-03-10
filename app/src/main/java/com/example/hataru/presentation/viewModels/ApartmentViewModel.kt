@@ -4,9 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.hataru.data.ApartmentListRepositoryImpl
-import com.example.hataru.domain.Apartment
-import com.example.hataru.domain.EditApartmentUseCase
-import com.example.hataru.domain.GetApartmentUseCase
+import com.example.hataru.domain.uselessUseCase.Apartment
+import com.example.hataru.domain.uselessUseCase.EditApartmentUseCase
+import com.example.hataru.domain.uselessUseCase.GetApartmentUseCase
 
 class ApartmentViewModel : ViewModel() {
 

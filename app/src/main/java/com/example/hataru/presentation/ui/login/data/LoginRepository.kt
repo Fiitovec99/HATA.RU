@@ -1,6 +1,6 @@
-package com.example.hataru.presentation.data
+package com.example.hataru.presentation.ui.login.data
 
-import com.example.hataru.presentation.data.model.LoggedInUser
+import com.example.hataru.presentation.ui.login.data.model.LoggedInUser
 
 /**
  * Class that requests authentication and user information from the remote data source and

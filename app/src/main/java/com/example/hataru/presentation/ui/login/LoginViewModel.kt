@@ -5,8 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import android.util.Patterns
 import com.example.hataru.R
-import com.example.hataru.presentation.data.LoginRepository
-import com.example.hataru.presentation.data.Result
+import com.example.hataru.presentation.ui.login.data.LoginRepository
+import com.example.hataru.presentation.ui.login.data.Result
 
 
 

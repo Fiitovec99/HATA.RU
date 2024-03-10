@@ -2,21 +2,14 @@ package com.example.hataru.presentation.fragments
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import com.denzcoskun.imageslider.ImageSlider
+import androidx.fragment.app.Fragment
 import com.denzcoskun.imageslider.models.SlideModel
-import com.example.hataru.R
 import com.example.hataru.databinding.FragmentFlatBinding
-import com.example.hataru.domain.entity.RoomX
 import com.example.hataru.domain.entity.Roomtype
-import com.example.hataru.domain.entity.Roomtypes
-import com.example.hataru.presentation.fragments.FlatBottomSheetFragment.Companion.KEY_GET_FLAT
 import com.example.hataru.presentation.viewModels.FlatViewModel
-import com.example.hataru.showToast
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class FlatFragment : Fragment() {

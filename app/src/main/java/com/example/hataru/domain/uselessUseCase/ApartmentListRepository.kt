@@ -1,6 +1,7 @@
-package com.example.hataru.domain
+package com.example.hataru.domain.uselessUseCase
 
 import androidx.lifecycle.LiveData
+import com.example.hataru.domain.uselessUseCase.Apartment
 
 interface ApartmentListRepository {
 

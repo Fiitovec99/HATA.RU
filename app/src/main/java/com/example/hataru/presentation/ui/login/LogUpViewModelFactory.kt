@@ -2,8 +2,8 @@ package com.example.hataru.presentation.ui.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.hataru.presentation.data.LoginDataSource
-import com.example.hataru.presentation.data.LoginRepository
+import com.example.hataru.presentation.ui.login.data.LoginDataSource
+import com.example.hataru.presentation.ui.login.data.LoginRepository
 
 
 class LogUpViewModelFactory : ViewModelProvider.Factory {
