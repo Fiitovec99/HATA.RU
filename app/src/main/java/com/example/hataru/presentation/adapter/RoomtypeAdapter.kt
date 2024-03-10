@@ -45,6 +45,10 @@ class RoomtypeAdapter : ListAdapter<RoomtypeWithPhotos, ApartmentViewHolder>(Apa
 
     }
 
+    override fun getItemCount(): Int {
+        return currentList.size
+    }
+
 
 
 

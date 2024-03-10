@@ -36,7 +36,7 @@ class FlatFragment : Fragment() {
 
 //        Toast.makeText(requireContext(),flat.toString(),Toast.LENGTH_LONG).show()
         //Log.d("asad",flat.toString())
-
+        Log.d("Flat",flat.toString())
 
         return binding.root
     }

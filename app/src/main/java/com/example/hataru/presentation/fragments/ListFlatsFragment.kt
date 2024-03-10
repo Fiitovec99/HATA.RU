@@ -2,6 +2,7 @@ package com.example.hataru.presentation.fragments
 
 import android.os.Bundle
 import android.os.Parcelable
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -39,15 +40,16 @@ class ListFlatsFragment : Fragment() {
         apartmentContainer = view.findViewById(R.id.apartment_container)
         setupRecyclerView()
 
-        viewModel.flats.observe(viewLifecycleOwner) {
 
 
-        }
-        viewModel.apply {
-            flats.observe(viewLifecycleOwner) { roomtypes ->
-                url.observe(viewLifecycleOwner) { roomxList ->
-                    val roomtypeWithPhotosList = roomtypes?.map { roomtype ->
-                        val matchingPhoto = roomxList?.firstOrNull { roomx ->
+
+
+
+        viewModel.combinedData.observe(viewLifecycleOwner) { (roomtypes, roomxList) ->
+            roomtypes?.let { roomtypes ->
+                roomxList?.let { roomxList ->
+                    val roomtypeWithPhotosList = roomtypes.map { roomtype ->
+                        val matchingPhoto = roomxList.firstOrNull { roomx ->
                             roomx.name == roomtype.name
                         }?.photos ?: emptyList()
                         RoomtypeWithPhotos(roomtype, matchingPhoto)
@@ -56,6 +58,12 @@ class ListFlatsFragment : Fragment() {
                 }
             }
         }
+
+
+
+
+
+
 
     }
 
