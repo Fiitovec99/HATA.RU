@@ -14,7 +14,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="308dp"
+        android:layout_height="wrap_content"
         android:padding="0dp"
         tools:ignore="MissingConstraints">
 
@@ -30,10 +30,10 @@
                 android:id="@+id/button_Like"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
+                android:layout_alignParentTop="true"
                 android:layout_alignParentEnd="true"
-                android:layout_alignParentBottom="true"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="176dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
                 android:background="?android:attr/selectableItemBackgroundBorderless"
                 android:onClick="Like"
                 android:src="@drawable/vector"
@@ -47,36 +47,40 @@
             android:id="@+id/text_short_description"
             android:layout_width="374dp"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/image_slider"
+            android:layout_below="@+id/image_slider"
+            android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
-            android:layout_marginEnd="0dp"
-            android:layout_marginBottom="-44dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="10dp"
             android:text="Однокомнатная квартира для 4х гостей в доме бизнес класса на ул. Тельмана д. 110"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            android:textStyle="bold"/>
 
         <TextView
             android:id="@+id/text_View_Area"
-            android:layout_width="95dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/text_short_description"
-            android:layout_marginBottom="-29dp"
+            android:layout_below="@+id/text_short_description"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="5dp"
+
             android:text="47 кв.м."
             android:textAlignment="center"
-            android:textSize="18sp"
-            android:textStyle="bold" />
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/text_View_Price"
-            android:layout_width="124dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/text_short_description"
             android:layout_alignEnd="@+id/image_slider"
-            android:layout_alignBottom="@+id/text_short_description"
-            android:layout_marginEnd="0dp"
-            android:layout_marginBottom="-31dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="20dp"
             android:text="3 848 ₽"
             android:textAlignment="center"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            android:textSize="20sp" />
 
 
     </RelativeLayout>
