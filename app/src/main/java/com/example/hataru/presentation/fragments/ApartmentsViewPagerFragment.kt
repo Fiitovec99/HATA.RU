@@ -3,15 +3,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.example.hataru.R
 import com.example.hataru.domain.entity.Roomtype
-
 import com.example.hataru.presentation.fragments.FlatFragment
 import com.example.hataru.presentation.fragments.FlatFragment.Companion.KEY_GET_FLAT_INTO_FLATFRAGMENT
-import com.tbuonomo.viewpagerdotsindicator.SpringDotsIndicator
 import com.tbuonomo.viewpagerdotsindicator.WormDotsIndicator
 
 class ApartmentsViewPagerFragment : Fragment() {

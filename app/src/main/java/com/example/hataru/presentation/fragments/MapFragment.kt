@@ -131,6 +131,8 @@ class MapFragment : Fragment(), CameraListener, ViewTreeObserver.OnPreDrawListen
         initializeMap()
         initImageLocation()
 
+
+
         mapView = binding.mapview
         mapView.map.logo.setAlignment(Alignment(HorizontalAlignment.RIGHT, VerticalAlignment.TOP))
 
@@ -213,9 +215,24 @@ class MapFragment : Fragment(), CameraListener, ViewTreeObserver.OnPreDrawListen
 
 
 
-                    viewModel.visibleFlats.observe(viewLifecycleOwner) { flats ->
-                        val roomtypeWithPhotosList = flats?.map { RoomtypeWithPhotos(it, emptyList()) }
-                        adapter.submitList(roomtypeWithPhotosList)
+//                    viewModel.visibleFlats.observe(viewLifecycleOwner) { flats ->
+//                        val roomtypeWithPhotosList = flats?.map { RoomtypeWithPhotos(it, emptyList()) }
+//                        adapter.submitList(roomtypeWithPhotosList)
+//                    }
+
+                    viewModel.combinedData.observe(viewLifecycleOwner) { (roomtypes, roomxList) ->
+                        roomtypes?.let { roomtypes ->
+                            roomxList?.let { roomxList ->
+                                val roomtypeWithPhotosList = roomtypes.map { roomtype ->
+                                    val matchingPhoto = roomxList.firstOrNull { roomx ->
+                                        roomx.name == roomtype.name
+                                    }?.photos ?: emptyList()
+                                    RoomtypeWithPhotos(roomtype, matchingPhoto)
+                                }
+                                adapter.submitList(roomtypeWithPhotosList)
+
+                            }
+                        }
                     }
 
 
@@ -276,6 +293,7 @@ class MapFragment : Fragment(), CameraListener, ViewTreeObserver.OnPreDrawListen
         super.onViewCreated(view, savedInstanceState)
         initMap()
 
+        setFirstFlats()
 
         adapter = RoomtypeAdapter()
         setupApartmentClickListener()
@@ -312,14 +330,6 @@ class MapFragment : Fragment(), CameraListener, ViewTreeObserver.OnPreDrawListen
             }
         }
 
-    }
-
-    fun getFlatsWithFilter(price: Double): List<Roomtype> {
-        val flats = viewModel.flats.value
-        if (flats != null)
-            return flats.filter { flat: Roomtype -> flat.price.toDouble() >= price }
-        else
-            return listOf()
     }
 
     fun getFlatsWithFilter(price_min: Double, price_max: Double): List<Roomtype> {
@@ -605,6 +615,29 @@ class MapFragment : Fragment(), CameraListener, ViewTreeObserver.OnPreDrawListen
         p2: CameraUpdateReason,
         p3: Boolean,
     ) {
+        val visibleRegion = mapView.map.visibleRegion
+        val visibleFlats = flats?.filter { flat ->
+            flat.geo_data?.let { geoData ->
+                val x = geoData.x?.toDoubleOrNull()
+                val y = geoData.y?.toDoubleOrNull()
+
+                if (x != null && y != null) {
+                    val flatPoint = Point(x, y)
+                    isPointInVisibleRegion(
+                        flatPoint,
+                        visibleRegion.topLeft,
+                        visibleRegion.bottomRight
+                    )
+                } else {
+                    false
+                }
+            } ?: false
+        }
+
+        viewModel.updateVisibleFlats(visibleFlats)
+    }
+
+    private fun setFirstFlats(){
         val visibleRegion = mapView.map.visibleRegion
         val visibleFlats = flats?.filter { flat ->
             flat.geo_data?.let { geoData ->

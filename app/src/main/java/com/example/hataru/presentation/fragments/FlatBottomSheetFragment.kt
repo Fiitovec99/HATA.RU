@@ -8,13 +8,17 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.denzcoskun.imageslider.models.SlideModel
 import com.example.hataru.R
 import com.example.hataru.databinding.FragmentFlatBottomSheetBinding
 import com.example.hataru.domain.entity.Roomtype
 import com.example.hataru.presentation.adapter.PhotoAdapter
 import com.example.hataru.presentation.fragments.FlatFragment.Companion.KEY_GET_FLAT_INTO_FLATFRAGMENT
+import com.example.hataru.presentation.viewModels.FlatBottomSheetViewModel
+import com.example.hataru.presentation.viewModels.MapViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.Serializable
 
 
@@ -22,6 +26,7 @@ class FlatBottomSheetFragment : BottomSheetDialogFragment() {
 
     private lateinit var binding: FragmentFlatBottomSheetBinding
     private lateinit var flat : Roomtype
+    private val viewModel by viewModel<FlatBottomSheetViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,26 +41,7 @@ class FlatBottomSheetFragment : BottomSheetDialogFragment() {
 
 
 
-        ///////////////////////////////
-        val photoRecyclerView: RecyclerView = binding.photoRecyclerView
-        // Получите массив ресурсов изображений
-        val photoResources = resources.obtainTypedArray(R.array.photo_resources)
 
-        val photos = mutableListOf<Int>()
-
-        for (i in 0 ..3) {
-            photos.add(photoResources.getResourceId(i, 0))
-        }
-        photoResources.recycle()
-
-        val photoAdapter = PhotoAdapter(photos)
-        photoRecyclerView.adapter = photoAdapter
-
-        // Настройте LayoutManager для RecyclerView (например, LinearLayoutManager)
-        val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        val spaceInPixels = resources.getDimensionPixelSize(R.dimen.space_between_photos)
-        photoRecyclerView.layoutManager = layoutManager
-        ///////////////////////////////////
 
         return binding.root
     }
@@ -80,6 +66,23 @@ class FlatBottomSheetFragment : BottomSheetDialogFragment() {
         }
 
 
+    }
+
+    override fun onStart() {
+        val imageList = ArrayList<SlideModel>() // Create image list
+        viewModel.url.observe(viewLifecycleOwner){
+            it.rooms.forEach {
+                if(it.name == flat.name.toString()){
+                    it.photos?.forEach {
+                            photo ->
+                        photo.url?.let { it1 -> imageList.add(SlideModel(photo.url))}
+                        binding.imageSlider.setImageList(imageList)
+                    }
+                }
+            }
+        }
+
+        super.onStart()
     }
 
     companion object{
