@@ -37,10 +37,20 @@ class FlatFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.apply {
+            textShortDescription.text = "Однокомнатная квартира для 4-х гостей на " + flat.address
             textFlatPrice.text = flat.price!!.toDouble().toString() + " ₽"
-            Equipment.text = ""
-            Location.text = ""
+            Equipment.text = "Комфортабельная кровать 160х200 см\n" +
+                    "Чистая сатиновое белье из прачечной\n" +
+                    "Раскладывающийся диван\n" +
+                    "Шампунь, гель для душа, полотенца\n" +
+                    "Телевизор с выходом в интернет\n" +
+                    "Посуда и столовые принадлежности\n" +
+                    "Электрический чайник, микроволновая печь, гладильная доска, утюг, фен, сушилка для одежды\n" +
+                    "Современная сплит-система\n" +
+                    "Стиральная машина"
+            Adress.text = "Адрес: " + flat.address
             description.text = flat.description
+            Location.text = "Рядом: Удобный выезд на трассу М-4 Дон, магазины, супермаркет \"Магнит\", аптека, остановки общественного транспорта. ТЦ \"Мега\"."
 
 
         }

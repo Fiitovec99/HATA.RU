@@ -57,6 +57,19 @@
             android:textSize="20sp"
             android:textStyle="bold" />
 
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textFlatPrice"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="40dp"
+            android:text="Забронировать"
+            android:textSize="20dp"/>
+
         <TextView
         android:id="@+id/textFlatDetails"
         android:layout_width="wrap_content"
@@ -114,30 +127,41 @@
             android:text="Местоположение"/>
 
         <TextView
-            android:id="@+id/Location"
+            android:id="@+id/Adress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_below="@+id/textFlatLocation"
             android:layout_marginTop="10dp"
             android:textSize="18sp"
-            tools:text="Описание местоположения\n1\n2\n3\n4\n5\n6\n7\n8\n9\n10"/>
-
-
-
+            tools:text="Адрес"/>
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/button3"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_below="@+id/Adress"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="5dp"
+            android:text="Показать на карте"
+            android:textAlignment="center"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/Location"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/textFlatPrice"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginStart="40dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="40dp"
-            android:text="Забронировать"
-            android:textSize="20dp"/>
+            android:layout_marginStart="10dp"
+            android:layout_below="@+id/button3"
+            android:layout_marginTop="10dp"
+            android:textSize="18sp"
+            tools:text="Рядом:"/>
+
+
+
+
+
 
 
     </RelativeLayout>
