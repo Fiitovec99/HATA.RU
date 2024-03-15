@@ -37,10 +37,9 @@ class FlatFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.apply {
-            textFlatPrice.text = "Цена аренды: " + flat.price!!.toDouble().toString() + "р"
-            textFlatLocation.text = flat.address
-            countAdultsFlatTextView.text = "Количество взрослых: "+ flat.adults.toString()
-            countChildrenFlatTextView.text = "Количество детей: " + flat.children.toString()
+            textFlatPrice.text = flat.price!!.toDouble().toString() + " ₽"
+            Equipment.text = ""
+            Location.text = ""
             description.text = flat.description
 
 

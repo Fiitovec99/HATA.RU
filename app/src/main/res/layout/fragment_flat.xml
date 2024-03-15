@@ -2,67 +2,145 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="16dp">
+    android:layout_height="wrap_content"
+    android:padding="0dp">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:orientation="vertical"
         android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/textFlatDetails"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:layout_gravity="center_horizontal"
-            android:text="О квартире"/>
+
 
         <com.denzcoskun.imageslider.ImageSlider
             android:id="@+id/image_slider"
             android:layout_width="wrap_content"
-            android:layout_height="300dp"
-            />
+            android:layout_height="245dp">
+
+        <ImageButton
+            android:id="@+id/button_Like"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
+            android:onClick="Like"
+            android:src="@drawable/vector"
+            tools:ignore="UnknownId" />
+        </com.denzcoskun.imageslider.ImageSlider>
+
+        <TextView
+            android:id="@+id/text_short_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/image_slider"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="10dp"
+            android:text="Однокомнатная квартира для 4х гостей в доме бизнес класса на ул. Тельмана д. 110"
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/textFlatPrice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:layout_marginTop="8dp"
-            tools:text="Price: $100000"/>
+            android:layout_below="@+id/text_short_description"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="5dp"
+            android:text="3 848 ₽"
+            android:textAlignment="center"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+        android:id="@+id/textFlatDetails"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/button2"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="10dp"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        android:layout_gravity="left"
+        android:text="О квартире"/>
+
+        <TextView
+            android:id="@+id/description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_below="@+id/textFlatDetails"
+            android:layout_marginTop="10dp"
+            android:textSize="18sp"
+            tools:text="Описание кваритры\n1\n2\n3\n4\n5\n6\n7\n8\n9\n10"/>
+
+        <TextView
+            android:id="@+id/textFlatEquipment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/description"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="10dp"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            android:layout_gravity="left"
+            android:text="Оснащение"/>
+
+        <TextView
+            android:id="@+id/Equipment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_below="@+id/textFlatEquipment"
+            android:layout_marginTop="10dp"
+            android:textSize="18sp"
+            tools:text="Оснащение кваритры\n1\n2\n3\n4\n5\n6\n7\n8\n9\n10"/>
 
         <TextView
             android:id="@+id/textFlatLocation"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:layout_marginTop="8dp"
-            tools:text="Улица ..."/>
-
+            android:layout_below="@+id/Equipment"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="10dp"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            android:layout_gravity="left"
+            android:text="Местоположение"/>
 
         <TextView
-            android:id="@+id/countAdultsFlatTextView"
+            android:id="@+id/Location"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_below="@+id/textFlatLocation"
+            android:layout_marginTop="10dp"
             android:textSize="18sp"
-            tools:text="Кол-вогостей"/>
+            tools:text="Описание местоположения\n1\n2\n3\n4\n5\n6\n7\n8\n9\n10"/>
 
-        <TextView
-            android:id="@+id/countChildrenFlatTextView"
+
+
+
+        <Button
+            android:id="@+id/button2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
-            tools:text="Кол-во гостей"/>
+            android:layout_below="@+id/textFlatPrice"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="40dp"
+            android:text="Забронировать"
+            android:textSize="20dp"/>
 
-        <TextView
-            android:id="@+id/description"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
 
-
-    </LinearLayout>
+    </RelativeLayout>
 
 
 
