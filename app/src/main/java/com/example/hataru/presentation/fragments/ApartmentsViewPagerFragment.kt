@@ -9,12 +9,14 @@ import com.example.hataru.R
 import com.example.hataru.domain.entity.Roomtype
 import com.example.hataru.presentation.fragments.FlatFragment
 import com.example.hataru.presentation.fragments.FlatFragment.Companion.KEY_GET_FLAT_INTO_FLATFRAGMENT
+
 import com.tbuonomo.viewpagerdotsindicator.WormDotsIndicator
 
 class ApartmentsViewPagerFragment : Fragment() {
 
     private lateinit var viewPager: ViewPager2
     private lateinit var roomtypesList: List<Roomtype>
+
 
 
     override fun onCreateView(
@@ -26,6 +28,13 @@ class ApartmentsViewPagerFragment : Fragment() {
         viewPager = view.findViewById(R.id.viewPager)
 
 
+        viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageScrollStateChanged(state: Int) {
+                super.onPageScrollStateChanged(state)
+                // Проверяем, если ViewPager2 в состоянии прокрутки, то отключаем его
+                viewPager.isUserInputEnabled = state != ViewPager2.SCROLL_STATE_DRAGGING
+            }
+        })
 
 
         roomtypesList = arguments?.getSerializable(KEY_GET_FLAT_INTO_ADAPTER) as List<Roomtype>
@@ -39,6 +48,7 @@ class ApartmentsViewPagerFragment : Fragment() {
         return view
     }
 
+
     // Адаптер для ViewPager
     private inner class ApartmentsPagerAdapter(
         fragment: Fragment,
@@ -51,7 +61,7 @@ class ApartmentsViewPagerFragment : Fragment() {
 
         override fun createFragment(position: Int): Fragment {
             // отображения информации о квартире
-            val apartmentFragment = FlatFragment()
+            val apartmentFragment = FlatFragmentViewPager()
             val bundle = Bundle()
             bundle.putParcelable(KEY_GET_FLAT_INTO_FLATFRAGMENT, roomtypesList[position])
             apartmentFragment.arguments = bundle

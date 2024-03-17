@@ -1,5 +1,6 @@
 package com.example.hataru.presentation
 
+import FlatFragmentViewPagerViewModel
 import com.example.hataru.data.FlatsImpl
 import com.example.hataru.data.PhotosImpl
 import com.example.hataru.data.PhotosService
@@ -56,6 +57,7 @@ val appMod = module {
     viewModel<ListFlatsViewModel> { ListFlatsViewModel(rep = get(),photos = get()) }
     viewModel<FlatViewModel> { FlatViewModel(photos = get()) }
     viewModel<FlatBottomSheetViewModel> { FlatBottomSheetViewModel(photosCase = get()) }
+    viewModel<FlatFragmentViewPagerViewModel> { FlatFragmentViewPagerViewModel(photos = get()) }
 }
 
 
