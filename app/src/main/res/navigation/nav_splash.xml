@@ -38,6 +38,9 @@
         <action
             android:id="@+id/action_logUpFragment_to_mainActivity2"
             app:destination="@id/mainActivity" />
+        <action
+            android:id="@+id/action_logUpFragment_to_forgotPassword"
+            app:destination="@id/forgotPassword" />
     </fragment>
 
     <fragment
@@ -48,4 +51,8 @@
             android:id="@+id/action_logInFragment_to_logUpFragment"
             app:destination="@id/logUpFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/forgotPassword"
+        android:name="com.example.hataru.presentation.ui.login.ForgotPassword"
+        android:label="ForgotPassword" />
 </navigation>
