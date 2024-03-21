@@ -175,8 +175,8 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="734" />
-                            <option name="y" value="31" />
+                            <option name="x" value="744" />
+                            <option name="y" value="88" />
                           </Point>
                         </option>
                       </LayoutPositions>
@@ -194,6 +194,11 @@
                         <option name="myPositions">
                           <map>
                             <entry key="action_splashFragment_to_logInFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                            <entry key="action_splashFragment_to_mainActivity">
                               <value>
                                 <LayoutPositions />
                               </value>

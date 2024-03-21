@@ -75,23 +75,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/username" />
 
-    <!--    <EditText-->
-    <!--        android:id="@+id/repeatPassword"-->
-    <!--        android:layout_width="0dp"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:layout_marginStart="24dp"-->
-    <!--        android:layout_marginTop="16dp"-->
-    <!--        android:layout_marginEnd="24dp"-->
-    <!--        android:hint="Пароль ещё раз"-->
-    <!--        android:imeOptions="actionDone"-->
-    <!--        android:inputType="textPassword"-->
-    <!--        android:selectAllOnFocus="true"-->
-    <!--        android:textColorHint="#A5A5A5"-->
-    <!--        android:textSize="14sp"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintStart_toStartOf="parent"-->
-    <!--        app:layout_constraintTop_toBottomOf="@+id/password" />-->
-
     <Button
         android:id="@+id/login"
         android:layout_width="0dp"
@@ -103,14 +86,16 @@
         android:layout_marginBottom="64dp"
         android:backgroundTint="@color/black"
         android:enabled="true"
-        android:text="Войти"
-        android:textSize="18sp"
+        android:text="Зарегистрироваться"
         android:textColor="@color/white"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/password"
-        app:layout_constraintVertical_bias="0.2" />
+        app:layout_constraintVertical_bias="0.197" />
+
     <TextView
         android:id="@+id/textViewHasAccount"
         android:layout_width="wrap_content"
