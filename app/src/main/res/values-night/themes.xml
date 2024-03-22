@@ -1,8 +1,29 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Base.Theme.HATARU" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your dark theme here. -->
-        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
-        <item name="android:statusBarColor">#000000</item>
+        <item name="colorPrimary">@color/purple_200</item>
+        <item name="colorPrimaryVariant">@color/purple_700</item>
+        <item name="colorOnPrimary">@color/black</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/teal_200</item>
+        <item name="colorSecondaryVariant">@color/teal_200</item>
+        <item name="colorOnSecondary">@color/black</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor">@color/black_background</item>
+
     </style>
+
+
+    <style name="ENTER_LOGO">
+        <item name="android:src">@drawable/enter_black</item>
+    </style>
+
+    <style name="BACKGROUND">
+        <item name="android:background">#1E1E1E</item>
+    </style>
+
+    <style name="TEXTVIEW_COLOR">
+        <item name="android:textColor">@color/white</item>
+    </style>
+
 </resources>

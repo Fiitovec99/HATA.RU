@@ -5,7 +5,7 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    style="@style/BACKGROUND"
     tools:context=".presentation.ui.login.LoginFragment">
 
     <ImageView
@@ -16,7 +16,7 @@
         android:layout_marginBottom="16dp"
         android:adjustViewBounds="true"
         android:scaleType="fitXY"
-        android:src="@drawable/roof"
+        style="@style/ENTER_LOGO"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -28,7 +28,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="Вход"
-        android:textColor="@color/black"
+        style="@style/TEXTVIEW_COLOR"
         android:textSize="30sp"
         android:textStyle="bold"
         app:layout_constraintTop_toTopOf="parent"
@@ -48,7 +48,7 @@
         android:inputType="textEmailAddress"
         android:selectAllOnFocus="true"
         android:textSize="18sp"
-        android:textColor="@color/black"
+        style="@style/TEXTVIEW_COLOR"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView3" />
@@ -61,7 +61,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="24dp"
         android:hint="Пароль"
-        android:textColor="@color/black"
+        style="@style/TEXTVIEW_COLOR"
         android:textColorHint="#A5A5A5"
         android:imeActionLabel="@string/action_sign_in_short"
         android:imeOptions="actionDone"
@@ -99,6 +99,7 @@
         android:layout_height="wrap_content"
         android:text="Забыли пароль?"
         android:textSize="14sp"
+        style="@style/TEXTVIEW_COLOR"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"

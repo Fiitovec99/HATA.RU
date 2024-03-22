@@ -3,53 +3,51 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
+    style="@style/BACKGROUND"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white"
     tools:context=".presentation.ui.login.LoginFragment">
 
 
     <ImageView
         android:id="@+id/imageView5"
+        style="@style/ENTER_LOGO"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="0dp"
         android:layout_marginBottom="16dp"
         android:adjustViewBounds="true"
         android:scaleType="fitXY"
-        android:src="@drawable/roof"
-
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
 
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Регистрация"
-        android:textColor="@color/black"
-        android:textSize="30sp"
         android:layout_marginTop="8dp"
+        android:text="Регистрация"
+        style="@style/TEXTVIEW_COLOR"
+        android:textSize="30sp"
         android:textStyle="bold"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/username"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/black"
         android:layout_marginStart="24dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="24dp"
         android:hint="Эл. почта"
         android:inputType="textEmailAddress"
         android:selectAllOnFocus="true"
+        style="@style/TEXTVIEW_COLOR"
         android:textColorHint="#A5A5A5"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -68,7 +66,7 @@
         android:imeOptions="actionDone"
         android:inputType="textPassword"
         android:selectAllOnFocus="true"
-        android:textColor="@color/black"
+        style="@style/TEXTVIEW_COLOR"
         android:textColorHint="#A5A5A5"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -102,6 +100,7 @@
         android:layout_height="wrap_content"
         android:text="уже есть аккаут?"
         android:textSize="14sp"
+        style="@style/TEXTVIEW_COLOR"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
