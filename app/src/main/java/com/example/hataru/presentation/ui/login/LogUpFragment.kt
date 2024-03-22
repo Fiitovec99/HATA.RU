@@ -5,18 +5,19 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import androidx.annotation.StringRes
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.example.hataru.presentation.activities.MainActivity
+import androidx.navigation.fragment.findNavController
 import com.example.hataru.R
 import com.example.hataru.databinding.FragmentLogUpBinding
+import com.example.hataru.presentation.activities.MainActivity
 import com.example.hataru.showToast
 import com.google.firebase.auth.FirebaseAuth
 
@@ -28,8 +29,7 @@ class LogUpFragment : Fragment() {
     private lateinit var logUpViewModel: LogUpViewModel
     private var _binding: FragmentLogUpBinding? = null
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
+
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -110,30 +110,9 @@ class LogUpFragment : Fragment() {
         }
 
 
-//        _binding!!.textViewForgotPassword.setOnClickListener { TODO возобновить пароль аккаунта
-//            if(_binding!!.username.text.toString() == ""){
-//                showToast("ПУсто")
-//                return@setOnClickListener
-//            }
-//
-//            loadingProgressBar.visibility = View.VISIBLE
-//
-//            firebaseAuth.sendPasswordResetEmail(
-//                usernameEditText.text.toString()
-//            ).addOnCompleteListener { task ->
-//                if (task.isSuccessful) {
-//                    // Вход успешен, вы можете выполнить необходимые действия
-//                    val intent = Intent(context, MainActivity::class.java)
-//                    startActivity(intent)
-//                   //TODO добавить отображение, что придет сообщение
-//                } else {
-//                    // Вход не удался, отобразить сообщение об ошибке
-//                    Toast.makeText(context, task.exception?.message, Toast.LENGTH_SHORT).show()
-//                    Log.d("TAG", task.exception.toString())
-//                }
-//                loadingProgressBar.visibility = View.GONE
-//            }
-//        }
+        binding.textViewForgotPassword.setOnClickListener {
+            findNavController().navigate(R.id.action_logUpFragment_to_forgotPassword)
+        }
 
 
 

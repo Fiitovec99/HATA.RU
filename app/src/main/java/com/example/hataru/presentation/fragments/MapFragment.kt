@@ -480,7 +480,6 @@ class MapFragment : Fragment(), CameraListener, ViewTreeObserver.OnPreDrawListen
                 }
 
         if (flatsLocateNearByAnother(listPointsOfCluster, 0.00001)) { // расстояние в меридиане
-            showToast("Квартиры находятся в одном здании, реализация впереди!")
             val flats = it.placemarks?.mapNotNull { it.userData as? Roomtype }
             val args = Bundle()
             args.putSerializable(KEY_GET_FLAT_INTO_ADAPTER, flats as? Serializable)

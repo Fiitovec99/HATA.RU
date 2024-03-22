@@ -1,60 +1,110 @@
-package com.example.hataru.presentation.fragments
+package com.example.hataru.presentation.ui.login
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.annotation.StringRes
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import com.example.hataru.R
+import com.example.hataru.databinding.FragmentForgotPasswordBinding
+import com.example.hataru.showToast
+import com.google.firebase.auth.FirebaseAuth
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [ForgotPassword.newInstance] factory method to
- * create an instance of this fragment.
- */
 class ForgotPassword : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+
+    private lateinit var firebaseAuth: FirebaseAuth
+
+    private var _binding: FragmentForgotPasswordBinding? = null
+
+    private val binding get() = _binding!!
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_forgot_password, container, false)
+        firebaseAuth = FirebaseAuth.getInstance()
+
+        _binding = FragmentForgotPasswordBinding.inflate(inflater, container, false)
+        return binding.root
+
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment ForgotPassword.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            ForgotPassword().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+
+        val loadingProgressBar = binding.loading
+
+
+
+        binding.continue4.setOnClickListener{
+            if(_binding!!.textViewForgotPassword.text.toString() == ""){
+                showToast("Пусто")
+                return@setOnClickListener
             }
+
+            loadingProgressBar.visibility = View.VISIBLE
+
+            firebaseAuth.sendPasswordResetEmail(
+                binding.textViewForgotPassword.text.toString()
+            ).addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    showToast("На вашу почту отправлено сообщение для снятия пароля")
+                } else {
+                    showToast("Ошибка")
+                    Toast.makeText(context, task.exception?.message, Toast.LENGTH_SHORT).show()
+                }
+                loadingProgressBar.visibility = View.GONE
+            }
+        }
+
+
+
+
+
+
+
+
     }
+
+
+
+
+
+    private fun updateUiWithUser(model: LoggedInUserView) {
+        val welcome = getString(R.string.welcome) + model.displayName
+        // TODO : initiate successful logged in experience
+        val appContext = context?.applicationContext ?: return
+        Toast.makeText(appContext, welcome, Toast.LENGTH_LONG).show()
+
+    }
+
+    private fun showLoginFailed(@StringRes errorString: Int) {
+        val appContext = context?.applicationContext ?: return
+        Toast.makeText(appContext, errorString, Toast.LENGTH_LONG).show()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    override fun onStart() {
+        super.onStart()
+//        if(firebaseAuth.currentUser != null){
+//            val intent = Intent(context,MainActivity::class.java)
+//            startActivity(intent)
+//        }
+
+    }
+
+
+
 }

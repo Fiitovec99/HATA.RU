@@ -47,11 +47,11 @@ class LoginFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if(firebaseAuth.currentUser!=null){
-            val intent = Intent(requireContext(), MainActivity::class.java)
-            startActivity(intent)
-        }
-        
+//        if(firebaseAuth.currentUser!=null){
+//            val intent = Intent(requireContext(), MainActivity::class.java)
+//            startActivity(intent)
+//        }
+
         loginViewModel = ViewModelProvider(this, LoginViewModelFactory())
             .get(LoginViewModel::class.java)
 
@@ -125,13 +125,13 @@ class LoginFragment : Fragment() {
             false
         }
 
-            _binding!!.login.setOnClickListener {
+        _binding!!.login.setOnClickListener {
 
             if(usernameEditText.text.toString()=="" || passwordEditText.text.toString()==""){
                 showToast("Вы не заполнили одно из полей")
                 return@setOnClickListener
             }
-                loadingProgressBar.visibility = View.VISIBLE
+            loadingProgressBar.visibility = View.VISIBLE
             firebaseAuth.createUserWithEmailAndPassword(
                 usernameEditText.text.toString(),
                 passwordEditText.text.toString()

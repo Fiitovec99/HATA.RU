@@ -24,10 +24,10 @@ class MainActivity : AppCompatActivity() {
         setNavigation()
 
 
-        MapKitFactory.setApiKey(API_KEY)
-        if (!isMapKitInitialized) {
+        if (savedInstanceState == null) {
+            // Устанавливаем API ключ и инициализируем MapKit только если savedInstanceState равно null
+            MapKitFactory.setApiKey(API_KEY)
             MapKitFactory.initialize(this)
-            isMapKitInitialized = true
         }
 
 
