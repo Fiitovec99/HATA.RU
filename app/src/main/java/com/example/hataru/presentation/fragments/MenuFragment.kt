@@ -11,14 +11,18 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
+import com.example.hataru.SharedPreferenceManger
 import com.example.hataru.databinding.FragmentMenuBinding
 import com.example.hataru.presentation.adapter.FAQAdapter
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class MenuFragment : Fragment() {
 
 
     private lateinit var binding: FragmentMenuBinding
+    private val themeTitleList = arrayOf("Светлая", "Тёмная", "Системная")
 
     private val listDataHeader = mutableListOf<String>(
         "Во сколько заезд и выезд?",
@@ -47,6 +51,8 @@ class MenuFragment : Fragment() {
     )
 
 
+
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -63,7 +69,6 @@ class MenuFragment : Fragment() {
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://hataru.ru"))
             startActivity(intent)
         }
-
         binding.textViewOpenWhatsUp.setOnClickListener {
             val phoneNumber = "+79959890049"
             val intent = Intent(Intent.ACTION_VIEW)
@@ -82,6 +87,32 @@ class MenuFragment : Fragment() {
         // Создание экземпляра адаптера и установка его для ExpandableListView
         val listAdapter = FAQAdapter(requireContext(), listDataHeader, listHashMap)
         expandableListView.setAdapter(listAdapter)
+
+
+        ////////////////////////////////////////работа с темой
+        val sharedPreferenceManger = SharedPreferenceManger(requireContext())
+        var checkedTheme = sharedPreferenceManger.theme
+
+        val themeDialog = MaterialAlertDialogBuilder(
+            requireContext()
+        )
+            .setTitle("Тема приложения")
+            .setPositiveButton("Ok") { _, _ ->
+                sharedPreferenceManger.theme = checkedTheme
+                AppCompatDelegate.setDefaultNightMode(sharedPreferenceManger.themeFlag[checkedTheme])
+            }
+            .setSingleChoiceItems(themeTitleList, checkedTheme) { _, which ->
+                checkedTheme = which
+            }
+            .setCancelable(false)
+
+
+        binding.changeThemeBtn.setOnClickListener {
+            themeDialog.show()
+        }
+        //////////////////////////////////////////////
+
+
     }
 
 }

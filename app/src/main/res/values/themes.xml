@@ -35,5 +35,10 @@
         <item name="background">@color/light_blue</item>
     </style>
 
+    <style name="buttonStyle">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:backgroundTint">@color/white</item>
+    </style>
+
 
 </resources>

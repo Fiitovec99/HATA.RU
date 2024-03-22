@@ -82,7 +82,7 @@ class LoginFragment : Fragment() {
                     showLoginFailed(it)
                 }
                 loginResult.success?.let {
-                    updateUiWithUser(it)
+                    //updateUiWithUser(it)
                 }
 
             })
