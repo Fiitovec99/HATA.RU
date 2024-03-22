@@ -101,7 +101,8 @@
             android:text="Часто задаваемые вопросы"
             android:textStyle="bold"
             android:textSize="20sp"
-            android:padding="16dp" />
+            android:padding="16dp"
+            android:textColor="@color/black"/>
 
     </LinearLayout>
 

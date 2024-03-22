@@ -38,8 +38,8 @@ class FlatFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.apply {
             textShortDescription.text = "Однокомнатная квартира для 4-х гостей на " + flat.address
-            textFlatPrice.text = "Цена аренды: " + flat.price!!.toDouble().toString() + "р"
-            textFlatLocation.text = flat.address
+            textFlatPrice.text = flat.price!!.toDouble().toString() + "₽"
+//            textFlatLocation.text = flat.address
             Equipment.text = "Комфортабельная кровать 160х200 см\n" +
                     "Чистая сатиновое белье из прачечной\n" +
                     "Раскладывающийся диван\n" +

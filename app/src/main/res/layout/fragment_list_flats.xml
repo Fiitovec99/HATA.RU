@@ -49,9 +49,11 @@
         android:layout_height="44dp"
         android:layout_marginTop="35dp"
         android:hint="Поиск"
+        android:textColor="@color/black"
         android:imeOptions="actionSearch"
         android:inputType="text"
         android:paddingLeft="39dp"
+        android:paddingRight="10dp"
         android:background="@drawable/rounded_background"
         app:layout_constraintTop_toTopOf="parent"
         tools:layout_editor_absoluteX="0dp" />
