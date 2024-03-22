@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".presentation.onboarding.SplashFragment"
-    android:background="#B0F1FF">
+    style="@style/SPLASH_SCREEN">
 
     <ImageView
         android:id="@+id/imageView"
@@ -19,4 +19,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.5"
         android:contentDescription="TODO" />
+
+    
 </androidx.constraintlayout.widget.ConstraintLayout>

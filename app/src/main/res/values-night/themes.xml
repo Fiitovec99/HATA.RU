@@ -19,11 +19,22 @@
     </style>
 
     <style name="BACKGROUND">
-        <item name="android:background">#1E1E1E</item>
+        <item name="android:background">@color/black</item>
     </style>
 
     <style name="TEXTVIEW_COLOR">
         <item name="android:textColor">@color/white</item>
     </style>
+
+    <style name="BUTTON">
+        <item name="android:backgroundTint">@color/dark_blue</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="SPLASH_SCREEN">
+        <item name="android:background">@color/dark_blue</item>
+    </style>
+
 
 </resources>

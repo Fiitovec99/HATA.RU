@@ -68,4 +68,6 @@
     <color name="our_green_night">#477F64</color>
     <color name="our_grey_night">#2D3933</color>
 
+    <color name="dark_blue">#002F3E</color>
+    <color name="light_blue">#78CEFF</color>
 </resources>
