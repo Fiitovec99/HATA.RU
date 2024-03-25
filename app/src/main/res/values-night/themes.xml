@@ -36,11 +36,13 @@
         <item name="android:background">@color/dark_blue</item>
     </style>
 
-
-
     <style name="buttonStyle">
         <item name="android:textColor">@color/white</item>
         <item name="android:backgroundTint">@color/black</item>
+    </style>
+
+    <style name="BottomNavigationView">
+        <item name="android:background">@color/dark_bottom_nav</item>
     </style>
 
 </resources>

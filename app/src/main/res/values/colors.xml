@@ -70,4 +70,7 @@
 
     <color name="dark_blue">#002F3E</color>
     <color name="light_blue">#78CEFF</color>
+
+    <color name="light_bottom_nav">#A4EFFF</color>
+    <color name="dark_bottom_nav">#004F60</color>
 </resources>

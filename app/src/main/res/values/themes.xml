@@ -40,5 +40,9 @@
         <item name="android:backgroundTint">@color/white</item>
     </style>
 
+    <style name="BottomNavigationView">
+        <item name="android:background">@color/light_bottom_nav</item>
+    </style>
+
 
 </resources>
