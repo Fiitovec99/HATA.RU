@@ -1,19 +1,21 @@
 package com.example.hataru.presentation.fragments
 
+
+
+import FavoriteFlatViewModel
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentContainerView
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hataru.R
-import com.example.hataru.presentation.activities.ApartmentActivity
 import com.example.hataru.presentation.adapter.RoomtypeAdapter
-import com.example.hataru.presentation.viewModels.FavoriteFlatViewModel
-import com.example.hataru.presentation.viewModels.FlatViewModel
+import com.example.hataru.showToast
 import org.koin.androidx.viewmodel.ext.android.viewModel
+
 
 class FavoriteFlatFragment : Fragment() {
 
@@ -31,12 +33,31 @@ class FavoriteFlatFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         apartmentContainer = view.findViewById(R.id.apartment_container)
+
         setupRecyclerView()
+
+
+        viewModel.favoriteFlats.observe(viewLifecycleOwner) { favoriteFlats ->
+            Log.d("FavoriteFlatFragment", "Favorite flats observed: $favoriteFlats")
+            // В этом блоке вы можете обновить ваш адаптер с новыми данными favoriteFlats
+            // Например:
+            apartmentListAdapter.submitList(favoriteFlats)
+            showToast(favoriteFlats.size.toString())
+        }
+
+
+
+
+
+
 
     }
 
+
+
     private fun isOnePaneMode(): Boolean {
-        val apartmentContainer = activity?.findViewById<FragmentContainerView>(R.id.apartment_container)
+        val apartmentContainer =
+            activity?.findViewById<FragmentContainerView>(R.id.apartment_container)
         return apartmentContainer == null
     }
 
@@ -53,21 +74,17 @@ class FavoriteFlatFragment : Fragment() {
         with(rvApartmentList) {
             apartmentListAdapter = RoomtypeAdapter()
             this?.adapter = apartmentListAdapter
-            rvApartmentList?.recycledViewPool?.setMaxRecycledViews(
-                RoomtypeAdapter.VIEW_TYPE_LIKED,
-               7
-            )
-            rvApartmentList?.recycledViewPool?.setMaxRecycledViews(
-                RoomtypeAdapter.VIEW_TYPE_NOLIKED,
-                7
-            )
         }
 
-//        setupLikeButtonClickListener()
-//        setupApartmentClickListener()
+        setupLikeButtonClickListener()
+        setupApartmentClickListener()
     }
 
-//    private fun setupApartmentClickListener() {
+    private fun setupLikeButtonClickListener() {
+        //TODO
+
+    }
+    private fun setupApartmentClickListener() {
 //        apartmentListAdapter.onApartmentClickListener = {
 //            if (isOnePaneMode()) {
 //                val intent = ApartmentActivity.newIntent(requireContext(), it.id)
@@ -82,6 +99,7 @@ class FavoriteFlatFragment : Fragment() {
 //        apartmentListAdapter.onLikeButtonClickListener = {
 //            viewModel.changeLikedStage(it)
 //        }
-//    }
+    }
 }
+
 

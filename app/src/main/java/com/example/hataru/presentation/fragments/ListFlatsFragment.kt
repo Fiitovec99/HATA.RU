@@ -83,7 +83,7 @@ class ListFlatsFragment : Fragment() {
 
         }
 
-//        setupLikeButtonClickListener()
+        setupLikeButtonClickListener()
         setupApartmentClickListener()
     }
 
@@ -105,10 +105,10 @@ class ListFlatsFragment : Fragment() {
 //            }
 //        }
     }
-//
-//    private fun setupLikeButtonClickListener() {
-//        apartmentListAdapter.onLikeButtonClickListener = {
-//            viewModel.changeLikedStage(it)
-//        }
-//    }
+
+    private fun setupLikeButtonClickListener() {
+        apartmentListAdapter.onLikeButtonClickListener = { flat ->
+            viewModel.changeLikedStage(flat)
+        }
+    }
 }
