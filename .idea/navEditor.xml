@@ -20,13 +20,13 @@
                       </LayoutPositions>
                     </value>
                   </entry>
-                  <entry key="favoriteFlatFragment">
+                  <entry key="favoriteFlatFragment3">
                     <value>
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="500" />
-                            <option name="y" value="12" />
+                            <option name="x" value="-185" />
+                            <option name="y" value="23" />
                           </Point>
                         </option>
                       </LayoutPositions>
@@ -43,6 +43,11 @@
                         </option>
                         <option name="myPositions">
                           <map>
+                            <entry key="action_flatBottomSheetFragment_to_apartmentsViewPagerFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
                             <entry key="action_flatBottomSheetFragment_to_flatFragment">
                               <value>
                                 <LayoutPositions />
@@ -73,6 +78,15 @@
                             <option name="x" value="12" />
                             <option name="y" value="12" />
                           </Point>
+                        </option>
+                        <option name="myPositions">
+                          <map>
+                            <entry key="action_listFlatsFragment_to_flatFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                          </map>
                         </option>
                       </LayoutPositions>
                     </value>

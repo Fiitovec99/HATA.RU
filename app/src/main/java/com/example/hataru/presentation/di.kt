@@ -10,6 +10,7 @@ import com.example.hataru.domain.GetPhotosUseCase
 import com.example.hataru.domain.PhotosRep
 import com.example.hataru.domain.ApiService
 import com.example.hataru.domain.entity.MyCookieJar
+import com.example.hataru.presentation.viewModels.FavoriteFlatViewModel
 import com.example.hataru.presentation.viewModels.FlatBottomSheetViewModel
 import com.example.hataru.presentation.viewModels.FlatViewModel
 import com.example.hataru.presentation.viewModels.ListFlatsViewModel
@@ -58,6 +59,7 @@ val appMod = module {
     viewModel<FlatViewModel> { FlatViewModel(photos = get()) }
     viewModel<FlatBottomSheetViewModel> { FlatBottomSheetViewModel(photosCase = get()) }
     viewModel<FlatFragmentViewPagerViewModel> { FlatFragmentViewPagerViewModel(photos = get()) }
+    viewModel<FavoriteFlatViewModel>{get()}
 }
 
 

@@ -51,4 +51,9 @@
         android:id="@+id/apartmentsViewPagerFragment"
         android:name="ApartmentsViewPagerFragment"
         android:label="ApartmentsViewPagerFragment" />
+    <fragment
+        android:id="@+id/favoriteFlatFragment"
+        android:name="com.example.hataru.presentation.fragments.FavoriteFlatFragment"
+        android:label="fragment_favorite_flat"
+        tools:layout="@layout/fragment_favorite_flat" />
 </navigation>
