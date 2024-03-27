@@ -1,5 +1,7 @@
-package com.example.hataru.presentation.adapter
-
+//package com.example.hataru.presentation.adapter
+//
+//import android.widget.ListAdapter
+//
 //class ApartmentListAdapter : ListAdapter<Roomtype> {
 //
 //    var onLikeButtonClickListener: ((Roomtype) -> Unit)? = null
