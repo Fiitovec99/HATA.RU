@@ -44,5 +44,20 @@
         <item name="android:background">@color/light_bottom_nav</item>
     </style>
 
+    <style name="BOTTOM_SHEET_FRAGMENT_MAP">
+        <item name="android:background">@drawable/rounded_light_background</item>
+    </style>
+
+    <style name="FRAGMENT_FLAT_BOTTOM_SHEET">
+        <item name="android:background">@drawable/rounded_light_background</item>
+    </style>
+
+    <style name="BUTTONS_ON_MAP">
+        <item name="android:backgroundTint">@color/light_blue</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+
+
 
 </resources>

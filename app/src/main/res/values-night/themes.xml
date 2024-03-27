@@ -9,7 +9,7 @@
         <item name="colorSecondaryVariant">@color/teal_200</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor">@color/black_background</item>
+        <item name="android:statusBarColor">@color/grey</item>
 
     </style>
 
@@ -44,5 +44,19 @@
     <style name="BottomNavigationView">
         <item name="android:background">@color/dark_bottom_nav</item>
     </style>
+
+    <style name="BOTTOM_SHEET_FRAGMENT_MAP">
+        <item name="android:background">@drawable/rounded_black_background</item>
+    </style>
+
+    <style name="FRAGMENT_FLAT_BOTTOM_SHEET">
+        <item name="android:background">@drawable/rounded_black_background</item>
+    </style>
+
+    <style name="BUTTONS_ON_MAP">
+        <item name="android:backgroundTint">@color/dark_blue</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
 
 </resources>
