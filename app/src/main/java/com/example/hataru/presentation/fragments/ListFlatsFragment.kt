@@ -13,6 +13,7 @@ import com.example.hataru.R
 import com.example.hataru.domain.entity.RoomtypeWithPhotos
 import com.example.hataru.presentation.adapter.RoomtypeAdapter
 import com.example.hataru.presentation.viewModels.ListFlatsViewModel
+import com.example.hataru.showToast
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ListFlatsFragment : Fragment() {
@@ -109,6 +110,7 @@ class ListFlatsFragment : Fragment() {
     private fun setupLikeButtonClickListener() {
         apartmentListAdapter.onLikeButtonClickListener = { flat ->
             viewModel.changeLikedStage(flat)
+            showToast("Квартира добавлена в избранные!")
         }
     }
 }

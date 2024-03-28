@@ -119,15 +119,6 @@ class FavoriteFlatViewModel : ViewModel() {
                         .addOnFailureListener { e ->
                             Log.w("TAG", "Error removing room from favorites", e)
                         }
-                } else {
-                    // Комнаты нет в избранных, добавляем ее
-                    favoriteFlatDocument.set(roomtypeWithPhotos)
-                        .addOnSuccessListener {
-                            Log.d("TAG", "Room added to favorites: $roomId")
-                        }
-                        .addOnFailureListener { e ->
-                            Log.w("TAG", "Error adding room to favorites", e)
-                        }
                 }
             }.addOnFailureListener { e ->
                 Log.w("TAG", "Error checking if room is in favorites", e)

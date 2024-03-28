@@ -4,12 +4,14 @@ package com.example.hataru.presentation.fragments
 
 import FavoriteFlatViewModel
 import android.os.Bundle
+import android.os.Parcelable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentContainerView
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hataru.R
 import com.example.hataru.presentation.adapter.RoomtypeAdapter
@@ -33,23 +35,12 @@ class FavoriteFlatFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         apartmentContainer = view.findViewById(R.id.apartment_container)
-
         setupRecyclerView()
-
 
         viewModel.favoriteFlats.observe(viewLifecycleOwner) { favoriteFlats ->
             Log.d("FavoriteFlatFragment", "Favorite flats observed: $favoriteFlats")
-            // В этом блоке вы можете обновить ваш адаптер с новыми данными favoriteFlats
-            // Например:
             apartmentListAdapter.submitList(favoriteFlats)
-            showToast(favoriteFlats.size.toString())
         }
-
-
-
-
-
-
 
     }
 
@@ -85,7 +76,21 @@ class FavoriteFlatFragment : Fragment() {
             viewModel.changeLikedStage(flat)
         }
     }
+
     private fun setupApartmentClickListener() {
+        apartmentListAdapter.onApartmentClickListener = {
+
+            val args = Bundle()
+            args.putParcelable(
+                FlatFragment.KEY_GET_FLAT_INTO_FLATFRAGMENT,
+                it.roomtype as Parcelable
+            )
+
+            findNavController().navigate(R.id.flatFragment, args)
+
+        }
+    }
+    //private fun setupApartmentClickListener() {
 //        apartmentListAdapter.onApartmentClickListener = {
 //            if (isOnePaneMode()) {
 //                val intent = ApartmentActivity.newIntent(requireContext(), it.id)
@@ -100,7 +105,7 @@ class FavoriteFlatFragment : Fragment() {
 //        apartmentListAdapter.onLikeButtonClickListener = {
 //            viewModel.changeLikedStage(it)
 //        }
-    }
+  //  }
 }
 
 

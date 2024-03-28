@@ -8,7 +8,10 @@ import androidx.viewpager2.widget.ViewPager2
 import com.denzcoskun.imageslider.models.SlideModel
 import com.example.hataru.R
 import com.example.hataru.databinding.FragmentFlatFragmentViewPagerBinding
+import com.example.hataru.domain.entity.Photo
 import com.example.hataru.domain.entity.Roomtype
+import com.example.hataru.domain.entity.RoomtypeWithPhotos
+import com.example.hataru.showToast
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class FlatFragmentViewPager : Fragment() {
@@ -36,16 +39,27 @@ class FlatFragmentViewPager : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val imageList = ArrayList<SlideModel>()
-        viewModel.photo.observe(viewLifecycleOwner) {
-            it.rooms.forEach { room ->
-                if (room.name == flat.name.toString()) {
-                    room.photos?.forEach { photo ->
-                        photo.url?.let { url -> imageList.add(SlideModel(url)) }
+        val imageList = ArrayList<SlideModel>() // Create image list
+        var photosList = mutableListOf<Photo>()
+        viewModel.photo.observe(viewLifecycleOwner){
+
+            it.rooms.forEach {
+                if(it.name == flat.name.toString()){
+
+                    it.photos?.forEach {
+                            photo ->
+                        photo.url?.let { it1 -> imageList.add(SlideModel(photo.url))}
                         binding.imageSlider.setImageList(imageList)
+                        photosList.add(photo)
                     }
                 }
             }
+        }
+
+        binding.buttonLike.setOnClickListener {
+            viewModel.changeLikedStage(RoomtypeWithPhotos(roomtype = flat, photos = photosList))
+            showToast("Квартира добавлена в избранные!")
+
         }
 
         binding.apply {

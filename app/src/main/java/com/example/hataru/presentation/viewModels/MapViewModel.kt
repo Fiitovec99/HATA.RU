@@ -33,35 +33,17 @@ class MapViewModel(private val useCase: GetFlatsUseCase, private val photosCase:
 
         if (userId != null && roomId != null) {
             val favoriteFlatDocument = favoriteFlatsCollection.document(roomId)
-
-            // Проверяем, есть ли комната в избранных
-            favoriteFlatDocument.get().addOnSuccessListener { documentSnapshot ->
-                if (documentSnapshot.exists()) {
-                    // Комната уже в избранных, значит удаляем ее
-                    favoriteFlatDocument.delete()
-                        .addOnSuccessListener {
-                            Log.d("TAG", "Room removed from favorites: $roomId")
-                        }
-                        .addOnFailureListener { e ->
-                            Log.w("TAG", "Error removing room from favorites", e)
-                        }
-                } else {
-                    // Комнаты нет в избранных, добавляем ее
-                    favoriteFlatDocument.set(roomtypeWithPhotos)
-                        .addOnSuccessListener {
-                            Log.d("TAG", "Room added to favorites: $roomId")
-                        }
-                        .addOnFailureListener { e ->
-                            Log.w("TAG", "Error adding room to favorites", e)
-                        }
+            // Комнаты нет в избранных, добавляем ее
+            favoriteFlatDocument.set(roomtypeWithPhotos)
+                .addOnSuccessListener {
+                    Log.d("TAG", "Room added to favorites: $roomId")
                 }
-            }.addOnFailureListener { e ->
-                Log.w("TAG", "Error checking if room is in favorites", e)
-            }
+                .addOnFailureListener { e ->
+                    Log.w("TAG", "Error adding room to favorites", e)
+                }
+
         }
     }
-
-
 
 
     private val _visibleFlats = MutableLiveData<List<Roomtype>?>()
@@ -102,7 +84,6 @@ class MapViewModel(private val useCase: GetFlatsUseCase, private val photosCase:
             _url.value = photosResult
         }
     }
-
 
 
 }
