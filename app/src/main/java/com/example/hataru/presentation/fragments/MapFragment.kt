@@ -280,6 +280,9 @@ class MapFragment : Fragment(), CameraListener, ViewTreeObserver.OnPreDrawListen
             findNavController().navigate(R.id.flatFragment, args)
 
         }
+        adapter.onLikeButtonClickListener={ flat ->
+            viewModel.changeLikedStage(flat)
+        }
     }
 
     override fun onDestroy() {
