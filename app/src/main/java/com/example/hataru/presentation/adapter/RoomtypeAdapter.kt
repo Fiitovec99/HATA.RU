@@ -51,11 +51,9 @@ class RoomtypeAdapter : ListAdapter<RoomtypeWithPhotos, ApartmentViewHolder>(Apa
 
 
     companion object {
-
         const val VIEW_TYPE_LIKED = 1
         const val VIEW_TYPE_NOLIKED = 0
-
-//        const val MAX_POOL_SIZE = 7
+        const val MAX_POOL_SIZE = 7
     }
 
 }

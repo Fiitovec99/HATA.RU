@@ -81,8 +81,9 @@ class FavoriteFlatFragment : Fragment() {
     }
 
     private fun setupLikeButtonClickListener() {
-        //TODO
-
+        apartmentListAdapter.onLikeButtonClickListener = { flat ->
+            viewModel.changeLikedStage(flat)
+        }
     }
     private fun setupApartmentClickListener() {
 //        apartmentListAdapter.onApartmentClickListener = {
