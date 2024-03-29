@@ -15,13 +15,14 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        style="@style/BACKGROUND_CARDVIEW_FLAT"
         android:padding="0dp"
         tools:ignore="MissingConstraints">
 
         <!-- Изображение квартиры -->
         <com.denzcoskun.imageslider.ImageSlider
             android:id="@+id/image_slider"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="225dp"
             app:iss_corner_radius="@integer/material_motion_duration_short_1">
 
@@ -30,13 +31,12 @@
                 android:id="@+id/button_Like"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
+                style="@style/LIKE_BUTTON_ON_NOLIKED_FLAT"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentEnd="true"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="10dp"
-                android:background="?android:attr/selectableItemBackgroundBorderless"
                 android:onClick="Like"
-                android:src="@drawable/vector"
                 tools:ignore="UnknownId" />
         </com.denzcoskun.imageslider.ImageSlider>
 
@@ -47,40 +47,35 @@
             android:id="@+id/text_short_description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            style="@style/TEXT_SHORT_DESCRIPTION"
             android:layout_below="@+id/image_slider"
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
             android:layout_marginStart="12dp"
             android:layout_marginTop="5dp"
-            android:layout_marginEnd="10dp"
-            android:text="Однокомнатная квартира для 4х гостей в доме бизнес класса на ул. Тельмана д. 110"
-            android:textSize="16sp"
-            android:textStyle="bold"/>
+            android:layout_marginEnd="10dp"/>
 
         <TextView
             android:id="@+id/text_View_Area"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            style="@style/TEXT_VIEW_AREA"
             android:layout_below="@+id/text_short_description"
             android:layout_alignParentStart="true"
             android:layout_marginStart="12dp"
             android:layout_marginTop="5dp"
-
-            android:text="47 кв.м."
-            android:textAlignment="center"
-            android:textSize="18sp" />
+            android:textAlignment="center"/>
 
         <TextView
             android:id="@+id/text_View_Price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            style="@style/TEXT_VIEW_PRICE"
             android:layout_below="@+id/text_short_description"
             android:layout_alignEnd="@+id/image_slider"
             android:layout_marginTop="5dp"
             android:layout_marginEnd="20dp"
-            android:text="3 848 ₽"
-            android:textAlignment="center"
-            android:textSize="20sp" />
+            android:textAlignment="center"/>
 
 
     </RelativeLayout>

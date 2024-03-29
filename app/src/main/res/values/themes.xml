@@ -94,4 +94,32 @@
         <item name="android:background">@color/back_light_primary</item>
     </style>
 
+    <style name="TEXT_SHORT_DESCRIPTION">
+        <item name="android:text">Однокомнатная квартира для 4х гостей в доме бизнес класса на ул. Тельмана д. 110</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="TEXT_VIEW_AREA">
+        <item name="android:text">47 кв.м.</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="TEXT_VIEW_PRICE">
+        <item name="android:text">3 848 ₽</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="BACKGROUND_CARDVIEW_FLAT">
+        <item name="android:background">@color/white</item>
+    </style>
+
+    <style name="LIKE_BUTTON_ON_NOLIKED_FLAT">
+        <item name="android:background">?android:attr/selectableItemBackgroundBorderless</item>
+        <item name="android:src">@drawable/vector</item>
+    </style>
+
 </resources>
