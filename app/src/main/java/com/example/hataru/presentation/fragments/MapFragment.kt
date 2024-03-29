@@ -128,7 +128,8 @@ class MapFragment : Fragment(), CameraListener, ViewTreeObserver.OnPreDrawListen
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentMapBinding.inflate(inflater, container, false)
-        initializeMap()
+
+        MapKitFactory.initialize(requireContext())
         initImageLocation()
 
 
@@ -552,9 +553,7 @@ class MapFragment : Fragment(), CameraListener, ViewTreeObserver.OnPreDrawListen
         )
     }
 
-    private fun initializeMap() {
-        MapKitFactory.initialize(requireActivity() as MainActivity)
-    }
+
 
     private fun createBitmapWithText(text: String): Bitmap {
         val textSize = resources.getDimension(R.dimen.text_size)

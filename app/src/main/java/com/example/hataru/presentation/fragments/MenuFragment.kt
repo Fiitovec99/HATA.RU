@@ -15,8 +15,10 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import com.example.hataru.SharedPreferenceManger
 import com.example.hataru.databinding.FragmentMenuBinding
+import com.example.hataru.presentation.activities.OnboardingActivity
 import com.example.hataru.presentation.adapter.FAQAdapter
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.firebase.auth.FirebaseAuth
 
 class MenuFragment : Fragment() {
 
@@ -78,6 +80,13 @@ class MenuFragment : Fragment() {
             } catch (e: ActivityNotFoundException) {
                 Toast.makeText(activity, "Приложение не установлено", Toast.LENGTH_SHORT).show()
             }
+        }
+
+        binding.exitAccount.setOnClickListener {
+            FirebaseAuth.getInstance().signOut()
+            val intent = Intent(context, OnboardingActivity::class.java)
+            startActivity(intent)
+            activity?.finish()
         }
 
 
