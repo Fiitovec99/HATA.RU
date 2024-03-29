@@ -57,7 +57,41 @@
         <item name="android:textColor">@color/white</item>
     </style>
 
+    <style name="INFO_OCTAGON">
+        <item name="android:tint">@color/black</item>
+        <item name="android:background">@android:color/transparent</item>
+    </style>
 
+    <style name="HATA_RU">
+        <item name="android:text">HATA.RU</item>
+        <item name="android:textSize">22dp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
 
+    <style name="SEARCH_TEXT_BACKGROUND">
+        <item name="srcCompat">@drawable/cluster_view_background</item>
+        <item name="android:tint">@color/white</item>
+    </style>
+
+    <style name="SEARCH">
+        <item name="android:hint">Поиск</item>
+        <item name="android:textColorHint">@color/grey</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:background">@drawable/rounded_background</item>
+    </style>
+
+    <style name="SEARCH_BUTTON">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:src">@android:drawable/ic_search_category_default</item>
+    </style>
+
+    <style name="BACKGROUND_LIST_FLATS">
+        <item name="android:background">@color/light_bottom_nav</item>
+    </style>
+
+    <style name="RECYCLER_LIST_FLATS">
+        <item name="android:background">@color/back_light_primary</item>
+    </style>
 
 </resources>
