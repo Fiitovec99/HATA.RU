@@ -118,4 +118,14 @@
         <item name="android:background">@color/support_light_separator</item>
     </style>
 
+    <style name="LIKE_BUTTON_ON_NOLIKED_FLAT">
+        <item name="android:background">?android:attr/selectableItemBackgroundBorderless</item>
+        <item name="android:src">@drawable/vector</item>
+    </style>
+
+    <style name="LIKE_BUTTON_ON_LIKED_FLAT">
+        <item name="android:background">?android:attr/selectableItemBackgroundBorderless</item>
+        <item name="android:src">@drawable/image_like</item>
+    </style>
+
 </resources>
