@@ -128,4 +128,9 @@
         <item name="android:src">@drawable/image_like</item>
     </style>
 
+    <style name="Change_Dising_Button">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:src">@drawable/changing_design_dark</item>
+    </style>
+
 </resources>
