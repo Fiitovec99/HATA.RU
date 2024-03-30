@@ -162,4 +162,14 @@
         <item name="android:textColor">@color/black</item>
     </style>
 
+    <style name="CustomDialogTheme" parent="Theme.MaterialComponents.Light.Dialog">
+        <item name="android:backgroundTint">@color/white</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="Buttons_in_flat_bottom">
+        <item name="android:backgroundTint">@color/white</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
 </resources>

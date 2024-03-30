@@ -163,4 +163,14 @@
         <item name="android:textColor">@color/white</item>
     </style>
 
+    <style name="CustomDialogTheme" parent="Theme.MaterialComponents.Light.Dialog">
+        <item name="android:backgroundTint">@color/color_dark_gray_light</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="Buttons_in_flat_bottom">
+        <item name="android:backgroundTint">@color/purple_200</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
 </resources>

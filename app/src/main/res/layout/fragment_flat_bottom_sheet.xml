@@ -17,47 +17,65 @@
         android:id="@+id/textFlatDetails"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        style="@style/TEXTVIEW_COLOR"
         android:textSize="18sp"
         android:textStyle="bold"
         android:layout_gravity="center_horizontal"
         android:text="О квартире"/>
 
 
-    <TextView
-        android:id="@+id/textFlatPrice"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:layout_marginTop="8dp"
-        tools:text="Price: $100000"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/textFlatLocation"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:layout_marginTop="8dp"
-        tools:text="Улица ..."/>
+        <TextView
+            android:id="@+id/text_short_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/TEXT_SHORT_DESCRIPTION"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="5dp" />
+
+        <TextView
+            android:id="@+id/text_View_Area"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/TEXT_VIEW_AREA"
+            android:layout_below="@+id/text_short_description"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="5dp"
+            android:textAlignment="center"/>
+
+        <TextView
+            android:id="@+id/text_View_Level"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/TEXT_VIEW_Level"
+            android:layout_below="@+id/text_View_Area"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:textAlignment="center"/>
 
 
-    <TextView
-        android:id="@+id/countAdultsFlatTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="18sp"
-        tools:text="Кол-вогостей"/>
-
-    <TextView
-        android:id="@+id/countChildrenFlatTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="18sp"
-        tools:text="Кол-во гостей"/>
+        <TextView
+            android:id="@+id/text_View_Price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/TEXT_VIEW_PRICE"
+            android:layout_below="@+id/text_short_description"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="20dp"
+            android:layout_alignParentEnd="true"
+            android:textAlignment="center"/>
+    </RelativeLayout>
 
     <Button
         android:id="@+id/buttonOpeningFlat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        style="@style/Buttons_in_flat_bottom"
         android:gravity="center"
         android:layout_gravity="center_horizontal"
         android:text="Посмотреть подробнее" />
