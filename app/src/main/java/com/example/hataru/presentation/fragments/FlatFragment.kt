@@ -58,7 +58,6 @@ class FlatFragment : Fragment() {
             Location.text = "Рядом: Удобный выезд на трассу М-4 Дон, магазины, супермаркет \"Магнит\", аптека, остановки общественного транспорта. ТЦ \"Мега\"."
 //            countAdultsFlatTextView.text = "Количество взрослых: "+ flat.adults.toString()
 //            countChildrenFlatTextView.text = "Количество детей: " + flat.children.toString()
-            description.text = flat.description
 
             buttonLike.setOnClickListener {
 
