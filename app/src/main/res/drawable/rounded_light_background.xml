@@ -3,6 +3,6 @@
         android:topLeftRadius="28dp"
         android:topRightRadius="28dp" />
     <solid
-        android:color="@color/dark_bottom_nav"/>
+        android:color="@color/light_bottom_nav"/>
 
 </shape>

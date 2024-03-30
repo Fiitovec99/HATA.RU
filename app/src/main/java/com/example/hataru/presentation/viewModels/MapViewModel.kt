@@ -10,6 +10,9 @@ import com.example.hataru.domain.GetFlatsUseCase
 import com.example.hataru.domain.GetPhotosUseCase
 import com.example.hataru.domain.entity.RoomX
 import com.example.hataru.domain.entity.Roomtype
+import com.example.hataru.domain.entity.RoomtypeWithPhotos
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
@@ -19,6 +22,28 @@ class MapViewModel(private val useCase: GetFlatsUseCase, private val photosCase:
     var latitude: Double = 0.0
     var longitude: Double = 0.0
     var zoom: Float = 14.0f
+
+    private val firestore = FirebaseFirestore.getInstance()
+    private val auth = FirebaseAuth.getInstance()
+
+    fun changeLikedStage(roomtypeWithPhotos: RoomtypeWithPhotos?) {
+        val roomId = roomtypeWithPhotos?.roomtype?.id
+        val userId = auth.currentUser?.uid
+        val favoriteFlatsCollection = firestore.collection(userId.toString())
+
+        if (userId != null && roomId != null) {
+            val favoriteFlatDocument = favoriteFlatsCollection.document(roomId)
+            // Комнаты нет в избранных, добавляем ее
+            favoriteFlatDocument.set(roomtypeWithPhotos)
+                .addOnSuccessListener {
+                    Log.d("TAG", "Room added to favorites: $roomId")
+                }
+                .addOnFailureListener { e ->
+                    Log.w("TAG", "Error adding room to favorites", e)
+                }
+
+        }
+    }
 
 
     private val _visibleFlats = MutableLiveData<List<Roomtype>?>()
@@ -59,7 +84,6 @@ class MapViewModel(private val useCase: GetFlatsUseCase, private val photosCase:
             _url.value = photosResult
         }
     }
-
 
 
 }

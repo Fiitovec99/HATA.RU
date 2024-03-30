@@ -51,10 +51,8 @@ class FlatBottomSheetFragment : BottomSheetDialogFragment() {
 
 
         binding.apply {
-            textFlatPrice.text = "Цена аренды: " + flat.price!!.toDouble().toString() + "р"
-            textFlatLocation.text = flat.address
-            countAdultsFlatTextView.text = "Количество взрослых: "+ flat.adults.toString()
-            countChildrenFlatTextView.text = "Количество детей: " + flat.children.toString()
+            textViewPrice.text = flat.price + "₽"
+            textShortDescription.text = "Однокомнатная квартира для 4-х гостей на " + flat.address
 
             buttonOpeningFlat.setOnClickListener{
 

@@ -2,6 +2,7 @@ package com.example.hataru.presentation.fragments
 
 
 import android.content.ActivityNotFoundException
+import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
 
@@ -12,11 +13,15 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import com.example.hataru.R
 import com.example.hataru.SharedPreferenceManger
 import com.example.hataru.databinding.FragmentMenuBinding
+import com.example.hataru.presentation.activities.OnboardingActivity
 import com.example.hataru.presentation.adapter.FAQAdapter
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.firebase.auth.FirebaseAuth
 
 class MenuFragment : Fragment() {
 
@@ -80,6 +85,13 @@ class MenuFragment : Fragment() {
             }
         }
 
+        binding.exitAccount.setOnClickListener {
+            FirebaseAuth.getInstance().signOut()
+            val intent = Intent(context, OnboardingActivity::class.java)
+            startActivity(intent)
+            activity?.finish()
+        }
+
 
         // Инициализация ExpandableListView
         val expandableListView = binding.expandableListView
@@ -94,7 +106,8 @@ class MenuFragment : Fragment() {
         var checkedTheme = sharedPreferenceManger.theme
 
         val themeDialog = MaterialAlertDialogBuilder(
-            requireContext()
+            requireContext(),
+            R.style.CustomDialogTheme
         )
             .setTitle("Тема приложения")
             .setPositiveButton("Ok") { _, _ ->

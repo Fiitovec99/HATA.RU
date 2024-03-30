@@ -128,7 +128,8 @@ class MapFragment : Fragment(), CameraListener, ViewTreeObserver.OnPreDrawListen
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentMapBinding.inflate(inflater, container, false)
-        initializeMap()
+
+        MapKitFactory.initialize(requireContext())
         initImageLocation()
 
 
@@ -280,6 +281,10 @@ class MapFragment : Fragment(), CameraListener, ViewTreeObserver.OnPreDrawListen
             findNavController().navigate(R.id.flatFragment, args)
 
         }
+        adapter.onLikeButtonClickListener={ flat ->
+            viewModel.changeLikedStage(flat)
+            showToast("Квартира добавлена в избранные!")
+        }
     }
 
     override fun onDestroy() {
@@ -407,7 +412,7 @@ class MapFragment : Fragment(), CameraListener, ViewTreeObserver.OnPreDrawListen
 
             binding.currentCostTextView.visibility = View.VISIBLE
             binding.currentCostTextView.text =
-                "текущий диапозон цены: " + rangeSlider.values[0].toInt()
+                "текущий диапозон цен: \nот" + rangeSlider.values[0].toInt()
                     .toString() + " до " + rangeSlider.values[1].toInt().toString()
 
         }
@@ -548,9 +553,7 @@ class MapFragment : Fragment(), CameraListener, ViewTreeObserver.OnPreDrawListen
         )
     }
 
-    private fun initializeMap() {
-        MapKitFactory.initialize(requireActivity() as MainActivity)
-    }
+
 
     private fun createBitmapWithText(text: String): Bitmap {
         val textSize = resources.getDimension(R.dimen.text_size)

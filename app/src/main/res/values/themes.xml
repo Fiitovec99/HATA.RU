@@ -40,5 +40,137 @@
         <item name="android:backgroundTint">@color/white</item>
     </style>
 
+    <style name="BottomNavigationView">
+        <item name="android:background">@color/light_bottom_nav</item>
+    </style>
+
+    <style name="BOTTOM_SHEET_FRAGMENT_MAP">
+        <item name="android:background">@drawable/rounded_light_background</item>
+        <item name="android:backgroundTint">@color/back_light_primary</item>
+    </style>
+
+    <style name="FRAGMENT_FLAT_BOTTOM_SHEET">
+        <item name="android:background">@drawable/rounded_light_background</item>
+    </style>
+
+    <style name="BUTTONS_ON_MAP">
+        <item name="android:backgroundTint">@color/light_bottom_nav</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="INFO_OCTAGON">
+        <item name="android:tint">@color/black</item>
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+
+    <style name="HATA_RU">
+        <item name="android:text">HATA.RU</item>
+        <item name="android:textSize">22dp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="SEARCH_TEXT_BACKGROUND">
+        <item name="srcCompat">@drawable/cluster_view_background</item>
+        <item name="android:tint">@color/white</item>
+    </style>
+
+    <style name="SEARCH">
+        <item name="android:hint">Поиск</item>
+        <item name="android:textColorHint">@color/grey</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:background">@drawable/rounded_background</item>
+    </style>
+
+    <style name="SEARCH_BUTTON">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:src">@android:drawable/ic_search_category_default</item>
+    </style>
+
+    <style name="BACKGROUND_LIST_FLATS">
+        <item name="android:background">@color/light_bottom_nav</item>
+    </style>
+
+    <style name="RECYCLER_LIST_FLATS">
+        <item name="android:background">@color/back_light_primary</item>
+    </style>
+
+    <style name="TEXT_SHORT_DESCRIPTION">
+        <item name="android:text">Однокомнатная квартира для 4х гостей в доме бизнес класса на ул. Тельмана д. 110</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="TEXT_VIEW_AREA">
+        <item name="android:text">47 кв.м.</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="TEXT_VIEW_Level">
+        <item name="android:text">Этаж: 13</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="TEXT_VIEW_PRICE">
+        <item name="android:text">3 848 ₽</item>
+        <item name="android:textSize">25sp</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="BACKGROUND_CARDVIEW_FLAT">
+        <item name="android:background">@color/white</item>
+    </style>
+
+    <style name="LIKE_BUTTON_ON_NOLIKED_FLAT">
+        <item name="android:background">?android:attr/selectableItemBackgroundBorderless</item>
+        <item name="android:src">@drawable/vector</item>
+    </style>
+
+    <style name="LIKE_BUTTON_ON_LIKED_FLAT">
+        <item name="android:background">?android:attr/selectableItemBackgroundBorderless</item>
+        <item name="android:src">@drawable/image_like</item>
+    </style>
+
+    <style name="Change_Dising_Button">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:src">@drawable/changing_design_light</item>
+    </style>
+
+    <style name="MENU">
+        <item name="android:text">Меню</item>
+        <item name="android:textSize">38dp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="QUESTION">
+        <item name="android:text">Вопрос</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="ANSWER">
+        <item name="android:text">Ответ</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="Buttons_in_flat">
+        <item name="android:backgroundTint">@color/light_bottom_nav</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="CustomDialogTheme" parent="Theme.MaterialComponents.Light.Dialog">
+        <item name="android:backgroundTint">@color/white</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="Buttons_in_flat_bottom">
+        <item name="android:backgroundTint">@color/white</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
 
 </resources>

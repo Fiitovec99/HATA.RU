@@ -8,8 +8,12 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.denzcoskun.imageslider.models.SlideModel
 import com.example.hataru.databinding.FragmentFlatBinding
+import com.example.hataru.domain.entity.Photo
+import com.example.hataru.domain.entity.Photos
 import com.example.hataru.domain.entity.Roomtype
+import com.example.hataru.domain.entity.RoomtypeWithPhotos
 import com.example.hataru.presentation.viewModels.FlatViewModel
+import com.example.hataru.showToast
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class FlatFragment : Fragment() {
@@ -54,42 +58,40 @@ class FlatFragment : Fragment() {
             Location.text = "Рядом: Удобный выезд на трассу М-4 Дон, магазины, супермаркет \"Магнит\", аптека, остановки общественного транспорта. ТЦ \"Мега\"."
 //            countAdultsFlatTextView.text = "Количество взрослых: "+ flat.adults.toString()
 //            countChildrenFlatTextView.text = "Количество детей: " + flat.children.toString()
-            description.text = flat.description
+
+            buttonLike.setOnClickListener {
+
+            }
 
 
         }
 
-
-        //Log.d("flat",flat.toString())
-
-        //Log.d("asdasd", photos?.filter { roomX: RoomX -> roomX.name.trim() == flat.name.toString().trim() }.toString())
-
-
-
-
-
-//        imageList.add(SlideModel("https://bit.ly/2YoJ77H", "The animal population decreased by 58 percent in 42 years."))
-//        imageList.add(SlideModel("https://bit.ly/2BteuF2", "Elephants and tigers may become extinct."))
-//        imageList.add(SlideModel("https://bit.ly/3fLJf72", "And people do that."))
-
-
-
-
-
     }
+
+
 
     override fun onStart() {
         val imageList = ArrayList<SlideModel>() // Create image list
+        var photosList = mutableListOf<Photo>()
         viewModel.photo.observe(viewLifecycleOwner){
+
             it.rooms.forEach {
                 if(it.name == flat.name.toString()){
+
                     it.photos?.forEach {
                             photo ->
                         photo.url?.let { it1 -> imageList.add(SlideModel(photo.url))}
                         binding.imageSlider.setImageList(imageList)
+                        photosList.add(photo)
                     }
                 }
             }
+        }
+
+        binding.buttonLike.setOnClickListener {
+            viewModel.changeLikedStage(RoomtypeWithPhotos(roomtype = flat, photos = photosList))
+            showToast("Квартира добавлена в избранные!")
+
         }
 
         super.onStart()

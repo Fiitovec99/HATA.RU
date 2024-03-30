@@ -21,36 +21,18 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            style="@style/BUTTONS_ON_MAP"
             android:text="фильтр цен" />
 
         <Button
             android:id="@+id/deleteFilter"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            style="@style/BUTTONS_ON_MAP"
             android:layout_weight="1"
             android:text="удалить фильтр" />
 
-        <!--        <Button-->
 
-        <!--            android:id="@+id/buttonShowFLatsMore2500Cost"-->
-        <!--            android:layout_width="0dp"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:layout_weight="1"-->
-        <!--            android:text="От 2500" />-->
-
-        <!--        <Button-->
-        <!--            android:id="@+id/buttonShowFLatsMore3000Cost"-->
-        <!--            android:layout_width="0dp"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:layout_weight="1"-->
-        <!--            android:text="От 3000" />-->
-
-        <!--        <Button-->
-        <!--            android:id="@+id/buttonShowFLatsMore3500Cost"-->
-        <!--            android:layout_width="0dp"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:layout_weight="1"-->
-        <!--            android:text="От 3500" />-->
 
     </LinearLayout>
 
@@ -122,8 +104,7 @@
             android:id="@+id/persistentBottomSheet"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/rounded_black_background"
-
+            style="@style/BOTTOM_SHEET_FRAGMENT_MAP"
             android:elevation="4dp"
             android:orientation="vertical"
             app:behavior_peekHeight="40dp"
@@ -134,6 +115,7 @@
                 android:id="@+id/countFlatsOnMap"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
+                style="@style/TEXTVIEW_COLOR"
                 android:gravity="center"
                 android:textSize="25dp" />
 

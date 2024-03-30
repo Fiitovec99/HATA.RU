@@ -1,14 +1,15 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/black"
+    style="@style/BACKGROUND_LIST_FLATS"
     android:orientation="vertical"
     android:padding="16dp">
 
     <TextView
         android:id="@+id/tvSelectedPrice"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        style="@style/TEXTVIEW_COLOR"/>
 
     <com.google.android.material.slider.RangeSlider
         android:id="@+id/rangeSlider"
@@ -21,6 +22,7 @@
         android:id="@+id/btnApplyPreferences"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        style="@style/Buttons_in_flat_bottom"
         android:text="Применить" />
 
 </LinearLayout>

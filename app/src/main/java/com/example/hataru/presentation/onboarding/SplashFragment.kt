@@ -42,7 +42,7 @@ class SplashFragment : Fragment() {
             }
         }
 
-        mainHandler.postDelayed(runnable, 3000) //TODO поставить 1500
+        mainHandler.postDelayed(runnable, 0) //TODO поставить 1500
 
         return inflater.inflate(R.layout.fragment_splash, container, false)
     }

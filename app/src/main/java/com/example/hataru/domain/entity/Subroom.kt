@@ -6,4 +6,4 @@ import kotlinx.parcelize.Parcelize
 
 //TODO а что тут должно быть?
 @Parcelize
-class Subroom : Parcelable
+class Subroom(var s : String?) : Parcelable
