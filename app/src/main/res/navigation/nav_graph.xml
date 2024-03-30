@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_listFlatsFragment_to_flatFragment"
             app:destination="@id/flatFragment" />
+        <action
+            android:id="@+id/action_listFlatsFragment_to_infoFragment"
+            app:destination="@id/infoFragment" />
     </fragment>
     <fragment
         android:id="@+id/mapFragment"
@@ -56,4 +59,8 @@
         android:name="com.example.hataru.presentation.fragments.FavoriteFlatFragment"
         android:label="fragment_favorite_flat"
         tools:layout="@layout/fragment_favorite_flat" />
+    <fragment
+        android:id="@+id/infoFragment"
+        android:name="com.example.hataru.presentation.fragments.InfoFragment"
+        android:label="InfoFragment" />
 </navigation>

@@ -412,7 +412,7 @@ class MapFragment : Fragment(), CameraListener, ViewTreeObserver.OnPreDrawListen
 
             binding.currentCostTextView.visibility = View.VISIBLE
             binding.currentCostTextView.text =
-                "текущий диапозон цены: " + rangeSlider.values[0].toInt()
+                "текущий диапозон цен: \nот" + rangeSlider.values[0].toInt()
                     .toString() + " до " + rangeSlider.values[1].toInt().toString()
 
         }

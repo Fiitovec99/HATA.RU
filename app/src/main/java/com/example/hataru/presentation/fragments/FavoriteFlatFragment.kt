@@ -9,6 +9,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentContainerView
 import androidx.navigation.fragment.findNavController
@@ -40,6 +41,10 @@ class FavoriteFlatFragment : Fragment() {
         viewModel.favoriteFlats.observe(viewLifecycleOwner) { favoriteFlats ->
             Log.d("FavoriteFlatFragment", "Favorite flats observed: $favoriteFlats")
             apartmentListAdapter.submitList(favoriteFlats)
+        }
+
+        view.findViewById<ImageButton>(R.id.imageView7)?.setOnClickListener {
+            findNavController().navigate(R.id.infoFragment)
         }
 
     }

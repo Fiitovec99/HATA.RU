@@ -3,30 +3,37 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    style="@style/RECYCLER_LIST_FLATS"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".presentation.fragments.MenuFragment"
     android:background="#E5E4E4"
     android:orientation="vertical">
 
-
-    <TextView
-        android:id="@+id/textView"
-        android:gravity="center"
-        android:textSize="38dp"
-        android:textStyle="bold"
-        android:textColor="@color/black"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="HATA.RU" />
+        style="@style/BACKGROUND_LIST_FLATS"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textView"
+            android:gravity="center"
+            style="@style/MENU"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="HATA.RU" />
+    </LinearLayout>
 
     <androidx.cardview.widget.CardView
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        style="@style/BACKGROUND_CARDVIEW_FLAT"
         android:layout_gravity="center"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginBottom="16dp"
+        android:layout_marginTop="16dp"
         app:cardCornerRadius="25dp"
         app:cardElevation="4dp">
 
@@ -34,6 +41,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="16dp"
+            style="@style/TEXTVIEW_COLOR"
             android:text="HATA.RU — сервис краткосрочной аренды апартаментов. Мы предоставляем понятный, предсказуемый сервис, где будет чисто и безопасно.
 
 Вам не нужно встречаться с менеджерами или собственниками квартир, после бронирования вам будут доступны инструкции по самостоятельному заезду.
@@ -49,6 +57,7 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        style="@style/BACKGROUND_CARDVIEW_FLAT"
         android:layout_gravity="center"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
@@ -65,6 +74,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Контактная информация"
+                style="@style/TEXTVIEW_COLOR"
                 android:layout_gravity="center"
                 android:textStyle="bold"
                 android:textSize="16sp"/>
@@ -73,6 +83,7 @@
                 android:id="@+id/LinkToTheWebsite"
                 android:layout_width="wrap_content"
                 android:paddingTop="10dp"
+                style="@style/TEXTVIEW_COLOR"
                 android:layout_height="wrap_content"
                 android:text="@string/site_string"
                 android:textSize="20sp"/>
@@ -81,6 +92,7 @@
                 android:id="@+id/textViewOpenWhatsUp"
                 android:layout_width="wrap_content"
                 android:paddingTop="10dp"
+                style="@style/TEXTVIEW_COLOR"
                 android:layout_height="wrap_content"
                 android:text="@string/whatsUp_string"
                 android:textSize="20sp"/>

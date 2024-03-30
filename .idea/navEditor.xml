@@ -20,13 +20,13 @@
                       </LayoutPositions>
                     </value>
                   </entry>
-                  <entry key="favoriteFlatFragment3">
+                  <entry key="favoriteFlatFragment">
                     <value>
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="-185" />
-                            <option name="y" value="23" />
+                            <option name="x" value="465" />
+                            <option name="y" value="10" />
                           </Point>
                         </option>
                       </LayoutPositions>
@@ -70,6 +70,18 @@
                       </LayoutPositions>
                     </value>
                   </entry>
+                  <entry key="infoFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="-174" />
+                            <option name="y" value="-7" />
+                          </Point>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
                   <entry key="listFlatsFragment">
                     <value>
                       <LayoutPositions>
@@ -82,6 +94,11 @@
                         <option name="myPositions">
                           <map>
                             <entry key="action_listFlatsFragment_to_flatFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                            <entry key="action_listFlatsFragment_to_infoFragment">
                               <value>
                                 <LayoutPositions />
                               </value>
