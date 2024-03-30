@@ -107,9 +107,15 @@
         <item name="android:textColor">@color/black</item>
     </style>
 
+    <style name="TEXT_VIEW_Level">
+        <item name="android:text">Этаж: 13</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
     <style name="TEXT_VIEW_PRICE">
         <item name="android:text">3 848 ₽</item>
-        <item name="android:textSize">20sp</item>
+        <item name="android:textSize">25sp</item>
         <item name="android:textColor">@color/black</item>
     </style>
 
@@ -148,6 +154,11 @@
     <style name="ANSWER">
         <item name="android:text">Ответ</item>
         <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="Buttons_in_flat">
+        <item name="android:backgroundTint">@color/light_bottom_nav</item>
         <item name="android:textColor">@color/black</item>
     </style>
 

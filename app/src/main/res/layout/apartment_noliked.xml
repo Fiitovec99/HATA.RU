@@ -67,14 +67,27 @@
             android:textAlignment="center"/>
 
         <TextView
+            android:id="@+id/text_View_Level"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/TEXT_VIEW_Level"
+            android:layout_below="@+id/text_View_Area"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:textAlignment="center"/>
+
+
+        <TextView
             android:id="@+id/text_View_Price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/TEXT_VIEW_PRICE"
             android:layout_below="@+id/text_short_description"
             android:layout_alignEnd="@+id/image_slider"
-            android:layout_marginTop="5dp"
-            android:layout_marginEnd="20dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="25dp"
             android:textAlignment="center"/>
 
 
