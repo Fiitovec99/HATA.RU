@@ -115,6 +115,7 @@
                 android:id="@+id/countFlatsOnMap"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
+                style="@style/TEXTVIEW_COLOR"
                 android:gravity="center"
                 android:textSize="25dp" />
 
