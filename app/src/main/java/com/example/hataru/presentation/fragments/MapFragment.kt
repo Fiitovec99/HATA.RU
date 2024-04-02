@@ -199,8 +199,10 @@ class MapFragment : Fragment(), CameraListener, ViewTreeObserver.OnPreDrawListen
                 !Regex(".*\\b0\\b.*").matches(str)
             ) {
                 bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+
             } else {
                 bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+
             }
 
         }
@@ -211,16 +213,7 @@ class MapFragment : Fragment(), CameraListener, ViewTreeObserver.OnPreDrawListen
                 val isBottomSheetExpanded = newState == BottomSheetBehavior.STATE_EXPANDED
                 val isBottomSheetHidden = newState == BottomSheetBehavior.STATE_HIDDEN
 
-                // Выполняем нужные действия в зависимости от состояния BottomSheet
                 if (isBottomSheetExpanded) {
-
-
-
-//                    viewModel.visibleFlats.observe(viewLifecycleOwner) { flats ->
-//                        val roomtypeWithPhotosList = flats?.map { RoomtypeWithPhotos(it, emptyList()) }
-//                        adapter.submitList(roomtypeWithPhotosList)
-//                    }
-
                     viewModel.combinedData.observe(viewLifecycleOwner) { (roomtypes, roomxList) ->
                         roomtypes?.let { roomtypes ->
                             roomxList?.let { roomxList ->
@@ -238,13 +231,18 @@ class MapFragment : Fragment(), CameraListener, ViewTreeObserver.OnPreDrawListen
 
 
 
-                    // BottomSheet был выдвинут
-                    // Выполняем нужные действия
+                    binding.apply {
+                        deleteFilter.visibility= View.GONE
+                        buttonFilterFlats.visibility = View.GONE
+                    }
                 } else if (isBottomSheetHidden) {
                     // BottomSheet был скрыт
                     // Выполняем нужные действия
                 } else {
-
+                    binding.apply {
+                        deleteFilter.visibility= View.VISIBLE
+                        buttonFilterFlats.visibility = View.VISIBLE
+                    }
                 }
                 updateMapViewInteraction(newState)
             }
@@ -412,7 +410,7 @@ class MapFragment : Fragment(), CameraListener, ViewTreeObserver.OnPreDrawListen
 
             binding.currentCostTextView.visibility = View.VISIBLE
             binding.currentCostTextView.text =
-                "текущий диапозон цен: \nот" + rangeSlider.values[0].toInt()
+                "текущий диапозон цен: \nот " + rangeSlider.values[0].toInt()
                     .toString() + " до " + rangeSlider.values[1].toInt().toString()
 
         }
