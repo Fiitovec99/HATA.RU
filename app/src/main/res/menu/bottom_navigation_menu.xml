@@ -3,22 +3,22 @@
     <item
         android:id="@+id/listFlatsFragment"
         android:icon="@drawable/ic_icon_home"
-        android:title="home"
+        android:title="Главная"
         />
     <item
         android:id="@+id/mapFragment"
         android:icon="@drawable/ic_icon_map"
-        android:title="map"
+        android:title="Карта"
         />
     <item
         android:id="@+id/favoriteFlatFragment"
         android:icon="@drawable/ic_icon_favorite"
-        android:title="favorite"
+        android:title="Избранные"
         />
     <item
         android:id="@+id/menuFragment"
         android:icon="@drawable/ic_icon_menu"
-        android:title="menu"
+        android:title="Меню"
         />
 
 </menu>
