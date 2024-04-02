@@ -33,3 +33,9 @@ import androidx.fragment.app.Fragment
         val granted = PackageManager.PERMISSION_GRANTED
         return ContextCompat.checkSelfPermission(context, permission) == granted
     }
+
+    fun GetDescriptionFlat(s : String) : List<String>{
+        val regex = Regex("""[^:]+:\s*"([^"]+)"""")
+        val matches = regex.findAll(s)
+        return matches.map { it.groupValues[1] }.toList()
+    }
