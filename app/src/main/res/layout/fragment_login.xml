@@ -98,7 +98,7 @@
         android:id="@+id/textViewHasAccount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="уже есть аккаут?"
+        android:text="уже есть аккаунт?"
         android:textSize="14sp"
         style="@style/TEXTVIEW_COLOR"
         app:layout_constraintBottom_toBottomOf="parent"
