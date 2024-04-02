@@ -15,4 +15,5 @@ class ApartmentViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
     val image_slider = view.findViewById<ImageSlider>(R.id.image_slider)
 //    val twDescription = view.findViewById<TextView>(R.id.text_View_Description)
     val buttonLike = view.findViewById<ImageButton>(R.id.button_Like)
+    val twLevel = view.findViewById<TextView>(R.id.text_View_Level)
 }
