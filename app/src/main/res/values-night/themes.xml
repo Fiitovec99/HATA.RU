@@ -165,7 +165,7 @@
         <item name="android:textColor">@color/white</item>
     </style>
 
-    <style name="CustomDialogTheme" parent="Theme.MaterialComponents.Light.Dialog">
+    <style name="CustomDialogTheme" parent="Theme.MaterialComponents.Dialog">
         <item name="android:backgroundTint">@color/color_dark_gray_light</item>
         <item name="android:textColor">@color/white</item>
     </style>
