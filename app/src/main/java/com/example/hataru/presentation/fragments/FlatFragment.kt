@@ -5,8 +5,12 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.ImageButton
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.denzcoskun.imageslider.models.SlideModel
+import com.example.hataru.R
 import com.example.hataru.databinding.FragmentFlatBinding
 import com.example.hataru.domain.entity.Photo
 import com.example.hataru.domain.entity.Photos
@@ -64,6 +68,14 @@ class FlatFragment : Fragment() {
             }
 
 
+        }
+
+        view.findViewById<Button>(R.id.button2)?.setOnClickListener {
+            showToast("В разработке!")
+        }
+
+        view.findViewById<Button>(R.id.button3)?.setOnClickListener {
+            showToast("В разработке!")
         }
 
     }
