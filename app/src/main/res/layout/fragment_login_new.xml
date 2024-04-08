@@ -11,7 +11,7 @@
 
     <ImageView
         android:id="@+id/wave"
-        style="@style/ENTER_LOGO"
+        style="@style/ENTER_LOGO_NEW"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:adjustViewBounds="true"
@@ -99,15 +99,15 @@
         android:layout_height="wrap_content"
         android:layout_gravity="start"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="100dp"
         android:layout_marginEnd="24dp"
+        android:layout_marginBottom="142dp"
         android:backgroundTint="@color/light_blue"
         android:enabled="true"
         android:text="Зарегистрироваться"
+        app:layout_constraintBottom_toTopOf="@+id/imageView8"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/confirm_password" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <ImageView
         android:id="@+id/imageView8"

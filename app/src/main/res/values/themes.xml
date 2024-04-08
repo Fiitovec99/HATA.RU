@@ -17,6 +17,10 @@
         <item name="android:src">@drawable/enter_white</item>
     </style>
 
+    <style name="ENTER_LOGO_NEW">
+        <item name="android:src">@drawable/wave</item>
+    </style>
+
     <style name="BACKGROUND">
         <item name="android:background">@color/white</item>
     </style>
