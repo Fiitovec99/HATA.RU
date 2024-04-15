@@ -17,6 +17,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.hataru.R
 import com.example.hataru.databinding.FragmentLogUpBinding
+import com.example.hataru.databinding.FragmentLogUpNewBinding
 import com.example.hataru.presentation.activities.MainActivity
 import com.example.hataru.showToast
 import com.google.firebase.auth.FirebaseAuth
@@ -27,7 +28,7 @@ class LogUpFragment : Fragment() {
 
     private lateinit var firebaseAuth: FirebaseAuth
     private lateinit var logUpViewModel: LogUpViewModel
-    private var _binding: FragmentLogUpBinding? = null
+    private var _binding: FragmentLogUpNewBinding? = null
 
 
     private val binding get() = _binding!!
@@ -39,7 +40,7 @@ class LogUpFragment : Fragment() {
     ): View? {
         firebaseAuth = FirebaseAuth.getInstance()
 
-        _binding = FragmentLogUpBinding.inflate(inflater, container, false)
+        _binding = FragmentLogUpNewBinding.inflate(inflater, container, false)
         return binding.root
 
     }

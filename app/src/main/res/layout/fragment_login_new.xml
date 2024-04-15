@@ -118,6 +118,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@drawable/bottom_roof" />
 
+    <TextView
+        android:id="@+id/textViewHasAccount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="уже есть аккаут?"
+        android:textSize="14sp"
+        style="@style/TEXTVIEW_COLOR"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/login"
+        app:layout_constraintVertical_bias="0.168" />
+
     <ProgressBar
         android:id="@+id/loading"
         android:layout_width="wrap_content"
