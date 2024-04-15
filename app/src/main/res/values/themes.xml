@@ -21,6 +21,10 @@
         <item name="android:src">@drawable/wave</item>
     </style>
 
+    <style name="ENTER_ROOF">
+        <item name="android:src">@drawable/bottom_roof</item>
+    </style>
+
     <style name="BACKGROUND">
         <item name="android:background">@color/white</item>
     </style>
