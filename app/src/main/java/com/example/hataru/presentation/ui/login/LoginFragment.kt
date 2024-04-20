@@ -58,6 +58,7 @@ class LoginFragment : Fragment() {
 
         val usernameEditText = binding.username
         val passwordEditText = binding.password
+        val confirmPasswordEditText = binding.confirmPassword
         val loginButton = binding.login
         val loadingProgressBar = binding.loading
 
@@ -116,6 +117,7 @@ class LoginFragment : Fragment() {
         }
         usernameEditText.addTextChangedListener(afterTextChangedListener)
         passwordEditText.addTextChangedListener(afterTextChangedListener)
+        confirmPasswordEditText.addTextChangedListener(afterTextChangedListener)
         passwordEditText.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 loginViewModel.login(
@@ -128,10 +130,16 @@ class LoginFragment : Fragment() {
 
         _binding!!.login.setOnClickListener {
 
-            if(usernameEditText.text.toString()=="" || passwordEditText.text.toString()==""){
+            if(usernameEditText.text.toString()=="" || passwordEditText.text.toString()=="" || confirmPasswordEditText.text.toString()==""){
                 showToast("Вы не заполнили одно из полей")
                 return@setOnClickListener
             }
+
+            if(passwordEditText.text.toString() != confirmPasswordEditText.text.toString()) {
+                showToast("Пароли не совпадают")
+                return@setOnClickListener
+            }
+
             loadingProgressBar.visibility = View.VISIBLE
             firebaseAuth.createUserWithEmailAndPassword(
                 usernameEditText.text.toString(),
