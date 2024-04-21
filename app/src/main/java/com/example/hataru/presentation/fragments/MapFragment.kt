@@ -89,6 +89,8 @@ class MapFragment : Fragment(), CameraListener, ViewTreeObserver.OnPreDrawListen
     private lateinit var imageLocation: ImageView
     private var flats: List<Roomtype>? = null
 
+    private var roomtypeWithPhotosList: List<RoomtypeWithPhotos> = emptyList()
+
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private val requestPermissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
@@ -224,7 +226,7 @@ class MapFragment : Fragment(), CameraListener, ViewTreeObserver.OnPreDrawListen
                     viewModel.combinedData.observe(viewLifecycleOwner) { (roomtypes, roomxList) ->
                         roomtypes?.let { roomtypes ->
                             roomxList?.let { roomxList ->
-                                val roomtypeWithPhotosList = roomtypes.map { roomtype ->
+                                roomtypeWithPhotosList = roomtypes.map { roomtype ->
                                     val matchingPhoto = roomxList.firstOrNull { roomx ->
                                         roomx.name == roomtype.name
                                     }?.photos ?: emptyList()
@@ -300,7 +302,7 @@ class MapFragment : Fragment(), CameraListener, ViewTreeObserver.OnPreDrawListen
 
         setFirstFlats()
 
-        adapter = RoomtypeAdapter()
+        adapter = RoomtypeAdapter(roomtypeWithPhotosList)
         setupApartmentClickListener()
         binding.recyclerViewBottomSheet.adapter = adapter
         mapView.map.addCameraListener(this)

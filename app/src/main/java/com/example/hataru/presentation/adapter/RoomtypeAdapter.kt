@@ -1,5 +1,6 @@
 package com.example.hataru.presentation.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,7 +12,7 @@ import com.example.hataru.domain.entity.Roomtype
 import com.example.hataru.domain.entity.RoomtypeWithPhotos
 import java.util.Dictionary
 
-class RoomtypeAdapter : ListAdapter<RoomtypeWithPhotos, ApartmentViewHolder>(ApartmentDiffCallback()) {
+class RoomtypeAdapter(private val roomtypeWithPhotosList: List<RoomtypeWithPhotos>) : ListAdapter<RoomtypeWithPhotos, ApartmentViewHolder>(ApartmentDiffCallback()) {
 
     var mdesc = mapOf<String, String>(
         "467150" to "Однокомнатная квартира на Сиверса 32 для 4 человек",
@@ -88,6 +89,11 @@ class RoomtypeAdapter : ListAdapter<RoomtypeWithPhotos, ApartmentViewHolder>(Apa
         "349715" to "55"
     )
 
+    private var originalList: List<RoomtypeWithPhotos> = roomtypeWithPhotosList
+
+
+
+
     var onLikeButtonClickListener: ((RoomtypeWithPhotos) -> Unit)? = null
     var onApartmentClickListener: ((RoomtypeWithPhotos) -> Unit)? = null
 
@@ -119,7 +125,17 @@ class RoomtypeAdapter : ListAdapter<RoomtypeWithPhotos, ApartmentViewHolder>(Apa
 
 
 
+    }
 
+    fun filter(query: String) {
+        val filteredList = if (query.isEmpty() || query == "") {
+            originalList
+        } else {
+            originalList.filter { roomtypeWithPhotos ->
+                mdesc[roomtypeWithPhotos.roomtype.id]!!.contains(query, ignoreCase = true)
+            }
+        }
+        submitList(filteredList)
     }
 
     override fun getItemCount(): Int {

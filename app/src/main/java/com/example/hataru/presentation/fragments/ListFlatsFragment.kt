@@ -2,11 +2,16 @@ package com.example.hataru.presentation.fragments
 
 import android.os.Bundle
 import android.os.Parcelable
+import android.text.Editable
+import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.EditText
 import android.widget.ImageButton
+import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentContainerView
 import androidx.navigation.fragment.findNavController
@@ -22,6 +27,8 @@ class ListFlatsFragment : Fragment() {
 
     private val viewModel by viewModel<ListFlatsViewModel>()
 
+    private var roomtypeWithPhotosList: List<RoomtypeWithPhotos> = emptyList()
+
     private lateinit var apartmentListAdapter: RoomtypeAdapter
     private var apartmentContainer: FragmentContainerView? = null
 
@@ -35,9 +42,6 @@ class ListFlatsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         apartmentContainer = view.findViewById(R.id.apartment_container)
-        setupRecyclerView()
-
-
 
 
 
@@ -45,12 +49,13 @@ class ListFlatsFragment : Fragment() {
         viewModel.combinedData.observe(viewLifecycleOwner) { (roomtypes, roomxList) ->
             roomtypes?.let { roomtypes ->
                 roomxList?.let { roomxList ->
-                    val roomtypeWithPhotosList = roomtypes.map { roomtype ->
+                    roomtypeWithPhotosList = roomtypes.map { roomtype ->
                         val matchingPhoto = roomxList.firstOrNull { roomx ->
                             roomx.name == roomtype.name
                         }?.photos ?: emptyList()
                         RoomtypeWithPhotos(roomtype, matchingPhoto)
                     }
+                    setupRecyclerView()
                     apartmentListAdapter.submitList(roomtypeWithPhotosList)
                 }
             }
@@ -61,27 +66,46 @@ class ListFlatsFragment : Fragment() {
             findNavController().navigate(R.id.infoFragment)
         }
 
+        val editTextSearch = view.findViewById<EditText>(R.id.editText_search)
+        editTextSearch.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                // Вызывается перед изменением текста
+            }
 
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                performSearch()
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                // Вызывается после изменения текста
+                performSearch()
+            }
+        })
 
     }
 
-    private fun isOnePaneMode(): Boolean {
-        val apartmentContainer = activity?.findViewById<FragmentContainerView>(R.id.apartment_container)
-        return apartmentContainer == null
+    private fun performSearch() {
+        val query = view?.findViewById<EditText>(R.id.editText_search)?.text.toString().trim()
+        apartmentListAdapter.filter(query)
     }
 
-    private fun launchFragment(fragment: Fragment) {
-        parentFragmentManager.popBackStack()
-        parentFragmentManager.beginTransaction()
-            .replace(R.id.apartment_container, fragment)
-            .addToBackStack(null)
-            .commit()
-    }
+//    private fun isOnePaneMode(): Boolean {
+//        val apartmentContainer = activity?.findViewById<FragmentContainerView>(R.id.apartment_container)
+//        return apartmentContainer == null
+//    }
+//
+//    private fun launchFragment(fragment: Fragment) {
+//        parentFragmentManager.popBackStack()
+//        parentFragmentManager.beginTransaction()
+//            .replace(R.id.apartment_container, fragment)
+//            .addToBackStack(null)
+//            .commit()
+//    }
 
     private fun setupRecyclerView() {
         val rvApartmentList = view?.findViewById<RecyclerView>(R.id.rv_apartment_list)
         with(rvApartmentList) {
-            apartmentListAdapter = RoomtypeAdapter()
+            apartmentListAdapter = RoomtypeAdapter(roomtypeWithPhotosList)
             this?.adapter = apartmentListAdapter
 
 
