@@ -24,7 +24,7 @@ class InternetCheckService : BroadcastReceiver() {
         val networkInfo = cm.activeNetworkInfo
 
         if (networkInfo != null && networkInfo.isConnected) {
-            Toast.makeText(context, "Интернет подключен", Toast.LENGTH_SHORT).show()
+            // Toast.makeText(context, "Интернет подключен", Toast.LENGTH_SHORT).show() ИНЕТ ЕСТЬ
         } else {
             showNoInternetDialog(context.applicationContext)
         }

@@ -35,7 +35,6 @@ import com.example.hataru.domain.entity.Roomtype
 import com.example.hataru.domain.entity.RoomtypeWithPhotos
 import com.example.hataru.isLocationEnabled
 import com.example.hataru.presentation.ClusterView
-import com.example.hataru.presentation.activities.MainActivity
 import com.example.hataru.presentation.adapter.RoomtypeAdapter
 import com.example.hataru.presentation.fragments.FlatBottomSheetFragment.Companion.KEY_GET_FLAT
 import com.example.hataru.presentation.viewModels.MapViewModel
@@ -217,7 +216,6 @@ class MapFragment : Fragment(), CameraListener, ViewTreeObserver.OnPreDrawListen
                 if (isBottomSheetExpanded) {
 
 
-
 //                    viewModel.visibleFlats.observe(viewLifecycleOwner) { flats ->
 //                        val roomtypeWithPhotosList = flats?.map { RoomtypeWithPhotos(it, emptyList()) }
 //                        adapter.submitList(roomtypeWithPhotosList)
@@ -237,7 +235,6 @@ class MapFragment : Fragment(), CameraListener, ViewTreeObserver.OnPreDrawListen
                             }
                         }
                     }
-
 
 
                     // BottomSheet был выдвинут
@@ -269,7 +266,6 @@ class MapFragment : Fragment(), CameraListener, ViewTreeObserver.OnPreDrawListen
 //    }
 
 
-
     private fun setupApartmentClickListener() {
 
         adapter.onApartmentClickListener = {
@@ -283,7 +279,7 @@ class MapFragment : Fragment(), CameraListener, ViewTreeObserver.OnPreDrawListen
             findNavController().navigate(R.id.flatFragment, args)
 
         }
-        adapter.onLikeButtonClickListener={ flat ->
+        adapter.onLikeButtonClickListener = { flat ->
             viewModel.changeLikedStage(flat)
             showToast("Квартира добавлена в избранные!")
         }
@@ -302,7 +298,7 @@ class MapFragment : Fragment(), CameraListener, ViewTreeObserver.OnPreDrawListen
 
         setFirstFlats()
 
-        adapter = RoomtypeAdapter(roomtypeWithPhotosList)
+        adapter = RoomtypeAdapter(roomtypeWithPhotosList, requireContext())
         setupApartmentClickListener()
         binding.recyclerViewBottomSheet.adapter = adapter
         mapView.map.addCameraListener(this)
@@ -556,7 +552,6 @@ class MapFragment : Fragment(), CameraListener, ViewTreeObserver.OnPreDrawListen
     }
 
 
-
     private fun createBitmapWithText(text: String): Bitmap {
         val textSize = resources.getDimension(R.dimen.text_size)
         val textColor = Color.WHITE
@@ -641,7 +636,7 @@ class MapFragment : Fragment(), CameraListener, ViewTreeObserver.OnPreDrawListen
         viewModel.updateVisibleFlats(visibleFlats)
     }
 
-    private fun setFirstFlats(){
+    private fun setFirstFlats() {
         val visibleRegion = mapView.map.visibleRegion
         val visibleFlats = flats?.filter { flat ->
             flat.geo_data?.let { geoData ->

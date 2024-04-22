@@ -20,6 +20,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hataru.R
 import com.example.hataru.domain.entity.RoomtypeWithPhotos
+import com.example.hataru.databinding.FragmentFavoriteFlatBinding
 import com.example.hataru.presentation.adapter.RoomtypeAdapter
 import com.example.hataru.showToast
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -29,30 +30,32 @@ class FavoriteFlatFragment : Fragment() {
 
     private val viewModel by viewModel<FavoriteFlatViewModel>()
     private lateinit var apartmentListAdapter: RoomtypeAdapter
-    private var apartmentContainer: FragmentContainerView? = null
+    //private var apartmentContainer: FragmentContainerView? = null
+    private var _binding : FragmentFavoriteFlatBinding ?= null
+    private val binding : FragmentFavoriteFlatBinding
+        get() = _binding ?: throw RuntimeException("FragmentFavoriteFlatBinding == null")
 
     private var roomtypeWithPhotosList: List<RoomtypeWithPhotos> = emptyList()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_list_flats, container, false)
+    ): View {
+        _binding =  FragmentFavoriteFlatBinding.inflate(inflater,container,false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        apartmentContainer = view.findViewById(R.id.apartment_container)
+        //apartmentContainer = view.findViewById(R.id.apartment_container)
         setupRecyclerView()
-
         viewModel.favoriteFlats.observe(viewLifecycleOwner) { favoriteFlats ->
             Log.d("FavoriteFlatFragment", "Favorite flats observed: $favoriteFlats")
             roomtypeWithPhotosList = favoriteFlats
             setupRecyclerView()
             apartmentListAdapter.submitList(favoriteFlats)
         }
-
-        view.findViewById<ImageButton>(R.id.imageView7)?.setOnClickListener {
+        binding.imageView7.setOnClickListener {
             findNavController().navigate(R.id.infoFragment)
         }
 
@@ -78,6 +81,14 @@ class FavoriteFlatFragment : Fragment() {
         super.onPause()
         clearSearchEditTextAndHideNoResults()
     }
+
+
+
+//    private fun isOnePaneMode(): Boolean {
+//        val apartmentContainer =
+//            activity?.findViewById<FragmentContainerView>(R.id.apartment_container)
+//        return apartmentContainer == null
+//    }
 
     override fun onResume() {
         super.onResume()
@@ -118,13 +129,13 @@ class FavoriteFlatFragment : Fragment() {
 //    }
 
     private fun setupRecyclerView() {
-        val rvApartmentList = view?.findViewById<RecyclerView>(R.id.rv_apartment_list)
+        val rvApartmentList = binding.rvApartmentList
         with(rvApartmentList) {
-            apartmentListAdapter = RoomtypeAdapter(roomtypeWithPhotosList)
-            this?.adapter = apartmentListAdapter
+            apartmentListAdapter = RoomtypeAdapter(roomtypeWithPhotosList,requireContext())
+            this.adapter = apartmentListAdapter
+            setupLikeButtonClickListener() // Добавьте эту строку
         }
 
-        setupLikeButtonClickListener()
         setupApartmentClickListener()
     }
 
@@ -136,15 +147,12 @@ class FavoriteFlatFragment : Fragment() {
 
     private fun setupApartmentClickListener() {
         apartmentListAdapter.onApartmentClickListener = {
-
             val args = Bundle()
             args.putParcelable(
                 FlatFragment.KEY_GET_FLAT_INTO_FLATFRAGMENT,
                 it.roomtype as Parcelable
             )
-
             findNavController().navigate(R.id.flatFragment, args)
-
         }
     }
     //private fun setupApartmentClickListener() {
@@ -157,12 +165,6 @@ class FavoriteFlatFragment : Fragment() {
 //            }
 //        }
 //    }
-
-//    private fun setupLikeButtonClickListener() {
-//        apartmentListAdapter.onLikeButtonClickListener = {
-//            viewModel.changeLikedStage(it)
-//        }
-  //  }
 }
 
 

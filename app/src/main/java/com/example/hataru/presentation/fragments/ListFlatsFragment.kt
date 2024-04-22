@@ -4,14 +4,11 @@ import android.os.Bundle
 import android.os.Parcelable
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentContainerView
@@ -21,7 +18,6 @@ import com.example.hataru.R
 import com.example.hataru.domain.entity.RoomtypeWithPhotos
 import com.example.hataru.presentation.adapter.RoomtypeAdapter
 import com.example.hataru.presentation.viewModels.ListFlatsViewModel
-import com.example.hataru.showToast
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ListFlatsFragment : Fragment() {
@@ -89,6 +85,10 @@ class ListFlatsFragment : Fragment() {
         super.onPause()
         clearSearchEditTextAndHideNoResults()
     }
+//    private fun isOnePaneMode(): Boolean {
+//        val apartmentContainer = activity?.findViewById<FragmentContainerView>(R.id.apartment_container)
+//        return apartmentContainer == null
+//    }
 
     override fun onResume() {
         super.onResume()
@@ -98,13 +98,17 @@ class ListFlatsFragment : Fragment() {
     private fun clearSearchEditTextAndHideNoResults() {
         val editTextSearch = view?.findViewById<EditText>(R.id.editText_search)
         editTextSearch?.setText("") // Очищаем строку поиска
-        view?.findViewById<TextView>(R.id.text_no_results)?.visibility = View.GONE // Скрываем надпись "Ничего не найдено"
+        view?.findViewById<TextView>(R.id.text_no_results)?.visibility =
+            View.GONE // Скрываем надпись "Ничего не найдено"
     }
 
     private fun performSearch() {
         val query = view?.findViewById<EditText>(R.id.editText_search)?.text.toString().trim()
         val filteredList = roomtypeWithPhotosList.filter { roomtypeWithPhotos ->
-            apartmentListAdapter.mdesc[roomtypeWithPhotos.roomtype.id]!!.contains(query, ignoreCase = true)
+            apartmentListAdapter.mdesc[roomtypeWithPhotos.roomtype.id]!!.contains(
+                query,
+                ignoreCase = true
+            )
         }
         if (filteredList.isEmpty()) {
             view?.findViewById<TextView>(R.id.text_no_results)?.visibility = View.VISIBLE
@@ -130,24 +134,26 @@ class ListFlatsFragment : Fragment() {
     private fun setupRecyclerView() {
         val rvApartmentList = view?.findViewById<RecyclerView>(R.id.rv_apartment_list)
         with(rvApartmentList) {
-            apartmentListAdapter = RoomtypeAdapter(roomtypeWithPhotosList)
+            apartmentListAdapter = RoomtypeAdapter(roomtypeWithPhotosList, requireContext())
             this?.adapter = apartmentListAdapter
-
-
+            setupLikeButtonClickListener() // Добавьте эту строку
         }
 
-        setupLikeButtonClickListener()
         setupApartmentClickListener()
     }
+
 
     private fun setupApartmentClickListener() {
         apartmentListAdapter.onApartmentClickListener = {
 
             val args = Bundle()
-            args.putParcelable(FlatFragment.KEY_GET_FLAT_INTO_FLATFRAGMENT, it.roomtype as Parcelable)
+            args.putParcelable(
+                FlatFragment.KEY_GET_FLAT_INTO_FLATFRAGMENT,
+                it.roomtype as Parcelable
+            )
 
-            findNavController().navigate(R.id.flatFragment,args)
-            
+            findNavController().navigate(R.id.flatFragment, args)
+
         }
 //        apartmentListAdapter.onApartmentClickListener = {
 //            if (isOnePaneMode()) {
@@ -162,7 +168,6 @@ class ListFlatsFragment : Fragment() {
     private fun setupLikeButtonClickListener() {
         apartmentListAdapter.onLikeButtonClickListener = { flat ->
             viewModel.changeLikedStage(flat)
-            showToast("Квартира добавлена в избранные!")
         }
     }
 }

@@ -2,16 +2,14 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.example.hataru.domain.entity.GeoData
 import com.example.hataru.domain.entity.Photo
 import com.example.hataru.domain.entity.Room
 import com.example.hataru.domain.entity.Roomtype
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
 import com.example.hataru.domain.entity.RoomtypeWithPhotos
 import com.example.hataru.domain.entity.Subroom
-import kotlinx.coroutines.launch
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import java.util.Date
 
 class FavoriteFlatViewModel : ViewModel() {
