@@ -12,6 +12,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentContainerView
 import androidx.navigation.fragment.findNavController
@@ -42,7 +43,7 @@ class ListFlatsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         apartmentContainer = view.findViewById(R.id.apartment_container)
-
+        setupRecyclerView()
 
 
 
@@ -86,6 +87,14 @@ class ListFlatsFragment : Fragment() {
 
     private fun performSearch() {
         val query = view?.findViewById<EditText>(R.id.editText_search)?.text.toString().trim()
+        val filteredList = roomtypeWithPhotosList.filter { roomtypeWithPhotos ->
+            apartmentListAdapter.mdesc[roomtypeWithPhotos.roomtype.id]!!.contains(query, ignoreCase = true)
+        }
+        if (filteredList.isEmpty()) {
+            view?.findViewById<TextView>(R.id.text_no_results)?.visibility = View.VISIBLE
+        } else {
+            view?.findViewById<TextView>(R.id.text_no_results)?.visibility = View.GONE
+        }
         apartmentListAdapter.filter(query)
     }
 

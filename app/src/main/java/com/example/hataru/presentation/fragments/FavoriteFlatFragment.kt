@@ -13,6 +13,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.ImageButton
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentContainerView
 import androidx.navigation.fragment.findNavController
@@ -42,6 +43,7 @@ class FavoriteFlatFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         apartmentContainer = view.findViewById(R.id.apartment_container)
+        setupRecyclerView()
 
         viewModel.favoriteFlats.observe(viewLifecycleOwner) { favoriteFlats ->
             Log.d("FavoriteFlatFragment", "Favorite flats observed: $favoriteFlats")
@@ -75,6 +77,14 @@ class FavoriteFlatFragment : Fragment() {
 
     private fun performSearch() {
         val query = view?.findViewById<EditText>(R.id.editText_search)?.text.toString().trim()
+        val filteredList = roomtypeWithPhotosList.filter { roomtypeWithPhotos ->
+            apartmentListAdapter.mdesc[roomtypeWithPhotos.roomtype.id]!!.contains(query, ignoreCase = true)
+        }
+        if (filteredList.isEmpty()) {
+            view?.findViewById<TextView>(R.id.text_no_results)?.visibility = View.VISIBLE
+        } else {
+            view?.findViewById<TextView>(R.id.text_no_results)?.visibility = View.GONE
+        }
         apartmentListAdapter.filter(query)
     }
 
