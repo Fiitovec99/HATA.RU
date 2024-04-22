@@ -85,6 +85,22 @@ class ListFlatsFragment : Fragment() {
 
     }
 
+    override fun onPause() {
+        super.onPause()
+        clearSearchEditTextAndHideNoResults()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        clearSearchEditTextAndHideNoResults()
+    }
+
+    private fun clearSearchEditTextAndHideNoResults() {
+        val editTextSearch = view?.findViewById<EditText>(R.id.editText_search)
+        editTextSearch?.setText("") // Очищаем строку поиска
+        view?.findViewById<TextView>(R.id.text_no_results)?.visibility = View.GONE // Скрываем надпись "Ничего не найдено"
+    }
+
     private fun performSearch() {
         val query = view?.findViewById<EditText>(R.id.editText_search)?.text.toString().trim()
         val filteredList = roomtypeWithPhotosList.filter { roomtypeWithPhotos ->
