@@ -40,6 +40,12 @@
         <item name="android:textSize">18sp</item>
     </style>
 
+    <style name="BUTTON_ENTER">
+        <item name="android:backgroundTint">@color/light_blue</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
     <style name="SPLASH_SCREEN">
         <item name="background">@color/light_blue</item>
     </style>

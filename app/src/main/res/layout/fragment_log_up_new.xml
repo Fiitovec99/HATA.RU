@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
-    style="@style/BACKGROUND"
+    style="@style/SPLASH_SCREEN"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".presentation.ui.login.LoginFragment">
@@ -16,7 +16,6 @@
         android:layout_height="wrap_content"
         android:adjustViewBounds="true"
         android:scaleType="fitXY"
-        android:src="@drawable/wave"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -38,38 +37,38 @@
 
     <EditText
         android:id="@+id/username"
+        style="@style/TEXTVIEW_COLOR"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="24dp"
+        android:background="#F0F0F0"
         android:hint="Эл. почта"
         android:inputType="textEmailAddress"
         android:selectAllOnFocus="true"
-        style="@style/TEXTVIEW_COLOR"
         android:textColorHint="#A5A5A5"
         android:textSize="18sp"
-        android:background="#F0F0F0"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
     <EditText
         android:id="@+id/password"
+        style="@style/TEXTVIEW_COLOR"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="24dp"
+        android:background="#F0F0F0"
         android:hint="Пароль"
         android:imeActionLabel="@string/action_sign_in_short"
         android:imeOptions="actionDone"
         android:inputType="textPassword"
         android:selectAllOnFocus="true"
-        style="@style/TEXTVIEW_COLOR"
         android:textColorHint="#A5A5A5"
         android:textSize="18sp"
-        android:background="#F0F0F0"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/username" />
@@ -77,14 +76,13 @@
 
     <Button
         android:id="@+id/login"
-        style="@style/BUTTON"
+        style="@style/BUTTON_ENTER"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="start"
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
         android:layout_marginBottom="142dp"
-        android:backgroundTint="@color/light_blue"
         android:enabled="true"
         android:text="Войти"
         app:layout_constraintBottom_toTopOf="@+id/imageView9"
@@ -94,12 +92,12 @@
 
     <ImageView
         android:id="@+id/imageView9"
+        style="@style/ENTER_ROOF"
         android:layout_width="480dp"
         android:layout_height="170dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/bottom_roof" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/textViewForgotPassword"
@@ -107,7 +105,6 @@
         android:layout_height="wrap_content"
         android:text="Забыли пароль?"
         android:textSize="14sp"
-        style="@style/ENTER_ROOF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
@@ -130,7 +127,6 @@
         app:layout_constraintStart_toStartOf="@+id/password"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.3" />
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
