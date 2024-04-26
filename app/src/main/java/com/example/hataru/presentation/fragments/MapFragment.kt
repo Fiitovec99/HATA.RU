@@ -72,6 +72,8 @@ import com.yandex.runtime.image.ImageProvider
 import com.yandex.runtime.ui_view.ViewProvider
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.Serializable
+import kotlin.math.pow
+import kotlin.math.sqrt
 
 
 private const val CLUSTER_RADIUS = 60.0
@@ -83,7 +85,10 @@ class MapFragment : Fragment(), CameraListener, ViewTreeObserver.OnPreDrawListen
 
     private lateinit var adapter: RoomtypeAdapter
     private val viewModel by viewModel<MapViewModel>()
-    private lateinit var binding: FragmentMapBinding
+
+    private var _binding: FragmentMapBinding? = null
+    private val binding : FragmentMapBinding
+        get() = _binding ?: throw RuntimeException("FragmentMapBinding is null")
     private lateinit var mapView: MapView
     private lateinit var imageLocation: ImageView
     private var flats: List<Roomtype>? = null
@@ -127,8 +132,8 @@ class MapFragment : Fragment(), CameraListener, ViewTreeObserver.OnPreDrawListen
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        binding = FragmentMapBinding.inflate(inflater, container, false)
+    ): View{
+        _binding = FragmentMapBinding.inflate(inflater, container, false)
 
         MapKitFactory.initialize(requireContext())
         initImageLocation()
@@ -140,43 +145,10 @@ class MapFragment : Fragment(), CameraListener, ViewTreeObserver.OnPreDrawListen
 
         setBottomSheetWithSetting()
 
-
         viewModel.visibleFlats.observe(viewLifecycleOwner) { visibleFlats ->
             binding.countFlatsOnMap.text =
-                "Обнаружено " + getRigthStringForCountFlatsOnMap(visibleFlats?.size ?: 3)
+                "Обнаружено " + getRightStringForCountFlatsOnMap(visibleFlats?.size ?: 3)
         }
-
-
-//        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
-//        if (isLocationEnabled(activity as AppCompatActivity)) {
-//            if (ActivityCompat.checkSelfPermission(
-//                    activity as AppCompatActivity,
-//                    Manifest.permission.ACCESS_FINE_LOCATION
-//                ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-//                    activity as AppCompatActivity,
-//                    Manifest.permission.ACCESS_COARSE_LOCATION
-//                ) != PackageManager.PERMISSION_GRANTED
-//            ) {
-//                // TODO: Consider calling
-//                //    ActivityCompat#requestPermissions
-//                // here to request the missing permissions, and then overriding
-//                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-//                //                                          int[] grantResults)
-//                // to handle the case where the user grants the permission. See the documentation
-//                // for ActivityCompat#requestPermissions for more details.
-//
-//            }
-//            fusedLocationClient.lastLocation
-//                .addOnSuccessListener { location ->
-//                    if (location != null) { //TODO
-//                        showMyLocationIconOnMap(Point(location.latitude, location.longitude))
-//                    }
-//                }
-//                .addOnFailureListener { exception ->
-//                    showToast("Failed to get location: ")
-//                    // Ошибка получения местоположения
-//                }
-//        }
         return binding.root
     }
 
@@ -215,12 +187,6 @@ class MapFragment : Fragment(), CameraListener, ViewTreeObserver.OnPreDrawListen
                 // Выполняем нужные действия в зависимости от состояния BottomSheet
                 if (isBottomSheetExpanded) {
 
-
-//                    viewModel.visibleFlats.observe(viewLifecycleOwner) { flats ->
-//                        val roomtypeWithPhotosList = flats?.map { RoomtypeWithPhotos(it, emptyList()) }
-//                        adapter.submitList(roomtypeWithPhotosList)
-//                    }
-
                     viewModel.combinedData.observe(viewLifecycleOwner) { (roomtypes, roomxList) ->
                         roomtypes?.let { roomtypes ->
                             roomxList?.let { roomxList ->
@@ -236,6 +202,9 @@ class MapFragment : Fragment(), CameraListener, ViewTreeObserver.OnPreDrawListen
                         }
                     }
 
+                    binding.deleteFilter.visibility = View.GONE
+                    binding.buttonFilterFlats.visibility = View.GONE
+
 
                     // BottomSheet был выдвинут
                     // Выполняем нужные действия
@@ -243,27 +212,17 @@ class MapFragment : Fragment(), CameraListener, ViewTreeObserver.OnPreDrawListen
                     // BottomSheet был скрыт
                     // Выполняем нужные действия
                 } else {
-
+                    binding.deleteFilter.visibility = View.VISIBLE
+                    binding.buttonFilterFlats.visibility = View.VISIBLE
                 }
-                updateMapViewInteraction(newState)
             }
 
             override fun onSlide(bottomSheet: View, slideOffset: Float) {
-                // Handle slide offset changes if needed
+                binding.deleteFilter.visibility = View.GONE
+                binding.buttonFilterFlats.visibility = View.GONE
             }
         })
     }
-
-//    val recyclerView = binding.recyclerViewBottomSheet
-//
-//    val adapter = FlatListOnMap(emptyList())
-//    viewModel.visibleFlats.observe(viewLifecycleOwner) { visibleFlats ->
-//        if (visibleFlats != null) {
-//            adapter.updateFlats(visibleFlats)
-//        }
-//        binding.countFlatsOnMap.text = "Обнаружено " + getRigthStringForCountFlatsOnMap(visibleFlats?.size ?: 3)
-//        recyclerView.adapter = adapter
-//    }
 
 
     private fun setupApartmentClickListener() {
@@ -275,7 +234,6 @@ class MapFragment : Fragment(), CameraListener, ViewTreeObserver.OnPreDrawListen
                 FlatFragment.KEY_GET_FLAT_INTO_FLATFRAGMENT,
                 it.roomtype as Parcelable
             )
-
             findNavController().navigate(R.id.flatFragment, args)
 
         }
@@ -283,12 +241,6 @@ class MapFragment : Fragment(), CameraListener, ViewTreeObserver.OnPreDrawListen
             viewModel.changeLikedStage(flat)
             showToast("Квартира добавлена в избранные!")
         }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        //TODO fusedLocationClient.lastLocation
-        // Освобождение других ресурсов, связанных с местоположением, если они есть
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -316,8 +268,6 @@ class MapFragment : Fragment(), CameraListener, ViewTreeObserver.OnPreDrawListen
             showFlatsOnMap(it)
         }
 
-
-        //showRostovLocation()//TODO для удобного тестинга
         if (viewModel.latitude != 0.0 && viewModel.longitude != 0.0) {
             val currentPosition = Point(viewModel.latitude, viewModel.longitude)
             mapView.map.move(
@@ -423,12 +373,12 @@ class MapFragment : Fragment(), CameraListener, ViewTreeObserver.OnPreDrawListen
         lst.map { x: Roomtype ->
             Point(
                 x.geo_data!!.x!!.toDouble(),
-                x!!.geo_data!!.y!!.toDouble()
+                x.geo_data!!.y!!.toDouble()
             )
-        }?.forEachIndexed { index, point ->
+        }.forEachIndexed { index, point ->
 
-            val flat = lst!![index]
-            val markerBitmap = createBitmapWithText(flat.price!!.toDouble().toInt().toString())
+            val flat = lst[index]
+            val markerBitmap = createBitmapWithText(flat.price.toDouble().toInt().toString())
             val priceMarkerImageProvider = ImageProvider.fromBitmap(markerBitmap)
 
             clasterizedCollection.addPlacemark(
@@ -453,7 +403,6 @@ class MapFragment : Fragment(), CameraListener, ViewTreeObserver.OnPreDrawListen
         viewModel.latitude = cameraPosition.target.latitude
         viewModel.longitude = cameraPosition.target.longitude
         viewModel.zoom = cameraPosition.zoom
-
         mapView.map.removeCameraListener(this)
 
     }
@@ -483,7 +432,7 @@ class MapFragment : Fragment(), CameraListener, ViewTreeObserver.OnPreDrawListen
                 }
 
         if (flatsLocateNearByAnother(listPointsOfCluster, 0.00001)) { // расстояние в меридиане
-            val flats = it.placemarks?.mapNotNull { it.userData as? Roomtype }
+            val flats = it.placemarks.mapNotNull { it.userData as? Roomtype }
             val args = Bundle()
             args.putSerializable(KEY_GET_FLAT_INTO_ADAPTER, flats as? Serializable)
             val viewPagerFragment = ApartmentsViewPagerFragment()
@@ -545,9 +494,9 @@ class MapFragment : Fragment(), CameraListener, ViewTreeObserver.OnPreDrawListen
     }
 
     private fun calculateDistance(point1: Point, point2: Point): Double {
-        return Math.sqrt(
-            Math.pow(point1.latitude - point2.latitude, 2.0) +
-                    Math.pow(point1.longitude - point2.longitude, 2.0)
+        return sqrt(
+            (point1.latitude - point2.latitude).pow(2.0) +
+                    (point1.longitude - point2.longitude).pow(2.0)
         )
     }
 
@@ -660,50 +609,26 @@ class MapFragment : Fragment(), CameraListener, ViewTreeObserver.OnPreDrawListen
     }
 
 
-    private fun updateMapViewInteraction(bottomSheetState: Int) {
-        if (bottomSheetState == BottomSheetBehavior.STATE_EXPANDED ||
-            bottomSheetState == BottomSheetBehavior.STATE_HALF_EXPANDED
-        ) {
-            // BottomSheet развернут, блокируем карту
-            mapView.map.isScrollGesturesEnabled = false
-            mapView.map.isZoomGesturesEnabled = false
-            mapView.map.isTiltGesturesEnabled = false
-            mapView.map.isRotateGesturesEnabled = false
-            mapView.map.isFastTapEnabled = false
-            mapView.isClickable = false
-            mapView.isEnabled = false
-            mapView.map
-        } else {
-            // BottomSheet свёрнут, разблокируем карту
-            mapView.map.isScrollGesturesEnabled = true
-            mapView.map.isZoomGesturesEnabled = true
-            mapView.map.isTiltGesturesEnabled = true
-            mapView.map.isRotateGesturesEnabled = true
-            mapView.map.isFastTapEnabled = true
-            mapView.isClickable = true
-            mapView.isEnabled = true
-        }
-    }
+
 
     private fun isPointInVisibleRegion(point: Point, topLeft: Point, bottomRight: Point): Boolean {
         return (point.latitude in bottomRight.latitude..topLeft.latitude) &&
                 (point.longitude in topLeft.longitude..bottomRight.longitude)
     }
 
-    fun getRigthStringForCountFlatsOnMap(count: Int): String {
+    private fun getRightStringForCountFlatsOnMap(count: Int): String {
         val lastDigit = count % 10
         val lastTwoDigits = count % 100
 
         return when {
             lastDigit == 1 && lastTwoDigits != 11 -> "$count квартира"
-            (lastDigit in 2..4 && !(lastTwoDigits in 12..14)) -> "$count квартиры"
+            (lastDigit in 2..4 && lastTwoDigits !in 12..14) -> "$count квартиры"
             else -> "$count квартир"
         }
     }
 
     override fun onPreDraw(): Boolean {
         mapView.viewTreeObserver.removeOnPreDrawListener(this)
-        // Здесь вы можете выполнить дополнительные действия после отрисовки карты
         return true
 
     }
