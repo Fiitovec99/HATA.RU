@@ -24,7 +24,7 @@ class ClusterView(context: Context) : LinearLayout(context) {
     }
 
     @SuppressLint("SetTextI18n")
-    fun setData(size : Int, minCost : Double, maxCost : Double) {
+    fun setData(size: Int, minCost: Double, maxCost: Double) {
         flatsCountText.text = size.toString()
         flatsLayout.isVisible = size != 0
         flatsMinCost.text = context.getString(R.string.min_cost_format, minCost.toInt())

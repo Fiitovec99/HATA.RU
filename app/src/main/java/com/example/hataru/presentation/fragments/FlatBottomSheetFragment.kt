@@ -6,20 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.denzcoskun.imageslider.models.SlideModel
 import com.example.hataru.R
 import com.example.hataru.databinding.FragmentFlatBottomSheetBinding
 import com.example.hataru.domain.entity.Roomtype
-import com.example.hataru.presentation.adapter.PhotoAdapter
 import com.example.hataru.presentation.fragments.FlatFragment.Companion.KEY_GET_FLAT_INTO_FLATFRAGMENT
 import com.example.hataru.presentation.viewModels.FlatBottomSheetViewModel
-import com.example.hataru.presentation.viewModels.MapViewModel
-import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.io.Serializable
 
 
 class FlatBottomSheetFragment : BottomSheetDialogFragment() {

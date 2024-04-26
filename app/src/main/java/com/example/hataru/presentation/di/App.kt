@@ -1,4 +1,4 @@
-package com.example.hataru.presentation
+package com.example.hataru.presentation.di
 
 import android.app.Application
 import android.content.IntentFilter
@@ -7,6 +7,8 @@ import androidx.appcompat.app.AppCompatDelegate
 import com.example.hataru.BuildConfig
 import com.example.hataru.InternetCheckService
 import com.example.hataru.SharedPreferenceManger
+import com.example.hataru.presentation.di.appMod
+import com.example.hataru.presentation.di.appModule
 import com.yandex.mapkit.MapKitFactory
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
@@ -35,7 +37,7 @@ class App : Application() {
 
         startKoin {
             androidContext(this@App)
-            modules(listOf(appMod,appModule) )
+            modules(listOf(appMod, appModule) )
         }
     }
 

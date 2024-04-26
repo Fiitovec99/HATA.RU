@@ -1,21 +1,12 @@
 package com.example.hataru
 
-import android.app.Activity
-import android.app.Dialog
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.net.ConnectivityManager
-import android.net.NetworkCapabilities
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
-import android.view.WindowManager
-import android.widget.Button
-import android.widget.Toast
-import com.example.hataru.presentation.activities.MainActivity
-import com.example.hataru.presentation.activities.OnboardingActivity
-import com.google.firebase.auth.FirebaseAuth
+import com.example.hataru.presentation.activities.NoInternetActivity
 
 class InternetCheckService : BroadcastReceiver() {
 

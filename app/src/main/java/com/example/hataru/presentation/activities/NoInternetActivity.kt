@@ -1,5 +1,4 @@
-package com.example.hataru
-
+package com.example.hataru.presentation.activities
 
 import android.content.Context
 import android.content.Intent
@@ -7,13 +6,11 @@ import android.net.ConnectivityManager
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.view.animation.Animation
 import android.widget.Button
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.airbnb.lottie.LottieAnimationView
-import com.example.hataru.presentation.activities.OnboardingActivity
-
+import com.example.hataru.R
+import com.example.hataru.showToast
 
 
 class NoInternetActivity : AppCompatActivity() {
@@ -44,7 +41,6 @@ class NoInternetActivity : AppCompatActivity() {
             }
         }
     }
-
 
     private fun isInternetConnected(context: Context): Boolean {
         val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager

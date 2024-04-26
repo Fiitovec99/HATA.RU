@@ -13,7 +13,6 @@ class SharedPreferenceManger(context: Context) {
 
     private val keyTheme = "theme"
 
-
     var theme
         get() = preference.getInt(keyTheme, 0) // по дефолту белая тема
         set(value) {

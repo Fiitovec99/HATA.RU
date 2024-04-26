@@ -8,7 +8,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
-        android:name=".presentation.App"
+        android:name=".presentation.di.App"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -19,11 +19,13 @@
         android:theme="@style/Base.Theme.HATARU"
         tools:targetApi="31">
         <activity
-            android:name=".NoInternetActivity"
-            android:exported="false" />
+            android:name=".presentation.activities.NoInternetActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".presentation.activities.LoggingAccountActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".presentation.activities.MainActivity"
             android:exported="true"
@@ -38,17 +40,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".presentation.activities.ApartmentActivity">
-
-            <!-- дополнительные настройки, если есть -->
-        </activity>
 
         <receiver
             android:name=".InternetCheckService"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"
+                <action
+                    android:name="android.net.conn.CONNECTIVITY_CHANGE"
                     tools:ignore="BatteryLife" />
             </intent-filter>
         </receiver>
