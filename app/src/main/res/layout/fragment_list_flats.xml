@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_apartment_list"
         android:layout_width="0dp"
@@ -19,6 +20,19 @@
         app:layout_constraintTop_toTopOf="@id/guideline"
         app:layout_constraintVertical_bias="0.0"
         tools:listitem="@layout/apartment_noliked" />
+
+    <TextView
+        android:id="@+id/text_no_results"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Ничего не найдено"
+        android:textSize="30dp"
+        android:visibility="gone"
+        style="@style/TEXTVIEW_COLOR"
+        app:layout_constraintStart_toStartOf="@id/rv_apartment_list"
+        app:layout_constraintEnd_toEndOf="@id/rv_apartment_list"
+        app:layout_constraintTop_toTopOf="@id/rv_apartment_list"
+        app:layout_constraintBottom_toBottomOf="@id/rv_apartment_list" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline"

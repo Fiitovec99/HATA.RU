@@ -91,7 +91,7 @@
     </style>
 
     <style name="SEARCH">
-        <item name="android:hint">Поиск (в разработке)</item>
+        <item name="android:hint">Поиск</item>
         <item name="android:textColorHint">@color/grey</item>
         <item name="android:textColor">@color/black</item>
         <item name="android:background">@drawable/rounded_background</item>
