@@ -152,7 +152,7 @@ class FavoriteFlatFragment : Fragment() {
                 FlatFragment.KEY_GET_FLAT_INTO_FLATFRAGMENT,
                 it.roomtype as Parcelable
             )
-            findNavController().navigate(R.id.flatFragment, args)
+            findNavController().navigate(R.id.flatFragment,args)
         }
     }
     //private fun setupApartmentClickListener() {

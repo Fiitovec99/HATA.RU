@@ -23,6 +23,13 @@
         android:label="fragment_map"
         tools:layout="@layout/fragment_map" >
 
+        <action
+            android:id="@+id/action_mapFragment_to_favoriteFlatFragment"
+            app:destination="@id/favoriteFlatFragment" />
+
+        <action
+            android:id="@+id/action_mapFragment_to_apartmentsViewPagerFragment"
+            app:destination="@id/apartmentsViewPagerFragment" />
     </fragment>
 <!--    <fragment-->
 <!--        android:id="@+id/favoriteFlatFragment"-->
@@ -49,7 +56,14 @@
         android:id="@+id/flatFragment"
         android:name="com.example.hataru.presentation.fragments.FlatFragment"
         android:label="fragment_flat"
-        tools:layout="@layout/fragment_flat" />
+        tools:layout="@layout/fragment_flat" >
+
+        <!-- Добавляем действие для перехода на MapFragment -->
+        <action
+            android:id="@+id/action_flatFragment_to_mapFragment"
+            app:destination="@id/mapFragment" />
+    </fragment>
+
     <fragment
         android:id="@+id/apartmentsViewPagerFragment"
         android:name="ApartmentsViewPagerFragment"
@@ -58,7 +72,11 @@
         android:id="@+id/favoriteFlatFragment"
         android:name="com.example.hataru.presentation.fragments.FavoriteFlatFragment"
         android:label="fragment_favorite_flat"
-        tools:layout="@layout/fragment_favorite_flat" />
+        tools:layout="@layout/fragment_favorite_flat" >
+        <action
+            android:id="@+id/action_favoriteFlatFragment_to_flatFragment"
+            app:destination="@id/flatFragment" />
+    </fragment>
     <fragment
         android:id="@+id/infoFragment"
         android:name="com.example.hataru.presentation.fragments.InfoFragment"

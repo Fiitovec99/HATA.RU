@@ -13,8 +13,8 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="524" />
-                            <option name="y" value="588" />
+                            <option name="x" value="710" />
+                            <option name="y" value="206" />
                           </Point>
                         </option>
                       </LayoutPositions>
@@ -28,6 +28,15 @@
                             <option name="x" value="465" />
                             <option name="y" value="10" />
                           </Point>
+                        </option>
+                        <option name="myPositions">
+                          <map>
+                            <entry key="action_favoriteFlatFragment_to_flatFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                          </map>
                         </option>
                       </LayoutPositions>
                     </value>
