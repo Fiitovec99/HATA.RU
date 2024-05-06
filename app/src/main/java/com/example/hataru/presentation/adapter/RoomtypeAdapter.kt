@@ -124,7 +124,6 @@ class RoomtypeAdapter(
         val imageList = ArrayList<SlideModel>() // Create image list
         apartment.photos.forEach {
             imageList.add(SlideModel(it.url))
-
         }
         viewHolder.image_slider.setImageList(imageList)
         viewHolder.twShortDescription.text = mdesc[apartment.roomtype.id]
@@ -132,31 +131,29 @@ class RoomtypeAdapter(
         viewHolder.twLevel.text = "Этаж: " + mlev[apartment.roomtype.id]
         viewHolder.twArea.text = marea[apartment.roomtype.id] + " кв.м."
 
+        // Установка изображения кнопки лайка в зависимости от состояния избранного
+        val isLiked = sharedPreferences.getBoolean(apartment.roomtype.name, false)
+        val likeIconResId = if (isLiked) R.drawable.image_like else R.drawable.vector
+        viewHolder.buttonLike.setImageResource(likeIconResId)
 
-
+        // Обработчик нажатия на кнопку лайка
         viewHolder.buttonLike.setOnClickListener {
+            // Обновление состояния избранного
+            val newLikedState = !isLiked
+            sharedPreferences.edit().putBoolean(apartment.roomtype.name, newLikedState).apply()
+            // Обновление внешнего вида кнопки лайка
+            val updatedLikeIconResId = if (newLikedState) R.drawable.image_like else R.drawable.vector
+            viewHolder.buttonLike.setImageResource(updatedLikeIconResId)
+            // Вызов обработчика нажатия, если он задан
             onLikeButtonClickListener?.invoke(apartment)
-
-            // Выполнение асинхронно
-            backgroundExecutor.execute {
-                val isLiked = sharedPreferences.getBoolean(apartment.roomtype.id, false)
-                val editor = sharedPreferences.edit()
-                editor.putBoolean(apartment.roomtype.id, !isLiked)
-                editor.apply()
-
-                // Обновление стиля кнопки лайка в UI потоке
-                uiScope.launch {
-                    val drawableResId = if (!isLiked) R.drawable.vector else R.drawable.image_like
-                    // Очистка предыдущего фона кнопки
-                    viewHolder.buttonLike.setBackgroundResource(android.R.color.transparent)
-                    viewHolder.buttonLike.setBackgroundResource(drawableResId)
-                }
-            }
         }
+
+        // Добавьте обработчик нажатия на элемент списка, если он задан
         viewHolder.itemView.setOnClickListener {
             onApartmentClickListener?.invoke(apartment)
         }
     }
+
 
 
     fun filter(query: String) {
@@ -172,7 +169,7 @@ class RoomtypeAdapter(
 
     override fun getItemViewType(position: Int): Int {
         val apartment = getItem(position)
-        val isLiked = sharedPreferences.getBoolean(apartment.roomtype.id, false)
+        val isLiked = sharedPreferences.getBoolean(apartment.roomtype.name, false)
         return if (isLiked) VIEW_TYPE_LIKED else VIEW_TYPE_NOLIKED
     }
 
