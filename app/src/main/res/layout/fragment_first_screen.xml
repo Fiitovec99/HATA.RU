@@ -2,46 +2,52 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    style="@style/SPLASH_SCREEN"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".presentation.onboarding.screens.FirstScreen">
 
-    <TextView
-        android:id="@+id/firstScreen"
-        android:layout_width="360dp"
-        android:layout_height="130dp"
-        android:layout_marginTop="27dp"
-        android:gravity="center"
-        android:text="HATA.RU — сервис краткосрочной аренды апартаментов.
-         \nМы предоставляем понятный, предсказуемый сервис, \nгде будет чисто и безопасно."
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
-
-    <TextView
-        android:id="@+id/continue1"
-        android:layout_width="100dp"
-        android:layout_height="21dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="13dp"
-        android:text="Пропустить"
-        android:textSize="13sp"
+    <ImageView
+        android:id="@+id/message_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="4dp"
+        android:src="@drawable/message_white_1"
+        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="360dp"
-        android:layout_height="400dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginBottom="343dp"
-        android:src="@drawable/ic_first_onboarding"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        android:id="@+id/message_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="24dp"
+        android:src="@drawable/message_white_2"
+        android:visibility="invisible"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.5" />
+        app:layout_constraintTop_toBottomOf="@+id/message_1" />
 
+    <ImageView
+        android:id="@+id/message_3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="4dp"
+        android:src="@drawable/message_white_3"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/message_2" />
+
+    <ImageView
+        android:id="@+id/message_4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="4dp"
+        android:src="@drawable/message_white_4"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/message_3" />
 </androidx.constraintlayout.widget.ConstraintLayout>
