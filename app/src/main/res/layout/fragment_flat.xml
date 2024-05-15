@@ -18,18 +18,18 @@
             android:layout_width="wrap_content"
             android:layout_height="245dp">
 
-        <ImageButton
-            android:id="@+id/button_Like"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="10dp"
-            android:background="?android:attr/selectableItemBackgroundBorderless"
-            android:onClick="Like"
-            tools:src="@drawable/vector"
-            tools:ignore="UnknownId" />
+<!--        <ImageButton-->
+<!--            android:id="@+id/button_Like"-->
+<!--            android:layout_width="40dp"-->
+<!--            android:layout_height="40dp"-->
+<!--            android:layout_alignParentTop="true"-->
+<!--            android:layout_alignParentEnd="true"-->
+<!--            android:layout_marginTop="10dp"-->
+<!--            android:layout_marginEnd="10dp"-->
+<!--            android:background="?android:attr/selectableItemBackgroundBorderless"-->
+<!--            android:onClick="Like"-->
+<!--            tools:src="@drawable/vector"-->
+<!--            tools:ignore="UnknownId" />-->
         </com.denzcoskun.imageslider.ImageSlider>
 
         <TextView

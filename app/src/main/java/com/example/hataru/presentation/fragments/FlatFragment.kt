@@ -142,23 +142,23 @@ class FlatFragment : Fragment() {
 
             ////////////////////////////////////////////////
 
-            val userId = FirebaseAuth.getInstance().currentUser?.uid
-            if (userId != null && flat.id != null) {
-                val favoriteFlatDocument = FirebaseFirestore.getInstance().collection(userId).document(flat.id!!)
-                favoriteFlatDocument.get()
-                    .addOnSuccessListener { document ->
-                        if (document.exists()) {
-                            // Квартира уже в избранных
-                            buttonLike.setBackgroundResource(R.drawable.image_like)
-                        } else {
-                            // Квартиры нет в избранных
-                            buttonLike.setBackgroundResource(R.drawable.vector)
-                        }
-                    }
-                    .addOnFailureListener { e ->
-                        Log.w("TAG", "Error checking if room is in favorites", e)
-                    }
-            }
+//            val userId = FirebaseAuth.getInstance().currentUser?.uid
+//            if (userId != null && flat.id != null) {
+//                val favoriteFlatDocument = FirebaseFirestore.getInstance().collection(userId).document(flat.id!!)
+//                favoriteFlatDocument.get()
+//                    .addOnSuccessListener { document ->
+//                        if (document.exists()) {
+//                            // Квартира уже в избранных
+//                            buttonLike.setBackgroundResource(R.drawable.image_like)
+//                        } else {
+//                            // Квартиры нет в избранных
+//                            buttonLike.setBackgroundResource(R.drawable.vector)
+//                        }
+//                    }
+//                    .addOnFailureListener { e ->
+//                        Log.w("TAG", "Error checking if room is in favorites", e)
+//                    }
+//            }
 
 
         }
@@ -196,41 +196,41 @@ class FlatFragment : Fragment() {
             }
         }
 
-        binding.apply {
-            buttonLike.setOnClickListener {
-                val userId = FirebaseAuth.getInstance().currentUser?.uid
-                if (userId != null && flat.id != null) {
-                    val favoriteFlatDocument = FirebaseFirestore.getInstance().collection(userId).document(flat.id!!)
-                    favoriteFlatDocument.get()
-                        .addOnSuccessListener { document ->
-                            if (document.exists()) {
-                                // Квартира уже в избранных, убираем ее
-                                favoriteFlatDocument.delete()
-                                    .addOnSuccessListener {
-                                        Log.d("TAG", "Room removed from favorites: ${flat.id}")
-                                        buttonLike.setBackgroundResource(R.drawable.vector)
-                                    }
-                                    .addOnFailureListener { e ->
-                                        Log.w("TAG", "Error removing room from favorites", e)
-                                    }
-                            } else {
-                                // Квартиры нет в избранном, добавляем ее
-                                favoriteFlatDocument.set(RoomtypeWithPhotos(flat,photosList))
-                                    .addOnSuccessListener {
-                                        Log.d("TAG", "Room added to favorites: ${flat.id}")
-                                       buttonLike.setBackgroundResource(R.drawable.image_like)
-                                    }
-                                    .addOnFailureListener { e ->
-                                        Log.w("TAG", "Error adding room to favorites", e)
-                                    }
-                            }
-                        }
-                        .addOnFailureListener { e ->
-                            Log.w("TAG", "Error checking if room is in favorites", e)
-                        }
-                }
-            }
-        }
+//        binding.apply {
+//            buttonLike.setOnClickListener {
+//                val userId = FirebaseAuth.getInstance().currentUser?.uid
+//                if (userId != null && flat.id != null) {
+//                    val favoriteFlatDocument = FirebaseFirestore.getInstance().collection(userId).document(flat.id!!)
+//                    favoriteFlatDocument.get()
+//                        .addOnSuccessListener { document ->
+//                            if (document.exists()) {
+//                                // Квартира уже в избранных, убираем ее
+//                                favoriteFlatDocument.delete()
+//                                    .addOnSuccessListener {
+//                                        Log.d("TAG", "Room removed from favorites: ${flat.id}")
+//                                        buttonLike.setBackgroundResource(R.drawable.vector)
+//                                    }
+//                                    .addOnFailureListener { e ->
+//                                        Log.w("TAG", "Error removing room from favorites", e)
+//                                    }
+//                            } else {
+//                                // Квартиры нет в избранном, добавляем ее
+//                                favoriteFlatDocument.set(RoomtypeWithPhotos(flat,photosList))
+//                                    .addOnSuccessListener {
+//                                        Log.d("TAG", "Room added to favorites: ${flat.id}")
+//                                       buttonLike.setBackgroundResource(R.drawable.image_like)
+//                                    }
+//                                    .addOnFailureListener { e ->
+//                                        Log.w("TAG", "Error adding room to favorites", e)
+//                                    }
+//                            }
+//                        }
+//                        .addOnFailureListener { e ->
+//                            Log.w("TAG", "Error checking if room is in favorites", e)
+//                        }
+//                }
+//            }
+//        }
 
 
 
