@@ -1,5 +1,4 @@
 package com.example.hataru.presentation.onboarding.screens
-
 import android.content.Context
 import android.os.Bundle
 import android.os.Handler
@@ -21,9 +20,7 @@ class FirstScreen : Fragment() {
 
     private val messageDisplayRunnable = object : Runnable {
         override fun run() {
-            if (currentMessageIndex < messages.size) {
-                showNextMessage()
-            }
+            showNextMessage()
         }
     }
 
@@ -34,20 +31,15 @@ class FirstScreen : Fragment() {
         binding = FragmentFirstScreenBinding.inflate(inflater, container, false)
         val view = binding.root
 
-        messages.add(binding.message1)
         messages.add(binding.message2)
         messages.add(binding.message3)
         messages.add(binding.message4)
 
-        handler.postDelayed(messageDisplayRunnable, 3000) // Начинаем с первого сообщения
+        handler.postDelayed(messageDisplayRunnable, 4000)
 
         binding.constraintLayoutContainer.setOnClickListener {
-            handler.removeCallbacks(messageDisplayRunnable) // Останавливаем автопоявление
-            showNextMessage() // Показываем следующее сообщение
-// Перезапускаем автопоявление для следующего сообщения, если оно не последнее
-            if (currentMessageIndex < messages.size) {
-                handler.postDelayed(messageDisplayRunnable, 3000)
-            }
+            handler.removeCallbacks(messageDisplayRunnable)
+            showNextMessage()
         }
 
         return view
@@ -59,25 +51,27 @@ class FirstScreen : Fragment() {
             nextMessage.visibility = View.VISIBLE
             nextMessage.startAnimation(AnimationUtils.loadAnimation(context, android.R.anim.fade_in))
             currentMessageIndex++
-// Если это последнее сообщение, планируем переход через 5 секунд
-            if (currentMessageIndex == messages.size) {
+            if (currentMessageIndex < messages.size) {
+                handler.postDelayed(messageDisplayRunnable, 4000)
+            } else if (currentMessageIndex == messages.size) {
                 handler.postDelayed({
                     findNavController().navigate(R.id.logInFragment)
                     onBoardingFinished()
-                }, 5000) // Задержка перед переходом
+                }, 5000)
             }
         }
     }
 
     private fun onBoardingFinished() {
         val sharedPref = requireActivity().getSharedPreferences("onBoarding", Context.MODE_PRIVATE)
-        val editor = sharedPref.edit()
-        editor.putBoolean("Finished", true)
-        editor.apply()
+        with(sharedPref.edit()) {
+            putBoolean("Finished", true)
+            apply()
+        }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        handler.removeCallbacksAndMessages(null) // Очищаем все задания
+        handler.removeCallbacksAndMessages(null)
     }
 }
