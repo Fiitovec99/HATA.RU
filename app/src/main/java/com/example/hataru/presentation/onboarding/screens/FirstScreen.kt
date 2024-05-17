@@ -20,54 +20,58 @@ class FirstScreen : Fragment() {
 
     private val messageDisplayRunnable = object : Runnable {
         override fun run() {
-            showNextMessage()
+            if (currentMessageIndex < messages.size - 1) {
+                showNextMessage()
+            }
         }
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentFirstScreenBinding.inflate(inflater, container, false)
-        val view = binding.root
-
         messages.add(binding.message2)
         messages.add(binding.message3)
         messages.add(binding.message4)
-
         handler.postDelayed(messageDisplayRunnable, 4000)
-
         binding.constraintLayoutContainer.setOnClickListener {
-            handler.removeCallbacks(messageDisplayRunnable)
             showNextMessage()
         }
+        return binding.root
+    }
 
-        return view
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.skip.setOnClickListener {
+            navigateToLogIn()
+        }
     }
 
     private fun showNextMessage() {
         if (currentMessageIndex < messages.size) {
+            handler.removeCallbacks(messageDisplayRunnable)
             val nextMessage = messages[currentMessageIndex]
             nextMessage.visibility = View.VISIBLE
             nextMessage.startAnimation(AnimationUtils.loadAnimation(context, android.R.anim.fade_in))
             currentMessageIndex++
             if (currentMessageIndex < messages.size) {
                 handler.postDelayed(messageDisplayRunnable, 4000)
-            } else if (currentMessageIndex == messages.size) {
-                handler.postDelayed({
-                    findNavController().navigate(R.id.logInFragment)
-                    onBoardingFinished()
-                }, 5000)
             }
         }
     }
 
+    private fun navigateToLogIn() {
+        findNavController().navigate(R.id.logInFragment)
+        onBoardingFinished()
+    }
+
     private fun onBoardingFinished() {
-        val sharedPref = requireActivity().getSharedPreferences("onBoarding", Context.MODE_PRIVATE)
-        with(sharedPref.edit()) {
-            putBoolean("Finished", true)
-            apply()
-        }
+//        val sharedPref = requireActivity().getSharedPreferences("onBoarding", Context.MODE_PRIVATE)
+//        with(sharedPref.edit()) {
+//            putBoolean("Finished", true)
+//            apply()
+//        }
     }
 
     override fun onDestroyView() {

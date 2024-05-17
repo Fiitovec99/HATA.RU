@@ -27,21 +27,29 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.05" />
+        app:layout_constraintGuide_percent="0.02" />
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline25PercentTop"
+        android:id="@+id/guideline22PercentTop"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.25" />
+        app:layout_constraintGuide_percent="0.22" />
+
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline53PercentTop"
+        android:id="@+id/guideline48PercentTop"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.53" />
+        app:layout_constraintGuide_percent="0.48" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline55PercentTop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.56" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline75PercentTop"
@@ -65,8 +73,20 @@
         android:layout_height="wrap_content"
         android:src="@drawable/message_white_2"
         android:visibility="invisible"
-        app:layout_constraintTop_toTopOf="@id/guideline25PercentTop"
-        app:layout_constraintStart_toStartOf="@id/guideline5PercentStart" />
+        tools:visibility="visible"
+        app:layout_constraintTop_toTopOf="@id/guideline22PercentTop"
+        app:layout_constraintStart_toStartOf="@id/guideline5PercentStart"
+        app:layout_constraintBottom_toTopOf="@id/guideline48PercentTop"/>
+
+    <Button
+        android:id="@+id/skip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#BCF3FF"
+        android:text="Перейти на регистрацию"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/message_2" />
 
     <ImageView
         android:id="@+id/message_3"
@@ -74,7 +94,8 @@
         android:layout_height="wrap_content"
         android:src="@drawable/message_white_3"
         android:visibility="invisible"
-        app:layout_constraintTop_toTopOf="@id/guideline53PercentTop"
+        tools:visibility="visible"
+        app:layout_constraintTop_toTopOf="@id/guideline55PercentTop"
         app:layout_constraintEnd_toEndOf="@id/guideline5PercentEnd" />
 
     <ImageView
@@ -83,6 +104,7 @@
         android:layout_height="wrap_content"
         android:src="@drawable/message_white_4"
         android:visibility="invisible"
+        tools:visibility="visible"
         app:layout_constraintTop_toTopOf="@id/guideline75PercentTop"
         app:layout_constraintEnd_toEndOf="@id/guideline5PercentEnd" />
 
