@@ -54,6 +54,11 @@ class FavoriteFlatFragment : Fragment() {
             roomtypeWithPhotosList = favoriteFlats
             setupRecyclerView()
             apartmentListAdapter.submitList(favoriteFlats)
+            if (favoriteFlats.isEmpty()) {
+                binding.textNoFavoriteFlats.visibility = View.VISIBLE // Показываем текст "Нет избранных квартир"
+            } else {
+                binding.textNoFavoriteFlats.visibility = View.GONE // Скрываем текст "Нет избранных квартир"
+            }
         }
         binding.imageView7.setOnClickListener {
             findNavController().navigate(R.id.infoFragment)

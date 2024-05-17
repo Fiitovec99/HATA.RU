@@ -163,17 +163,9 @@ class FlatFragment : Fragment() {
 
         }
 
-
-
-
         view.findViewById<Button>(R.id.button2)?.setOnClickListener {
             showToast("В разработке!")
         }
-
-        view.findViewById<Button>(R.id.button3)?.setOnClickListener {
-            showToast("В разработке!")
-        }
-
     }
 
 
