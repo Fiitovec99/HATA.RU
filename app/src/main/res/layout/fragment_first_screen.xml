@@ -60,18 +60,26 @@
 
     <ImageView
         android:id="@+id/message_1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:src="@drawable/message_white_1"
+        app:layout_constraintWidth_percent="0.8"
+        app:layout_constraintHeight_percent="0.16"
+        android:adjustViewBounds="true"
+        android:scaleType="fitXY"
         app:layout_constraintTop_toTopOf="@id/guideline5PercentTop"
         app:layout_constraintEnd_toEndOf="@id/guideline5PercentEnd" />
 
 
     <ImageView
         android:id="@+id/message_2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:src="@drawable/message_white_2"
+        app:layout_constraintWidth_percent="0.8"
+        app:layout_constraintHeight_percent="0.23"
+        android:adjustViewBounds="true"
+        android:scaleType="fitXY"
         android:visibility="invisible"
         tools:visibility="visible"
         app:layout_constraintTop_toTopOf="@id/guideline22PercentTop"
@@ -90,9 +98,13 @@
 
     <ImageView
         android:id="@+id/message_3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:src="@drawable/message_white_3"
+        app:layout_constraintWidth_percent="0.8"
+        app:layout_constraintHeight_percent="0.16"
+        android:adjustViewBounds="true"
+        android:scaleType="fitXY"
         android:visibility="invisible"
         tools:visibility="visible"
         app:layout_constraintTop_toTopOf="@id/guideline55PercentTop"
@@ -100,9 +112,13 @@
 
     <ImageView
         android:id="@+id/message_4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:src="@drawable/message_white_4"
+        app:layout_constraintWidth_percent="0.8"
+        app:layout_constraintHeight_percent="0.16"
+        android:adjustViewBounds="true"
+        android:scaleType="fitXY"
         android:visibility="invisible"
         tools:visibility="visible"
         app:layout_constraintTop_toTopOf="@id/guideline75PercentTop"

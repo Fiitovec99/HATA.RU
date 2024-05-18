@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import android.preference.PreferenceManager
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.view.ViewTreeObserver
 import androidx.recyclerview.widget.ListAdapter
 import com.denzcoskun.imageslider.models.SlideModel
 import com.example.hataru.R
@@ -130,6 +131,16 @@ class RoomtypeAdapter(
         viewHolder.twPrice.text = apartment.roomtype.price + "₽" // "Цена: " +
         viewHolder.twLevel.text = "Этаж: " + mlev[apartment.roomtype.id]
         viewHolder.twArea.text = marea[apartment.roomtype.id] + " кв.м."
+
+        viewHolder.image_slider.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+            override fun onGlobalLayout() {
+                viewHolder.image_slider.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                val width = viewHolder.image_slider.width
+                val height = (width / 1.5).toInt()
+                viewHolder.image_slider.layoutParams.height = height
+                viewHolder.image_slider.requestLayout()
+            }
+        })
 
         // Установка изображения кнопки лайка в зависимости от состояния избранного
         val isLiked = sharedPreferences.getBoolean(apartment.roomtype.name, false)
