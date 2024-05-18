@@ -89,5 +89,33 @@
         app:layout_constraintBottom_toTopOf="@+id/imageView6"
         app:layout_constraintStart_toEndOf="@+id/imageView7" />
 
+    <TextView
+        android:id="@+id/text_no_favorite_flats"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="4dp"
+        android:text="Нет избранных квартир"
+        android:textSize="25dp"
+        android:visibility="gone"
+        style="@style/TEXTVIEW_COLOR"
+        app:layout_constraintBottom_toBottomOf="@+id/rv_apartment_list"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/rv_apartment_list" />
+
+    <TextView
+        android:id="@+id/text_no_results"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Ничего не найдено"
+        android:textSize="30dp"
+        android:visibility="gone"
+        style="@style/TEXTVIEW_COLOR"
+        app:layout_constraintStart_toStartOf="@id/rv_apartment_list"
+        app:layout_constraintEnd_toEndOf="@id/rv_apartment_list"
+        app:layout_constraintTop_toTopOf="@id/rv_apartment_list"
+        app:layout_constraintBottom_toBottomOf="@id/rv_apartment_list" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

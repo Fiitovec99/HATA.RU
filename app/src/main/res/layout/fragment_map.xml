@@ -14,7 +14,10 @@
         app:behavior_peekHeight="40dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        android:paddingTop="20dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
 
         <Button
             android:id="@+id/buttonFilterFlats"
@@ -22,7 +25,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             style="@style/BUTTONS_ON_MAP"
-            android:text="фильтр цен" />
+            android:text="фильтр цен"
+            android:layout_marginEnd="8dp"/>
 
         <Button
             android:id="@+id/deleteFilter"
@@ -30,7 +34,8 @@
             android:layout_height="wrap_content"
             style="@style/BUTTONS_ON_MAP"
             android:layout_weight="1"
-            android:text="удалить фильтр" />
+            android:text="удалить фильтр"
+            android:layout_marginStart="8dp"/>
 
 
 

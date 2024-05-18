@@ -3,10 +3,14 @@ package com.example.hataru.presentation.fragments
 import ApartmentsViewPagerFragment
 import ApartmentsViewPagerFragment.Companion.KEY_GET_FLAT_INTO_ADAPTER
 import android.Manifest
+import android.app.UiModeManager
+import android.content.Context
+import android.content.res.Configuration
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
+import android.graphics.Path
 import android.graphics.PointF
 import android.graphics.Rect
 import android.graphics.RectF
@@ -27,6 +31,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.hataru.R
@@ -302,6 +307,11 @@ class MapFragment : Fragment(), CameraListener, ViewTreeObserver.OnPreDrawListen
                 clasterizedCollection.clear()
                 showFlatsOnMap(viewModel.flats.value!!.toList())
                 currentCostTextView.visibility = View.GONE
+
+                val sharedPreferences = requireContext().getSharedPreferences("PriceFilterPrefs", Context.MODE_PRIVATE)
+                val editor = sharedPreferences.edit()
+                editor.clear()
+                editor.apply()
             }
 
             buttonFilterFlats.setOnClickListener {
@@ -328,18 +338,22 @@ class MapFragment : Fragment(), CameraListener, ViewTreeObserver.OnPreDrawListen
         popupWindow.isOutsideTouchable = true
         popupWindow.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
-
         val btnApplyPreferences = popupView.findViewById<Button>(R.id.btnApplyPreferences)
         val rangeSlider = popupView.findViewById<RangeSlider>(R.id.rangeSlider)
 
+        // Получение значений из SharedPreferences
+        val sharedPreferences = requireContext().getSharedPreferences("PriceFilterPrefs", Context.MODE_PRIVATE)
+        val savedStartPrice = sharedPreferences.getFloat("startPrice", 1000f)
+        val savedEndPrice = sharedPreferences.getFloat("endPrice", 5000f)
 
         // Установка пределов для RangeSlider
         rangeSlider.valueFrom = 1000f
         rangeSlider.valueTo = 5000f
-        rangeSlider.values = listOf(1000f, 5000f) // Устанавливаем начальные значения
+        rangeSlider.values = listOf(savedStartPrice, savedEndPrice) // Устанавливаем начальные значения
         rangeSlider.stepSize = 1f
 
-        popupView.findViewById<TextView>(R.id.tvSelectedPrice).text = "От 1000 до 5000"
+        popupView.findViewById<TextView>(R.id.tvSelectedPrice).text = "От ${savedStartPrice.toInt()} до ${savedEndPrice.toInt()}"
+
         // Обработчик изменения значения RangeSlider
         rangeSlider.addOnChangeListener { slider, _, _ ->
             val startPrice = slider.values[0].toInt()
@@ -350,23 +364,43 @@ class MapFragment : Fragment(), CameraListener, ViewTreeObserver.OnPreDrawListen
         }
 
         btnApplyPreferences.setOnClickListener {
-            val currentsFlatWithDiapozon = getFlatsWithFilter(
-                rangeSlider.values[0].toDouble(),
-                rangeSlider.values[1].toDouble()
-            )
+            val startPrice = rangeSlider.values[0].toDouble()
+            val endPrice = rangeSlider.values[1].toDouble()
+
+            // Сохранение значений в SharedPreferences
+            val editor = sharedPreferences.edit()
+            editor.putFloat("startPrice", startPrice.toFloat())
+            editor.putFloat("endPrice", endPrice.toFloat())
+            editor.apply()
+
+            val currentsFlatWithDiapozon = getFlatsWithFilter(startPrice, endPrice)
             clasterizedCollection.clear()
             showFlatsOnMap(currentsFlatWithDiapozon)
             binding.persistentBottomSheet.visibility = View.GONE
 
             binding.currentCostTextView.visibility = View.VISIBLE
             binding.currentCostTextView.text =
-                "текущий диапозон цен: \nот" + rangeSlider.values[0].toInt()
-                    .toString() + " до " + rangeSlider.values[1].toInt().toString()
-
+                "текущий диапозон цен: \nот " + startPrice.toInt().toString() + " до " + endPrice.toInt().toString()
         }
 
         popupWindow.showAtLocation(anchorView, Gravity.TOP, 0, 0)
     }
+
+    override fun onResume() {
+        super.onResume()
+        val sharedPreferences = requireContext().getSharedPreferences("PriceFilterPrefs", Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.clear()
+        editor.apply()
+    }
+    override fun onPause() {
+        super.onPause()
+        val sharedPreferences = requireContext().getSharedPreferences("PriceFilterPrefs", Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.clear()
+        editor.apply()
+    }
+
 
 
     private fun showFlatsOnMap(lst: List<Roomtype>) {
@@ -506,11 +540,12 @@ class MapFragment : Fragment(), CameraListener, ViewTreeObserver.OnPreDrawListen
         val textColor = Color.WHITE
         val padding = 70
 
-        val ovalWidth = 300 // Ширина овала
-        val ovalHeight = 200 // Высота овала
+        val rectWidth = 300 // Ширина закругленного прямоугольника
+        val rectHeight = 100 // Высота закругленного прямоугольника
+        val cornerRadius = 30f // Радиус закругления углов
+
         val paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
             color = textColor
-
             textAlign = Paint.Align.CENTER
         }
         paint.textSize = textSize
@@ -520,21 +555,43 @@ class MapFragment : Fragment(), CameraListener, ViewTreeObserver.OnPreDrawListen
         val textWidth = textBounds.width()
         val textHeight = textBounds.height()
 
-        val width = ovalWidth + 2 * padding
-        val height = ovalHeight + 2 * padding
+        val width = rectWidth + 2 * padding
+        val height = rectHeight + 2 * padding
 
         val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
         val canvas = Canvas(bitmap)
 
         // Рисуем овал
-        val ovalRect = RectF(
+        val rect = RectF(
             padding.toFloat(),
             padding.toFloat(),
             (width - padding).toFloat(),
             (height - padding).toFloat()
         )
-        paint.color = ContextCompat.getColor(requireContext(), R.color.flatWidgetOnMap)
-        canvas.drawRoundRect(ovalRect, ovalWidth.toFloat(), ovalHeight.toFloat(), paint)
+
+        if (isDarkTheme()){
+            paint.color = ContextCompat.getColor(requireContext(), R.color.purple_700)
+        }
+        else{
+            paint.color = ContextCompat.getColor(requireContext(), R.color.color_dark_blue)
+        }
+        canvas.drawRoundRect(rect, cornerRadius, cornerRadius, paint)
+
+        val path = Path()
+        val startX = (2.75*padding).toFloat()
+        val startY = height - padding - 50f
+        val endX = width - (2.75*padding).toFloat()
+        val endY = startY
+
+        val controlX1 = width / 2f
+        val controlY1 = (height - 20).toFloat()
+        val controlX2 = width / 2f
+        val controlY2 = (height - 20).toFloat()
+
+        path.moveTo(startX, startY)
+        path.cubicTo(controlX1, controlY1, controlX2, controlY2, endX, endY)
+        canvas.drawPath(path, paint)
+
 
         // Рисуем текст внутри овала
         paint.color = textColor
@@ -543,6 +600,10 @@ class MapFragment : Fragment(), CameraListener, ViewTreeObserver.OnPreDrawListen
             height / 2.toFloat() + textHeight / 2.toFloat() // Позиция Y текста по центру овала
         canvas.drawText(text, textX, textY, paint)
         return bitmap
+    }
+    private fun isDarkTheme(): Boolean {
+        val currentNightMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+        return currentNightMode == Configuration.UI_MODE_NIGHT_YES
     }
 
     private fun updateFocusRect() {
