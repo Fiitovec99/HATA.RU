@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Выберите диапазон цены"
+        android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/editText_min_price"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="От"
+        android:inputType="number" />
+
+    <EditText
+        android:id="@+id/editText_max_price"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="До"
+        android:inputType="number" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Выберите диапазон площади"
+        android:textStyle="bold"
+        android:layout_marginTop="16dp" />
+
+    <EditText
+        android:id="@+id/editText_min_area"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="От"
+        android:inputType="number" />
+
+    <EditText
+        android:id="@+id/editText_max_area"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="До"
+        android:inputType="number" />
+
+    <Button
+        android:id="@+id/button_apply_filter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Применить" />
+</LinearLayout>
