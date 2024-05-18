@@ -307,6 +307,11 @@ class MapFragment : Fragment(), CameraListener, ViewTreeObserver.OnPreDrawListen
                 clasterizedCollection.clear()
                 showFlatsOnMap(viewModel.flats.value!!.toList())
                 currentCostTextView.visibility = View.GONE
+
+                val sharedPreferences = requireContext().getSharedPreferences("PriceFilterPrefs", Context.MODE_PRIVATE)
+                val editor = sharedPreferences.edit()
+                editor.clear()
+                editor.apply()
             }
 
             buttonFilterFlats.setOnClickListener {
@@ -333,18 +338,22 @@ class MapFragment : Fragment(), CameraListener, ViewTreeObserver.OnPreDrawListen
         popupWindow.isOutsideTouchable = true
         popupWindow.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
-
         val btnApplyPreferences = popupView.findViewById<Button>(R.id.btnApplyPreferences)
         val rangeSlider = popupView.findViewById<RangeSlider>(R.id.rangeSlider)
 
+        // Получение значений из SharedPreferences
+        val sharedPreferences = requireContext().getSharedPreferences("PriceFilterPrefs", Context.MODE_PRIVATE)
+        val savedStartPrice = sharedPreferences.getFloat("startPrice", 1000f)
+        val savedEndPrice = sharedPreferences.getFloat("endPrice", 5000f)
 
         // Установка пределов для RangeSlider
         rangeSlider.valueFrom = 1000f
         rangeSlider.valueTo = 5000f
-        rangeSlider.values = listOf(1000f, 5000f) // Устанавливаем начальные значения
+        rangeSlider.values = listOf(savedStartPrice, savedEndPrice) // Устанавливаем начальные значения
         rangeSlider.stepSize = 1f
 
-        popupView.findViewById<TextView>(R.id.tvSelectedPrice).text = "От 1000 до 5000"
+        popupView.findViewById<TextView>(R.id.tvSelectedPrice).text = "От ${savedStartPrice.toInt()} до ${savedEndPrice.toInt()}"
+
         // Обработчик изменения значения RangeSlider
         rangeSlider.addOnChangeListener { slider, _, _ ->
             val startPrice = slider.values[0].toInt()
@@ -355,23 +364,43 @@ class MapFragment : Fragment(), CameraListener, ViewTreeObserver.OnPreDrawListen
         }
 
         btnApplyPreferences.setOnClickListener {
-            val currentsFlatWithDiapozon = getFlatsWithFilter(
-                rangeSlider.values[0].toDouble(),
-                rangeSlider.values[1].toDouble()
-            )
+            val startPrice = rangeSlider.values[0].toDouble()
+            val endPrice = rangeSlider.values[1].toDouble()
+
+            // Сохранение значений в SharedPreferences
+            val editor = sharedPreferences.edit()
+            editor.putFloat("startPrice", startPrice.toFloat())
+            editor.putFloat("endPrice", endPrice.toFloat())
+            editor.apply()
+
+            val currentsFlatWithDiapozon = getFlatsWithFilter(startPrice, endPrice)
             clasterizedCollection.clear()
             showFlatsOnMap(currentsFlatWithDiapozon)
             binding.persistentBottomSheet.visibility = View.GONE
 
             binding.currentCostTextView.visibility = View.VISIBLE
             binding.currentCostTextView.text =
-                "текущий диапозон цен: \nот" + rangeSlider.values[0].toInt()
-                    .toString() + " до " + rangeSlider.values[1].toInt().toString()
-
+                "текущий диапозон цен: \nот " + startPrice.toInt().toString() + " до " + endPrice.toInt().toString()
         }
 
         popupWindow.showAtLocation(anchorView, Gravity.TOP, 0, 0)
     }
+
+    override fun onResume() {
+        super.onResume()
+        val sharedPreferences = requireContext().getSharedPreferences("PriceFilterPrefs", Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.clear()
+        editor.apply()
+    }
+    override fun onPause() {
+        super.onPause()
+        val sharedPreferences = requireContext().getSharedPreferences("PriceFilterPrefs", Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.clear()
+        editor.apply()
+    }
+
 
 
     private fun showFlatsOnMap(lst: List<Roomtype>) {
