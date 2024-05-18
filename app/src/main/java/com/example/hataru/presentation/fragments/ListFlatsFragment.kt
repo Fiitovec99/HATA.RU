@@ -1,5 +1,6 @@
 package com.example.hataru.presentation.fragments
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.os.Parcelable
 import android.text.Editable
@@ -9,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentContainerView
@@ -62,6 +64,10 @@ class ListFlatsFragment : Fragment() {
         view.findViewById<ImageButton>(R.id.imageView7)?.setOnClickListener {
             findNavController().navigate(R.id.infoFragment)
         }
+
+//        view.findViewById<ImageView>(R.id.imageButton_filter)?.setOnClickListener {
+//            showFilterDialog()
+//        }
 
         val editTextSearch = view.findViewById<EditText>(R.id.editText_search)
         editTextSearch.addTextChangedListener(object : TextWatcher {
@@ -129,6 +135,45 @@ class ListFlatsFragment : Fragment() {
 //            .replace(R.id.apartment_container, fragment)
 //            .addToBackStack(null)
 //            .commit()
+//    }
+
+//    private fun showFilterDialog() {
+//        val dialogView = layoutInflater.inflate(R.layout.dialog_filter, null)
+//        val minPriceEditText = dialogView.findViewById<EditText>(R.id.editText_min_price)
+//        val maxPriceEditText = dialogView.findViewById<EditText>(R.id.editText_max_price)
+//        val minAreaEditText = dialogView.findViewById<EditText>(R.id.editText_min_area)
+//        val maxAreaEditText = dialogView.findViewById<EditText>(R.id.editText_max_area)
+//
+//        AlertDialog.Builder(requireContext())
+//            .setView(dialogView)
+//            .setTitle("Фильтр квартир")
+//            .setPositiveButton("Применить") { dialog, _ ->
+//                val minPrice = minPriceEditText.text.toString().toIntOrNull() ?: Int.MIN_VALUE
+//                val maxPrice = maxPriceEditText.text.toString().toIntOrNull() ?: Int.MAX_VALUE
+//                val minArea = minAreaEditText.text.toString().toIntOrNull() ?: Int.MIN_VALUE
+//                val maxArea = maxAreaEditText.text.toString().toIntOrNull() ?: Int.MAX_VALUE
+//
+//                performFilter(minPrice, maxPrice, minArea, maxArea)
+//                dialog.dismiss()
+//            }
+//            .setNegativeButton("Отмена") { dialog, _ ->
+//                dialog.cancel()
+//            }
+//            .show()
+//    }
+//
+//    private fun performFilter(minPrice: Int, maxPrice: Int, minArea: Int, maxArea: Int) {
+//        val filteredList = roomtypeWithPhotosList.filter { roomtypeWithPhotos ->
+//            val price = roomtypeWithPhotos.roomtype.price.toInt()
+//            val area = apartmentListAdapter.marea[roomtypeWithPhotos.roomtype.id]?.toInt()
+//            price in minPrice..maxPrice && area in minArea..maxArea
+//        }
+//        if (filteredList.isEmpty()) {
+//            view?.findViewById<TextView>(R.id.text_no_results)?.visibility = View.VISIBLE
+//        } else {
+//            view?.findViewById<TextView>(R.id.text_no_results)?.visibility = View.GONE
+//        }
+//        apartmentListAdapter.submitList(filteredList)
 //    }
 
     private fun setupRecyclerView() {
