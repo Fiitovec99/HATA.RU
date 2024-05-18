@@ -87,11 +87,8 @@ class FavoriteFlatFragment : Fragment() {
         clearSearchEditTextAndHideNoResults()
     }
 
-
-
 //    private fun isOnePaneMode(): Boolean {
-//        val apartmentContainer =
-//            activity?.findViewById<FragmentContainerView>(R.id.apartment_container)
+//        val apartmentContainer = activity?.findViewById<FragmentContainerView>(R.id.apartment_container)
 //        return apartmentContainer == null
 //    }
 
@@ -103,15 +100,19 @@ class FavoriteFlatFragment : Fragment() {
     private fun clearSearchEditTextAndHideNoResults() {
         val editTextSearch = view?.findViewById<EditText>(R.id.editText_search)
         editTextSearch?.setText("") // Очищаем строку поиска
-        view?.findViewById<TextView>(R.id.text_no_results)?.visibility = View.GONE // Скрываем надпись "Ничего не найдено"
+        view?.findViewById<TextView>(R.id.text_no_results)?.visibility =
+            View.GONE // Скрываем надпись "Ничего не найдено"
     }
 
     private fun performSearch() {
         val query = view?.findViewById<EditText>(R.id.editText_search)?.text.toString().trim()
         val filteredList = roomtypeWithPhotosList.filter { roomtypeWithPhotos ->
-            apartmentListAdapter.mdesc[roomtypeWithPhotos.roomtype.id]!!.contains(query, ignoreCase = true)
+            apartmentListAdapter.mdesc[roomtypeWithPhotos.roomtype.id]!!.contains(
+                query,
+                ignoreCase = true
+            )
         }
-        if (filteredList.isEmpty()) {
+        if (filteredList.isEmpty() && view?.findViewById<TextView>(R.id.text_no_favorite_flats)?.visibility == View.GONE) {
             view?.findViewById<TextView>(R.id.text_no_results)?.visibility = View.VISIBLE
         } else {
             view?.findViewById<TextView>(R.id.text_no_results)?.visibility = View.GONE
@@ -120,8 +121,7 @@ class FavoriteFlatFragment : Fragment() {
     }
 
 //    private fun isOnePaneMode(): Boolean {
-//        val apartmentContainer =
-//            activity?.findViewById<FragmentContainerView>(R.id.apartment_container)
+//        val apartmentContainer = activity?.findViewById<FragmentContainerView>(R.id.apartment_container)
 //        return apartmentContainer == null
 //    }
 //
@@ -134,16 +134,15 @@ class FavoriteFlatFragment : Fragment() {
 //    }
 
     private fun setupRecyclerView() {
-        val rvApartmentList = binding.rvApartmentList
+        val rvApartmentList = view?.findViewById<RecyclerView>(R.id.rv_apartment_list)
         with(rvApartmentList) {
-            apartmentListAdapter = RoomtypeAdapter(roomtypeWithPhotosList,requireContext())
-            this.adapter = apartmentListAdapter
+            apartmentListAdapter = RoomtypeAdapter(roomtypeWithPhotosList, requireContext())
+            this?.adapter = apartmentListAdapter
             setupLikeButtonClickListener() // Добавьте эту строку
         }
 
         setupApartmentClickListener()
     }
-
     private fun setupLikeButtonClickListener() {
         apartmentListAdapter.onLikeButtonClickListener = { flat ->
             viewModel.changeLikedStage(flat)
