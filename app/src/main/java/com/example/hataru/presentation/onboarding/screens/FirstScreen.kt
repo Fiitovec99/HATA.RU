@@ -20,7 +20,7 @@ class FirstScreen : Fragment() {
 
     private val messageDisplayRunnable = object : Runnable {
         override fun run() {
-            if (currentMessageIndex < messages.size - 1) {
+            if (currentMessageIndex < messages.size) {
                 showNextMessage()
             }
         }
@@ -67,11 +67,11 @@ class FirstScreen : Fragment() {
     }
 
     private fun onBoardingFinished() {
-//        val sharedPref = requireActivity().getSharedPreferences("onBoarding", Context.MODE_PRIVATE)
-//        with(sharedPref.edit()) {
-//            putBoolean("Finished", true)
-//            apply()
-//        }
+        val sharedPref = requireActivity().getSharedPreferences("onBoarding", Context.MODE_PRIVATE)
+        with(sharedPref.edit()) {
+            putBoolean("Finished", true)
+            apply()
+        }
     }
 
     override fun onDestroyView() {
