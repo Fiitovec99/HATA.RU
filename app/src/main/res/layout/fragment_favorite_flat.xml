@@ -42,6 +42,8 @@
         android:layout_height="40dp"
         style="@style/SEARCH_TEXT_BACKGROUND"
         android:layout_marginTop="33dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
         app:layout_constraintTop_toTopOf="parent"/>
 
     <EditText
@@ -52,9 +54,11 @@
         android:layout_marginTop="32dp"
         android:imeOptions="actionSearch"
         android:inputType="text"
-        android:paddingLeft="39dp"
-        android:paddingRight="10dp"
+        android:paddingLeft="44dp"
+        android:paddingRight="15dp"
         app:layout_constraintTop_toTopOf="parent"/>
+
+    <!--    android:paddingRight="55dp"  это отступ для EditText, если добавить кнопку фильтра-->
 
     <ImageView
         android:id="@+id/imageButton_search"
@@ -63,11 +67,25 @@
         style="@style/SEARCH_BUTTON"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
-        android:layout_marginStart="5dp"
+        android:layout_marginStart="10dp"
         android:layout_marginTop="36dp"
         android:contentDescription="Поиск"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <!--    <ImageView-->
+    <!--        android:id="@+id/imageButton_filter"-->
+    <!--        android:layout_width="35dp"-->
+    <!--        android:layout_height="35dp"-->
+    <!--        android:layout_alignParentEnd="true"-->
+    <!--        android:layout_centerVertical="true"-->
+    <!--        android:layout_marginTop="36dp"-->
+    <!--        android:layout_marginEnd="15dp"-->
+    <!--        android:background="@android:color/transparent"-->
+    <!--        android:contentDescription="Поиск"-->
+    <!--        android:src="@drawable/filter"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintTop_toTopOf="parent" />-->
 
     <ImageButton
         android:id="@+id/imageView7"
