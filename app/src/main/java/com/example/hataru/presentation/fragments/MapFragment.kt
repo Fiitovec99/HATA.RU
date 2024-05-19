@@ -244,7 +244,6 @@ class MapFragment : Fragment(), CameraListener, ViewTreeObserver.OnPreDrawListen
         }
         adapter.onLikeButtonClickListener = { flat ->
             viewModel.changeLikedStage(flat)
-            showToast("Квартира добавлена в избранные!")
         }
     }
 

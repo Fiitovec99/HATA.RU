@@ -92,10 +92,11 @@
     <EditText
         android:id="@+id/username"
         style="@style/TEXTVIEW_COLOR"
+        android:paddingLeft="10dp"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@drawable/edittext_rounded"
-        android:hint="Эл. почта или номер телефона"
+        android:hint="Эл. почта"
         android:textSize="20sp"
         android:inputType="textEmailAddress"
         android:selectAllOnFocus="true"
@@ -108,6 +109,7 @@
     <EditText
         android:id="@+id/password"
         style="@style/TEXTVIEW_COLOR"
+        android:paddingLeft="10dp"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@drawable/edittext_rounded"
