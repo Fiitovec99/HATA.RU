@@ -152,7 +152,7 @@ class MapFragment : Fragment(), CameraListener, ViewTreeObserver.OnPreDrawListen
 
         viewModel.visibleFlats.observe(viewLifecycleOwner) { visibleFlats ->
             binding.countFlatsOnMap.text =
-                "Обнаружено " + getRightStringForCountFlatsOnMap(visibleFlats?.size ?: 3)
+                "Обнаружено " + getRightStringForCountFlatsOnMap(visibleFlats?.size ?: 1)
         }
         return binding.root
     }
