@@ -1,17 +1,32 @@
-package com.example.hataru.presentation
+package com.example.hataru.presentation.di
 
 import android.app.Application
+import android.content.IntentFilter
+import android.net.ConnectivityManager
 import androidx.appcompat.app.AppCompatDelegate
 import com.example.hataru.BuildConfig
+import com.example.hataru.InternetCheckService
 import com.example.hataru.SharedPreferenceManger
+import com.example.hataru.presentation.di.appMod
+import com.example.hataru.presentation.di.appModule
 import com.yandex.mapkit.MapKitFactory
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 
 class App : Application() {
 
+    private val broadcastReceiver: InternetCheckService by lazy { InternetCheckService() }
+
     override fun onCreate() {
         super.onCreate()
+
+
+
+        registerReceiver(
+            broadcastReceiver,
+            IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION)
+        )
+
 
         val sharedPreferenceManger = SharedPreferenceManger(this)
         AppCompatDelegate.setDefaultNightMode(sharedPreferenceManger.themeFlag[sharedPreferenceManger.theme])
@@ -22,8 +37,15 @@ class App : Application() {
 
         startKoin {
             androidContext(this@App)
-            modules(listOf(appMod,appModule) )
+            modules(listOf(appMod, appModule) )
         }
     }
+
+    override fun onTerminate() {
+        super.onTerminate()
+        unregisterReceiver(broadcastReceiver)
+    }
+
+
 
 }

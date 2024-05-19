@@ -1,4 +1,4 @@
-package com.example.hataru.presentation
+package com.example.hataru.presentation.di
 
 import FavoriteFlatViewModel
 import FlatFragmentViewPagerViewModel

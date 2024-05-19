@@ -5,12 +5,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.hataru.R
 import com.example.hataru.databinding.FragmentViewPagerBinding
 import com.example.hataru.presentation.onboarding.screens.FirstScreen
-import com.example.hataru.presentation.onboarding.screens.SecondScreen
-import com.example.hataru.presentation.onboarding.screens.ThirdScreen
-import com.tbuonomo.viewpagerdotsindicator.SpringDotsIndicator
 
 class ViewPagerFragment : Fragment() {
 
@@ -25,9 +21,7 @@ class ViewPagerFragment : Fragment() {
         val view = binding.root
 
         val fragmentList = arrayListOf<Fragment>(
-            FirstScreen(),
-            SecondScreen(),
-            ThirdScreen()
+            FirstScreen()
         )
 
         val adapter = ViewPagerAdapter(
@@ -38,8 +32,8 @@ class ViewPagerFragment : Fragment() {
 
         binding.viewPager.adapter = adapter
 
-        val springDotsIndicator = binding.wormDotsIndicator
-        springDotsIndicator.attachTo(binding.viewPager)
+//        val springDotsIndicator = binding.wormDotsIndicator
+//        springDotsIndicator.attachTo(binding.viewPager)
 
 
         return view

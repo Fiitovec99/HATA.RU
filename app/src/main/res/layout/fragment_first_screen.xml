@@ -2,46 +2,127 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    style="@style/SPLASH_SCREEN"
+    android:id="@+id/constraintLayoutContainer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".presentation.onboarding.screens.FirstScreen">
 
-    <TextView
-        android:id="@+id/firstScreen"
-        android:layout_width="360dp"
-        android:layout_height="130dp"
-        android:layout_marginTop="27dp"
-        android:gravity="center"
-        android:text="HATA.RU — сервис краткосрочной аренды апартаментов.
-         \nМы предоставляем понятный, предсказуемый сервис, \nгде будет чисто и безопасно."
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline5PercentEnd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.95" />
 
-    <TextView
-        android:id="@+id/continue1"
-        android:layout_width="100dp"
-        android:layout_height="21dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="13dp"
-        android:text="Пропустить"
-        android:textSize="13sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline5PercentStart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.05" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline5PercentTop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.02" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline22PercentTop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.22" />
+
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline48PercentTop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.48" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline55PercentTop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.56" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline75PercentTop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.75" />
 
     <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="360dp"
-        android:layout_height="400dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginBottom="343dp"
-        android:src="@drawable/ic_first_onboarding"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:id="@+id/message_1"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:src="@drawable/message_white_1"
+        app:layout_constraintWidth_percent="0.8"
+        app:layout_constraintHeight_percent="0.16"
+        android:adjustViewBounds="true"
+        android:scaleType="fitXY"
+        app:layout_constraintTop_toTopOf="@id/guideline5PercentTop"
+        app:layout_constraintEnd_toEndOf="@id/guideline5PercentEnd" />
+
+
+    <ImageView
+        android:id="@+id/message_2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:src="@drawable/message_white_2"
+        app:layout_constraintWidth_percent="0.8"
+        app:layout_constraintHeight_percent="0.23"
+        android:adjustViewBounds="true"
+        android:scaleType="fitXY"
+        android:visibility="invisible"
+        tools:visibility="visible"
+        app:layout_constraintTop_toTopOf="@id/guideline22PercentTop"
+        app:layout_constraintStart_toStartOf="@id/guideline5PercentStart"
+        app:layout_constraintBottom_toTopOf="@id/guideline48PercentTop"/>
+
+    <Button
+        android:id="@+id/skip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#BCF3FF"
+        android:text="Перейти на регистрацию"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.5" />
+        app:layout_constraintTop_toBottomOf="@+id/message_2" />
+
+    <ImageView
+        android:id="@+id/message_3"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:src="@drawable/message_white_3"
+        app:layout_constraintWidth_percent="0.8"
+        app:layout_constraintHeight_percent="0.16"
+        android:adjustViewBounds="true"
+        android:scaleType="fitXY"
+        android:visibility="invisible"
+        tools:visibility="visible"
+        app:layout_constraintTop_toTopOf="@id/guideline55PercentTop"
+        app:layout_constraintEnd_toEndOf="@id/guideline5PercentEnd" />
+
+    <ImageView
+        android:id="@+id/message_4"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:src="@drawable/message_white_4"
+        app:layout_constraintWidth_percent="0.8"
+        app:layout_constraintHeight_percent="0.16"
+        android:adjustViewBounds="true"
+        android:scaleType="fitXY"
+        android:visibility="invisible"
+        tools:visibility="visible"
+        app:layout_constraintTop_toTopOf="@id/guideline75PercentTop"
+        app:layout_constraintEnd_toEndOf="@id/guideline5PercentEnd" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

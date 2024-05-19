@@ -18,6 +18,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.hataru.presentation.activities.MainActivity
 import com.example.hataru.R
 import com.example.hataru.databinding.FragmentLoginBinding
+import com.example.hataru.databinding.FragmentLoginNewBinding
 import com.example.hataru.showToast
 import com.google.firebase.auth.FirebaseAuth
 
@@ -26,7 +27,7 @@ class LoginFragment : Fragment() {
 
     private lateinit var firebaseAuth: FirebaseAuth
     private lateinit var loginViewModel: LoginViewModel
-    private var _binding: FragmentLoginBinding? = null
+    private var _binding: FragmentLoginNewBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -39,7 +40,7 @@ class LoginFragment : Fragment() {
     ): View? {
         firebaseAuth = FirebaseAuth.getInstance()
 
-        _binding = FragmentLoginBinding.inflate(inflater, container, false)
+        _binding = FragmentLoginNewBinding.inflate(inflater, container, false)
         return binding.root
 
     }
@@ -57,6 +58,7 @@ class LoginFragment : Fragment() {
 
         val usernameEditText = binding.username
         val passwordEditText = binding.password
+        val confirmPasswordEditText = binding.confirmPassword
         val loginButton = binding.login
         val loadingProgressBar = binding.loading
 
@@ -115,6 +117,7 @@ class LoginFragment : Fragment() {
         }
         usernameEditText.addTextChangedListener(afterTextChangedListener)
         passwordEditText.addTextChangedListener(afterTextChangedListener)
+        confirmPasswordEditText.addTextChangedListener(afterTextChangedListener)
         passwordEditText.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 loginViewModel.login(
@@ -127,10 +130,16 @@ class LoginFragment : Fragment() {
 
         _binding!!.login.setOnClickListener {
 
-            if(usernameEditText.text.toString()=="" || passwordEditText.text.toString()==""){
+            if(usernameEditText.text.toString()=="" || passwordEditText.text.toString()=="" || confirmPasswordEditText.text.toString()==""){
                 showToast("Вы не заполнили одно из полей")
                 return@setOnClickListener
             }
+
+            if(passwordEditText.text.toString() != confirmPasswordEditText.text.toString()) {
+                showToast("Пароли не совпадают")
+                return@setOnClickListener
+            }
+
             loadingProgressBar.visibility = View.VISIBLE
             firebaseAuth.createUserWithEmailAndPassword(
                 usernameEditText.text.toString(),

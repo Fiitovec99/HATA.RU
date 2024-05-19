@@ -1,17 +1,24 @@
 package com.example.hataru.presentation.adapter
 
+import android.content.Context
+import android.content.SharedPreferences
+import android.preference.PreferenceManager
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
+import android.view.ViewTreeObserver
 import androidx.recyclerview.widget.ListAdapter
-import androidx.recyclerview.widget.RecyclerView
 import com.denzcoskun.imageslider.models.SlideModel
 import com.example.hataru.R
-import com.example.hataru.domain.entity.Roomtype
 import com.example.hataru.domain.entity.RoomtypeWithPhotos
-import java.util.Dictionary
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import java.util.concurrent.Executors
 
-class RoomtypeAdapter : ListAdapter<RoomtypeWithPhotos, ApartmentViewHolder>(ApartmentDiffCallback()) {
+class RoomtypeAdapter(
+    private val roomtypeWithPhotosList: List<RoomtypeWithPhotos>,
+    private val context: Context
+) : ListAdapter<RoomtypeWithPhotos, ApartmentViewHolder>(ApartmentDiffCallback()) {
 
     var mdesc = mapOf<String, String>(
         "467150" to "Однокомнатная квартира на Сиверса 32 для 4 человек",
@@ -63,6 +70,7 @@ class RoomtypeAdapter : ListAdapter<RoomtypeWithPhotos, ApartmentViewHolder>(Apa
         "349715" to "6"
     )
 
+
     var marea = mapOf<String, String>(
         "467150" to "33",
         "394665" to "44",
@@ -88,44 +96,97 @@ class RoomtypeAdapter : ListAdapter<RoomtypeWithPhotos, ApartmentViewHolder>(Apa
         "349715" to "55"
     )
 
+    private var originalList: List<RoomtypeWithPhotos> = roomtypeWithPhotosList
+
+
     var onLikeButtonClickListener: ((RoomtypeWithPhotos) -> Unit)? = null
     var onApartmentClickListener: ((RoomtypeWithPhotos) -> Unit)? = null
 
+    private val sharedPreferences: SharedPreferences by lazy {
+        PreferenceManager.getDefaultSharedPreferences(context)
+    }
+
+    private val backgroundExecutor = Executors.newSingleThreadExecutor()
+    private val uiScope = CoroutineScope(Dispatchers.Main)
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ApartmentViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.apartment_noliked, parent, false)
+        // Определяем макет в зависимости от состояния избранного
+        val layoutResId =
+            if (viewType == VIEW_TYPE_LIKED) R.layout.apartment_liked else R.layout.apartment_noliked
+        val view = LayoutInflater.from(parent.context).inflate(layoutResId, parent, false)
         return ApartmentViewHolder(view)
     }
+
 
     override fun onBindViewHolder(viewHolder: ApartmentViewHolder, position: Int) {
         val apartment = getItem(position)
 
+        // инициализация полей
         val imageList = ArrayList<SlideModel>() // Create image list
         apartment.photos.forEach {
             imageList.add(SlideModel(it.url))
-
         }
         viewHolder.image_slider.setImageList(imageList)
-
-        viewHolder.buttonLike.setOnClickListener {
-            onLikeButtonClickListener?.invoke(apartment)
-        }
-        viewHolder.view.setOnClickListener {
-            onApartmentClickListener?.invoke(apartment)
-        }
         viewHolder.twShortDescription.text = mdesc[apartment.roomtype.id]
         viewHolder.twPrice.text = apartment.roomtype.price + "₽" // "Цена: " +
         viewHolder.twLevel.text = "Этаж: " + mlev[apartment.roomtype.id]
         viewHolder.twArea.text = marea[apartment.roomtype.id] + " кв.м."
 
+        viewHolder.image_slider.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+            override fun onGlobalLayout() {
+                viewHolder.image_slider.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                val width = viewHolder.image_slider.width
+                val height = (width / 1.5).toInt()
+                viewHolder.image_slider.layoutParams.height = height
+                viewHolder.image_slider.requestLayout()
+            }
+        })
+
+        // Установка изображения кнопки лайка в зависимости от состояния избранного
+        val isLiked = sharedPreferences.getBoolean(apartment.roomtype.name, false)
+        val likeIconResId = if (isLiked) R.drawable.image_like else R.drawable.vector
+        viewHolder.buttonLike.setImageResource(likeIconResId)
+
+        // Обработчик нажатия на кнопку лайка
+        viewHolder.buttonLike.setOnClickListener {
+            // Обновление состояния избранного
+            val newLikedState = !isLiked
+            sharedPreferences.edit().putBoolean(apartment.roomtype.name, newLikedState).apply()
+            // Обновление внешнего вида кнопки лайка
+            val updatedLikeIconResId = if (newLikedState) R.drawable.image_like else R.drawable.vector
+            viewHolder.buttonLike.setImageResource(updatedLikeIconResId)
+            // Вызов обработчика нажатия, если он задан
+            onLikeButtonClickListener?.invoke(apartment)
+        }
+
+        // Добавьте обработчик нажатия на элемент списка, если он задан
+        viewHolder.itemView.setOnClickListener {
+            onApartmentClickListener?.invoke(apartment)
+        }
+    }
 
 
 
+    fun filter(query: String) {
+        val filteredList = if (query.isEmpty() || query == "") {
+            originalList
+        } else {
+            originalList.filter { roomtypeWithPhotos ->
+                mdesc[roomtypeWithPhotos.roomtype.id]!!.contains(query, ignoreCase = true)
+            }
+        }
+        submitList(filteredList)
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        val apartment = getItem(position)
+        val isLiked = sharedPreferences.getBoolean(apartment.roomtype.name, false)
+        return if (isLiked) VIEW_TYPE_LIKED else VIEW_TYPE_NOLIKED
     }
 
     override fun getItemCount(): Int {
         return currentList.size
     }
-
 
     companion object {
         const val VIEW_TYPE_LIKED = 1

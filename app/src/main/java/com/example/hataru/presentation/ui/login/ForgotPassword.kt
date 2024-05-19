@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.hataru.R
 import com.example.hataru.databinding.FragmentForgotPasswordBinding
+import com.example.hataru.databinding.FragmentForgotPasswordNewBinding
 import com.example.hataru.showToast
 import com.google.firebase.auth.FirebaseAuth
 
@@ -20,7 +21,7 @@ class ForgotPassword : Fragment() {
 
     private lateinit var firebaseAuth: FirebaseAuth
 
-    private var _binding: FragmentForgotPasswordBinding? = null
+    private var _binding: FragmentForgotPasswordNewBinding? = null
 
     private val binding get() = _binding!!
 
@@ -31,7 +32,7 @@ class ForgotPassword : Fragment() {
     ): View? {
         firebaseAuth = FirebaseAuth.getInstance()
 
-        _binding = FragmentForgotPasswordBinding.inflate(inflater, container, false)
+        _binding = FragmentForgotPasswordNewBinding.inflate(inflater, container, false)
         return binding.root
 
     }
@@ -44,8 +45,8 @@ class ForgotPassword : Fragment() {
 
 
 
-        binding.continue4.setOnClickListener{
-            if(_binding!!.textViewForgotPassword.text.toString() == ""){
+        binding.login.setOnClickListener{
+            if(_binding!!.username.text.toString() == ""){
                 showToast("Пусто")
                 return@setOnClickListener
             }
@@ -53,7 +54,7 @@ class ForgotPassword : Fragment() {
             loadingProgressBar.visibility = View.VISIBLE
 
             firebaseAuth.sendPasswordResetEmail(
-                binding.textViewForgotPassword.text.toString()
+                binding.username.text.toString()
             ).addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     showToast("На вашу почту отправлено сообщение для снятия пароля")
