@@ -25,3 +25,10 @@
 **Ссылка 1 на [Figma](https://www.figma.com/file/k0UfFwfUhrutCCClW0qKhI/hataru-(%D0%BF%D1%80%D0%BE%D0%B5%D0%BA%D1%82-%D0%BF%D0%B4)?type=design&node-id=0%3A1&mode=design&t=B39rjKbHxuuJRSG4-1)**
 **Ссылка 2 на [Figma](https://www.figma.com/file/7BZPEO9PVnkcsnXcIuKxQq/Untitled?type=design&node-id=3-7&mode=design&t=aYp6YVu5Ub8PjT1p-0)**
 
+P.S. Так как приложения является коммерческим, кнопка "забронировать" во вкладке квартиры не работает, а исполняет роль заглушки. 
+
+В связи с добавлением заказчиком новых квартир в базу данных без добавления в них необходимых деталей для работы приложения, была исправлена предыдущая версия (см. коммиты в main)
+
+Советуется перед загрузкой патча удалить все данные о старом приложении(почистить кэш, память)
+
+**Ссылка на новый [Патч](https://disk.yandex.ru/d/yL9H2U05M1z2kQ)**
