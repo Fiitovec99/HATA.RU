@@ -3,6 +3,7 @@ package com.example.hataru.presentation.adapter
 import android.content.Context
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
@@ -20,87 +21,7 @@ class RoomtypeAdapter(
     private val context: Context
 ) : ListAdapter<RoomtypeWithPhotos, ApartmentViewHolder>(ApartmentDiffCallback()) {
 
-    var mdesc = mapOf<String, String>(
-        "467150" to "Однокомнатная квартира на Сиверса 32 для 4 человек",
-        "394665" to "Однокомнатная квартира для 4х гостей на Гвардейском 13",
-        "389394" to "Однокомнатная квартира для 4х гостей на Шолохова 211 корпус 3",
-        "354060" to "Однокомнатная квартира для 4х гостей на пр. Шолохова д. 211/2",
-        "396679" to "Однокомнатная квартира для 4х гостей на Мечникова 37",
-        "398045" to "Однокомнатная квартира для 4х гостей на Мечникова 37",
-        "460294" to "Уютная студия для 4х гостей на Мечникова 37",
-        "429750" to "Студия для 3х гостей на Нансена 83",
-        "221997" to "Однокомнатная квартира для 4х гостей в доме бизнес класса на ул. Тельмана д. 110с2",
-        "455567" to "Двухкомнатная квартира для 6 гостей на Соколова 68",
-        "366723" to "Однокомнатная квартира для 4х гостей на ул. Береговая д.6",
-        "478096" to "Однокомнатная квартира для 4х гостей на Ларина 45",
-        "236104" to "Двухкомнатная квартира для 6х гостей на пр. Михаила Нагибина д.14Г",
-        "279779" to "Однокомнатная квартира для 4х гостей на ул. Магнитогорская д.2Б",
-        "480849" to "Однокомнатная квартира для 4х гостей на Магнитогорской 2",
-        "325568" to "Однокомнатная квартира для 4х гостей на пер. Соборный д. 98",
-        "221995" to "Однокомнатная квартира для 4х гостей на пер. Доломановский д.124с2",
-        "221996" to "Однокомнатная квартира для 4х гостей на пер. Доломановский д.124с2",
-        "222541" to "Двухкомнатная квартира для 6х гостей на ул. Черепахина д.212",
-        "222542" to "Двухкомнатная квартира для 4х гостей на ул. Черепахина д.212",
-        "222543" to "Двухкомнатная квартира для 4х гостей на ул. Черепахина д.212",
-        "349715" to "Двухкомнатная квартира для 4х гостей на ул. Черепахина д. 212",
-        "538899" to "Однокомнатная квартира для 4х гостей на Нансена 83/3",
-        "538900" to "Однокомнатная квартира для 4х гостей на Жукова 16/6"
-    )
 
-    var mlev = mapOf<String, String>(
-        "467150" to "13",
-        "394665" to "8",
-        "389394" to "4",
-        "354060" to "3",
-        "396679" to "17",
-        "398045" to "13",
-        "460294" to "7",
-        "429750" to "17",
-        "221997" to "17",
-        "455567" to "5",
-        "366723" to "5",
-        "478096" to "8",
-        "236104" to "14",
-        "279779" to "8",
-        "480849" to "5",
-        "325568" to "21",
-        "221995" to "14",
-        "221996" to "18",
-        "222541" to "9",
-        "222542" to "8",
-        "222543" to "7",
-        "349715" to "6",
-        "538899" to "3",
-        "538900" to "3"
-    )
-
-
-    var marea = mapOf<String, String>(
-        "467150" to "33",
-        "394665" to "44",
-        "389394" to "40",
-        "354060" to "42",
-        "396679" to "30",
-        "398045" to "30",
-        "460294" to "25",
-        "429750" to "20",
-        "221997" to "47",
-        "455567" to "65",
-        "366723" to "27",
-        "478096" to "42",
-        "236104" to "65",
-        "279779" to "40",
-        "480849" to "39",
-        "325568" to "42",
-        "221995" to "41",
-        "221996" to "42",
-        "222541" to "58",
-        "222542" to "58",
-        "222543" to "58",
-        "349715" to "55",
-        "538899" to "35",
-        "538900" to "33"
-    )
 
     private var originalList: List<RoomtypeWithPhotos> = roomtypeWithPhotosList
 
@@ -112,8 +33,39 @@ class RoomtypeAdapter(
         PreferenceManager.getDefaultSharedPreferences(context)
     }
 
-    private val backgroundExecutor = Executors.newSingleThreadExecutor()
-    private val uiScope = CoroutineScope(Dispatchers.Main)
+    fun extractFloor(log: String?): Int? {
+        val floorRegex = """Этаж:\s*\"(\d+)\"""".toRegex()
+        val matchResult = log?.let { floorRegex.find(it) }
+        return matchResult?.groups?.get(1)?.value?.toInt()
+    }
+
+
+
+    fun extractArea(log: String): Int? {
+        try {
+            val areaRegex = """Площадь:\s*\"(\d+)\"""".toRegex()
+            val matchResult = log.let { areaRegex.find(it) }
+            return matchResult!!.groups!!.get(1)?.value?.toInt()
+        }catch (e : NullPointerException){
+            return 100000000
+        }
+    }
+
+
+    fun extractDescription(log: String): String? {
+        try{
+            val descriptionRegex = """Описание:\s*\"([^\"]+)\"""".toRegex()
+            val matchResult = log.let { descriptionRegex.find(it) }
+            return matchResult!!.groups.get(1)?.value
+        }catch (e : NullPointerException){
+            return "не приходят данные"
+        }
+
+    }
+
+
+
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ApartmentViewHolder {
         // Определяем макет в зависимости от состояния избранного
@@ -123,20 +75,29 @@ class RoomtypeAdapter(
         return ApartmentViewHolder(view)
     }
 
-
     override fun onBindViewHolder(viewHolder: ApartmentViewHolder, position: Int) {
         val apartment = getItem(position)
 
         // инициализация полей
         val imageList = ArrayList<SlideModel>() // Create image list
-        apartment.photos.forEach {
-            imageList.add(SlideModel(it.url))
+        apartment.photos.forEach { roomX ->
+            roomX.photos?.forEach {
+                imageList.add(SlideModel(it.url))
+            }
+        }
+
+        val description = if (apartment.photos.isNotEmpty()) {
+            apartment.photos[0].name_ru ?: "Описание не доступно"
+        } else {
+            "Описание не доступно"
         }
         viewHolder.image_slider.setImageList(imageList)
-        viewHolder.twShortDescription.text = mdesc[apartment.roomtype.id]
+        viewHolder.twShortDescription.text = extractDescription(description)
         viewHolder.twPrice.text = apartment.roomtype.price + "₽" // "Цена: " +
-        viewHolder.twLevel.text = "Этаж: " + mlev[apartment.roomtype.id]
-        viewHolder.twArea.text = marea[apartment.roomtype.id] + " кв.м."
+        viewHolder.twLevel.text = "Этаж: " + extractFloor(description)
+        viewHolder.twArea.text = extractArea(description).toString() + " кв.м."
+        Log.d("level",description )
+
 
         viewHolder.image_slider.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
             override fun onGlobalLayout() {
@@ -171,18 +132,17 @@ class RoomtypeAdapter(
         }
     }
 
-
-
     fun filter(query: String) {
-        val filteredList = if (query.isEmpty() || query == "") {
+        val filteredList = if (query.isEmpty()) {
             originalList
         } else {
             originalList.filter { roomtypeWithPhotos ->
-                mdesc[roomtypeWithPhotos.roomtype.id]!!.contains(query, ignoreCase = true)
+                roomtypeWithPhotos.roomtype.name!!.contains(query, ignoreCase = true)
             }
         }
         submitList(filteredList)
     }
+
 
     override fun getItemViewType(position: Int): Int {
         val apartment = getItem(position)

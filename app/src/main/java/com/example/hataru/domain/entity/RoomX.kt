@@ -8,14 +8,14 @@ data class RoomX(
     val description: String,
     val adults: Int,
     val children: Int,
-    val photos: List<Photo>?, // Можете заменить на конкретный тип данных, если он известен
+    val photos: List<Photo>?,
     val order: Int,
     val accommodation_type: Int,
-    val bed_variant: Any?, // Можете заменить на конкретный тип данных, если он известен
-    val youtube_url: Any?, // Можете заменить на конкретный тип данных, если он известен
+    val bed_variant: Any?,
+    val youtube_url: Any?,
     val amenities: Map<String, X1>,
     val extra_array: Any?,
-    val name_ru: String, // Добавьте другие языки по необходимости
+    val name_ru: String?,
     val name_en: String,
     val name_de: String,
     val name_zh: String,

@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.os.Parcelable
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -46,19 +47,18 @@ class ListFlatsFragment : Fragment() {
 
 
         viewModel.combinedData.observe(viewLifecycleOwner) { (roomtypes, roomxList) ->
-            roomtypes?.let { roomtypes ->
-                roomxList?.let { roomxList ->
-                    roomtypeWithPhotosList = roomtypes.map { roomtype ->
-                        val matchingPhoto = roomxList.firstOrNull { roomx ->
-                            roomx.name == roomtype.name
-                        }?.photos ?: emptyList()
-                        RoomtypeWithPhotos(roomtype, matchingPhoto)
+            if (roomtypes != null && roomxList != null) {
+                roomtypeWithPhotosList = roomtypes.map { roomtype ->
+                    val matchingRoomXList = roomxList.filter { roomx ->
+                        roomx.name == roomtype.name
                     }
-                    setupRecyclerView()
-                    apartmentListAdapter.submitList(roomtypeWithPhotosList)
+                    RoomtypeWithPhotos(roomtype, matchingRoomXList)
                 }
+                Log.d("ListFlatsFragment", "roomtypeWithPhotosList заполнен с ${roomtypeWithPhotosList.size} элементами.")
+                apartmentListAdapter.submitList(roomtypeWithPhotosList)
             }
         }
+
 
 
         view.findViewById<ImageButton>(R.id.imageView7)?.setOnClickListener {
@@ -91,10 +91,7 @@ class ListFlatsFragment : Fragment() {
         super.onPause()
         clearSearchEditTextAndHideNoResults()
     }
-//    private fun isOnePaneMode(): Boolean {
-//        val apartmentContainer = activity?.findViewById<FragmentContainerView>(R.id.apartment_container)
-//        return apartmentContainer == null
-//    }
+
 
     override fun onResume() {
         super.onResume()
@@ -109,20 +106,43 @@ class ListFlatsFragment : Fragment() {
     }
 
     private fun performSearch() {
-        val query = view?.findViewById<EditText>(R.id.editText_search)?.text.toString().trim()
-        val filteredList = roomtypeWithPhotosList.filter { roomtypeWithPhotos ->
-            apartmentListAdapter.mdesc[roomtypeWithPhotos.roomtype.id]!!.contains(
-                query,
-                ignoreCase = true
-            )
+        val editTextSearch = view?.findViewById<EditText>(R.id.editText_search)
+        val query = editTextSearch?.text.toString().trim()
+
+        // Проверка наличия данных в roomtypeWithPhotosList
+        if (roomtypeWithPhotosList.isEmpty()) {
+            Log.d("performSearch", "Список roomtypeWithPhotosList пуст.")
+            return
         }
+
+        // Проверка наличия данных в строке поиска
+        if (query.isEmpty()) {
+            Log.d("performSearch", "Поисковый запрос пуст, сбрасываем список.")
+            apartmentListAdapter.submitList(roomtypeWithPhotosList)
+            view?.findViewById<TextView>(R.id.text_no_results)?.visibility = View.GONE
+            return
+        }
+
+        // Фильтруем список по названию
+        val filteredList = roomtypeWithPhotosList.filter { roomtypeWithPhotos ->
+            roomtypeWithPhotos.roomtype.name!!.contains(query, ignoreCase = true)
+        }
+
+        // Логгирование результатов фильтрации
+        Log.d("performSearch", "Фильтрованный список содержит ${filteredList.size} элементов.")
+
+        // Показываем или скрываем текст "Ничего не найдено"
         if (filteredList.isEmpty()) {
             view?.findViewById<TextView>(R.id.text_no_results)?.visibility = View.VISIBLE
         } else {
             view?.findViewById<TextView>(R.id.text_no_results)?.visibility = View.GONE
         }
-        apartmentListAdapter.filter(query)
+
+        // Обновляем адаптер с отфильтрованным списком
+        apartmentListAdapter.submitList(filteredList)
     }
+
+
 
 //    private fun isOnePaneMode(): Boolean {
 //        val apartmentContainer = activity?.findViewById<FragmentContainerView>(R.id.apartment_container)

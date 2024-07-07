@@ -105,19 +105,19 @@ class FavoriteFlatFragment : Fragment() {
     }
 
     private fun performSearch() {
-        val query = view?.findViewById<EditText>(R.id.editText_search)?.text.toString().trim()
-        val filteredList = roomtypeWithPhotosList.filter { roomtypeWithPhotos ->
-            apartmentListAdapter.mdesc[roomtypeWithPhotos.roomtype.id]!!.contains(
-                query,
-                ignoreCase = true
-            )
-        }
-        if (filteredList.isEmpty() && view?.findViewById<TextView>(R.id.text_no_favorite_flats)?.visibility == View.GONE) {
-            view?.findViewById<TextView>(R.id.text_no_results)?.visibility = View.VISIBLE
-        } else {
-            view?.findViewById<TextView>(R.id.text_no_results)?.visibility = View.GONE
-        }
-        apartmentListAdapter.filter(query)
+//        val query = view?.findViewById<EditText>(R.id.editText_search)?.text.toString().trim()
+//        val filteredList = roomtypeWithPhotosList.filter { roomtypeWithPhotos ->
+//            apartmentListAdapter.mdesc[roomtypeWithPhotos.roomtype.id]!!.contains(
+//                query,
+//                ignoreCase = true
+//            )
+//        }
+//        if (filteredList.isEmpty() && view?.findViewById<TextView>(R.id.text_no_favorite_flats)?.visibility == View.GONE) {
+//            view?.findViewById<TextView>(R.id.text_no_results)?.visibility = View.VISIBLE
+//        } else {
+//            view?.findViewById<TextView>(R.id.text_no_results)?.visibility = View.GONE
+//        }
+//        apartmentListAdapter.filter(query)
     }
 
 //    private fun isOnePaneMode(): Boolean {

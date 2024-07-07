@@ -195,15 +195,17 @@ class MapFragment : Fragment(), CameraListener, ViewTreeObserver.OnPreDrawListen
                     viewModel.combinedData.observe(viewLifecycleOwner) { (roomtypes, roomxList) ->
                         roomtypes?.let { roomtypes ->
                             roomxList?.let { roomxList ->
-                                roomtypeWithPhotosList = roomtypes.map { roomtype ->
-                                    val matchingPhoto = roomxList.firstOrNull { roomx ->
+                                // Преобразуем roomtypes в список RoomtypeWithPhotos
+                                val roomtypeWithPhotosList = roomtypes.map { roomtype ->
+                                    // Ищем все RoomX объекты, которые соответствуют данному Roomtype по имени
+                                    val matchingRoomXList = roomxList.filter { roomx ->
                                         roomx.name == roomtype.name
-                                    }?.photos ?: emptyList()
-                                    RoomtypeWithPhotos(roomtype, matchingPhoto)
+                                    }
+                                    // Создаем объект RoomtypeWithPhotos
+                                    RoomtypeWithPhotos(roomtype, matchingRoomXList)
                                 }
                                 adapter.submitList(roomtypeWithPhotosList)
-
-                            }
+                                }
                         }
                     }
 

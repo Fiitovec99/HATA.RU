@@ -10,7 +10,7 @@ plugins {
 
 android {
     namespace = "com.example.hataru"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         val apikeyPropertiesFile = project.file("apikey.properties")

@@ -3,12 +3,8 @@ package com.example.hataru.domain.entity
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
-
-
-
-
 @Parcelize
-data class Roomtype (
+data class Roomtype(
     var id: String? = null,
     var hotel_id: String? = null,
     var parent_id: String? = null,

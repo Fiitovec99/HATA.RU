@@ -89,7 +89,7 @@ class FavoriteFlatViewModel : ViewModel() {
                         Log.d("ROOMTYPE", roomtype.toString())
                         Log.d("photos", photos.toString())
                         // Добавление объекта RoomtypeWithPhotos в список
-                        favoriteFlatsList.add(RoomtypeWithPhotos(roomtype, photos))
+//                        favoriteFlatsList.add(RoomtypeWithPhotos(roomtype, photos))
                     }
                     _favoriteFlats.value = favoriteFlatsList
 
