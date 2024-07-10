@@ -72,6 +72,7 @@ import com.yandex.mapkit.map.MapObjectCollection
 import com.yandex.mapkit.map.MapObjectTapListener
 import com.yandex.mapkit.map.PlacemarkMapObject
 import com.yandex.mapkit.map.SizeChangedListener
+import com.yandex.mapkit.map.VisibleRegion
 import com.yandex.mapkit.mapview.MapView
 import com.yandex.runtime.image.ImageProvider
 import com.yandex.runtime.ui_view.ViewProvider
@@ -620,12 +621,12 @@ class MapFragment : Fragment(), CameraListener, ViewTreeObserver.OnPreDrawListen
     }
 
     override fun onCameraPositionChanged(
-        p0: Map,
-        p1: CameraPosition,
-        p2: CameraUpdateReason,
-        p3: Boolean,
+        map: Map,
+        cameraPosition: CameraPosition,
+        cameraUpdateReason: CameraUpdateReason,
+        finished: Boolean
     ) {
-        val visibleRegion = mapView.map.visibleRegion
+        val visibleRegion = map.visibleRegion
         val visibleFlats = flats?.filter { flat ->
             flat.geo_data?.let { geoData ->
                 val x = geoData.x?.toDoubleOrNull()
@@ -633,11 +634,7 @@ class MapFragment : Fragment(), CameraListener, ViewTreeObserver.OnPreDrawListen
 
                 if (x != null && y != null) {
                     val flatPoint = Point(x, y)
-                    isPointInVisibleRegion(
-                        flatPoint,
-                        visibleRegion.topLeft,
-                        visibleRegion.bottomRight
-                    )
+                    isPointInVisibleRegion(flatPoint, visibleRegion)
                 } else {
                     false
                 }
@@ -645,38 +642,82 @@ class MapFragment : Fragment(), CameraListener, ViewTreeObserver.OnPreDrawListen
         }
 
         viewModel.updateVisibleFlats(visibleFlats)
+    }
+
+    private fun isPointInVisibleRegion(point: Point, visibleRegion: VisibleRegion): Boolean {
+        val corners = listOf(
+            visibleRegion.topLeft,
+            visibleRegion.topRight,
+            visibleRegion.bottomRight,
+            visibleRegion.bottomLeft
+        )
+
+        return isPointInPolygon(point, corners)
+    }
+
+    private fun isPointInPolygon(point: Point, polygon: List<Point>): Boolean {
+        var intersectCount = 0
+        for (i in polygon.indices) {
+            val j = (i + 1) % polygon.size
+            if (rayIntersectsSegment(point, polygon[i], polygon[j])) {
+                intersectCount++
+            }
+        }
+        return (intersectCount % 2) == 1
+    }
+
+    private fun rayIntersectsSegment(point: Point, a: Point, b: Point): Boolean {
+        val px = point.longitude
+        val py = point.latitude
+        val ax = a.longitude
+        val ay = a.latitude
+        val bx = b.longitude
+        val by = b.latitude
+
+        if (ay > by) {
+            return rayIntersectsSegment(point, b, a)
+        }
+        if (py == ay || py == by) {
+            return rayIntersectsSegment(Point(px, py + 0.0001), a, b)
+        }
+        if (py < ay || py > by) {
+            return false
+        }
+        if (px >= maxOf(ax, bx)) {
+            return false
+        }
+        if (px < minOf(ax, bx)) {
+            return true
+        }
+
+        val red = if (ax != bx) (by - ay) / (bx - ax) else Double.MAX_VALUE
+        val blue = if (ax != px) (py - ay) / (px - ax) else Double.MAX_VALUE
+        return blue >= red
     }
 
     private fun setFirstFlats() {
-        val visibleRegion = mapView.map.visibleRegion
-        val visibleFlats = flats?.filter { flat ->
-            flat.geo_data?.let { geoData ->
-                val x = geoData.x?.toDoubleOrNull()
-                val y = geoData.y?.toDoubleOrNull()
-
-                if (x != null && y != null) {
-                    val flatPoint = Point(x, y)
-                    isPointInVisibleRegion(
-                        flatPoint,
-                        visibleRegion.topLeft,
-                        visibleRegion.bottomRight
-                    )
-                } else {
-                    false
-                }
-            } ?: false
-        }
-
-        viewModel.updateVisibleFlats(visibleFlats)
+//        val visibleRegion = mapView.map.visibleRegion  TODO
+//        val visibleFlats = flats?.filter { flat ->
+//            flat.geo_data?.let { geoData ->
+//                val x = geoData.x?.toDoubleOrNull()
+//                val y = geoData.y?.toDoubleOrNull()
+//
+//                if (x != null && y != null) {
+//                    val flatPoint = Point(x, y)
+//                    isPointInVisibleRegion(flatPoint, visibleRegion)
+//                } else {
+//                    false
+//                }
+//            } ?: false
+//        }
+//
+//        viewModel.updateVisibleFlats(visibleFlats)
     }
 
 
 
 
-    private fun isPointInVisibleRegion(point: Point, topLeft: Point, bottomRight: Point): Boolean {
-        return (point.latitude in bottomRight.latitude..topLeft.latitude) &&
-                (point.longitude in topLeft.longitude..bottomRight.longitude)
-    }
+
 
     private fun getRightStringForCountFlatsOnMap(count: Int): String {
         val lastDigit = count % 10
