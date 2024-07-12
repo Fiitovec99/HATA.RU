@@ -18,6 +18,7 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
 import android.os.Parcelable
+import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -32,6 +33,7 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.getSystemService
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.hataru.R
@@ -163,7 +165,15 @@ class MapFragment : Fragment(), CameraListener, ViewTreeObserver.OnPreDrawListen
         val bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet)
         bottomSheetBehavior.isHideable = false
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
-        bottomSheetBehavior.isDraggable = true
+
+        // Функция для проверки наличия 0 в тексте и настройки isDraggable
+        fun updateDraggableState() {
+            val str = binding.countFlatsOnMap.text.toString()
+            bottomSheetBehavior.isDraggable = !Regex(".*\\b0\\b.*").matches(str)
+        }
+
+        // Проверяем состояние при инициализации
+        updateDraggableState()
 
         bottomSheet.setOnClickListener {
             val str = binding.countFlatsOnMap.text.toString()
@@ -181,7 +191,6 @@ class MapFragment : Fragment(), CameraListener, ViewTreeObserver.OnPreDrawListen
             } else {
                 bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
             }
-
         }
 
         bottomSheetBehavior.addBottomSheetCallback(object :
@@ -192,7 +201,6 @@ class MapFragment : Fragment(), CameraListener, ViewTreeObserver.OnPreDrawListen
 
                 // Выполняем нужные действия в зависимости от состояния BottomSheet
                 if (isBottomSheetExpanded) {
-
                     viewModel.combinedData.observe(viewLifecycleOwner) { (roomtypes, roomxList) ->
                         roomtypes?.let { roomtypes ->
                             roomxList?.let { roomxList ->
@@ -206,19 +214,14 @@ class MapFragment : Fragment(), CameraListener, ViewTreeObserver.OnPreDrawListen
                                     RoomtypeWithPhotos(roomtype, matchingRoomXList)
                                 }
                                 adapter.submitList(roomtypeWithPhotosList)
-                                }
+                            }
                         }
                     }
 
                     binding.deleteFilter.visibility = View.GONE
                     binding.buttonFilterFlats.visibility = View.GONE
-
-
-                    // BottomSheet был выдвинут
-                    // Выполняем нужные действия
                 } else if (isBottomSheetHidden) {
                     // BottomSheet был скрыт
-                    // Выполняем нужные действия
                 } else {
                     binding.deleteFilter.visibility = View.VISIBLE
                     binding.buttonFilterFlats.visibility = View.VISIBLE
@@ -230,7 +233,13 @@ class MapFragment : Fragment(), CameraListener, ViewTreeObserver.OnPreDrawListen
                 binding.buttonFilterFlats.visibility = View.GONE
             }
         })
+
+        // Обновляем состояние draggable при изменении текста
+        binding.countFlatsOnMap.addTextChangedListener {
+            updateDraggableState()
+        }
     }
+
 
 
     private fun setupApartmentClickListener() {

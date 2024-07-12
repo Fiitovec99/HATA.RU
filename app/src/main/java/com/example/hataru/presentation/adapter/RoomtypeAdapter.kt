@@ -96,7 +96,7 @@ class RoomtypeAdapter(
         viewHolder.twPrice.text = apartment.roomtype.price + "₽" // "Цена: " +
         viewHolder.twLevel.text = "Этаж: " + extractFloor(description)
         viewHolder.twArea.text = extractArea(description).toString() + " кв.м."
-        Log.d("level",description )
+
 
 
         viewHolder.image_slider.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
