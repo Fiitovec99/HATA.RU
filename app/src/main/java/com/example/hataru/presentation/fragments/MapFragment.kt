@@ -166,10 +166,10 @@ class MapFragment : Fragment(), CameraListener, ViewTreeObserver.OnPreDrawListen
         bottomSheetBehavior.isHideable = false
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
 
-        // Функция для проверки наличия 0 в тексте и настройки isDraggable
+        // Функция для проверки наличия 0 или 1 в тексте и настройки isDraggable
         fun updateDraggableState() {
             val str = binding.countFlatsOnMap.text.toString()
-            bottomSheetBehavior.isDraggable = !Regex(".*\\b0\\b.*").matches(str)
+            bottomSheetBehavior.isDraggable = !Regex(".*\\b(0|1)\\b.*").matches(str)
         }
 
         // Проверяем состояние при инициализации
@@ -185,7 +185,7 @@ class MapFragment : Fragment(), CameraListener, ViewTreeObserver.OnPreDrawListen
             }
 
             if (bottomSheetBehavior.state == BottomSheetBehavior.STATE_COLLAPSED &&
-                !Regex(".*\\b0\\b.*").matches(str)
+                !Regex(".*\\b(0|1)\\b.*").matches(str)
             ) {
                 bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
             } else {
@@ -239,6 +239,7 @@ class MapFragment : Fragment(), CameraListener, ViewTreeObserver.OnPreDrawListen
             updateDraggableState()
         }
     }
+
 
 
 
