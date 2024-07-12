@@ -216,6 +216,7 @@ class ListFlatsFragment : Fragment() {
                 FlatFragment.KEY_GET_FLAT_INTO_FLATFRAGMENT,
                 it.roomtype as Parcelable
             )
+            args.putString("description", it.photos[0].name_ru)
 
             findNavController().navigate(R.id.flatFragment, args)
 
