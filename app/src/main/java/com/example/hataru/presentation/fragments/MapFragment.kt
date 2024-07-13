@@ -70,6 +70,8 @@ import com.yandex.mapkit.map.ClusterTapListener
 import com.yandex.mapkit.map.ClusterizedPlacemarkCollection
 import com.yandex.mapkit.map.IconStyle
 import com.yandex.mapkit.map.Map
+import com.yandex.mapkit.map.MapLoadStatistics
+import com.yandex.mapkit.map.MapLoadedListener
 import com.yandex.mapkit.map.MapObjectCollection
 import com.yandex.mapkit.map.MapObjectTapListener
 import com.yandex.mapkit.map.PlacemarkMapObject
@@ -78,6 +80,7 @@ import com.yandex.mapkit.map.VisibleRegion
 import com.yandex.mapkit.mapview.MapView
 import com.yandex.runtime.image.ImageProvider
 import com.yandex.runtime.ui_view.ViewProvider
+import kotlinx.coroutines.coroutineScope
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.Serializable
 import kotlin.math.pow
@@ -155,7 +158,7 @@ class MapFragment : Fragment(), CameraListener, ViewTreeObserver.OnPreDrawListen
 
         viewModel.visibleFlats.observe(viewLifecycleOwner) { visibleFlats ->
             binding.countFlatsOnMap.text =
-                "Обнаружено " + getRightStringForCountFlatsOnMap(visibleFlats?.size ?: 1)
+                "Обнаружено " + getRightStringForCountFlatsOnMap(visibleFlats?.size ?:0)
         }
         return binding.root
     }
@@ -179,9 +182,10 @@ class MapFragment : Fragment(), CameraListener, ViewTreeObserver.OnPreDrawListen
             val str = binding.countFlatsOnMap.text.toString()
 
             if (Regex(".*\\b1\\b.*").matches(str)) {
-                val flat = viewModel.visibleFlats.value!![0]
+                val flat = viewModel.visibleFlats.value?.get(0) ?: return@setOnClickListener
+
                 showFlatDetailsBySheetFragment(flat)
-                return@setOnClickListener
+
             }
 
             if (bottomSheetBehavior.state == BottomSheetBehavior.STATE_COLLAPSED &&
@@ -265,7 +269,8 @@ class MapFragment : Fragment(), CameraListener, ViewTreeObserver.OnPreDrawListen
         super.onViewCreated(view, savedInstanceState)
         initMap()
 
-        setFirstFlats()
+        
+
 
         adapter = RoomtypeAdapter(roomtypeWithPhotosList, requireContext())
         setupApartmentClickListener()
@@ -283,6 +288,7 @@ class MapFragment : Fragment(), CameraListener, ViewTreeObserver.OnPreDrawListen
 
             flats = it
             showFlatsOnMap(it)
+            setFirstFlats()
         }
 
         if (viewModel.latitude != 0.0 && viewModel.longitude != 0.0) {
@@ -302,10 +308,10 @@ class MapFragment : Fragment(), CameraListener, ViewTreeObserver.OnPreDrawListen
 
     }
 
-    fun getFlatsWithFilter(price_min: Double, price_max: Double): List<Roomtype> {
+    private fun getFlatsWithFilter(price_min: Double, price_max: Double): List<Roomtype> {
         val flats = viewModel.flats.value
         if (flats != null)
-            return flats.filter { flat: Roomtype -> flat.price.toDouble() >= price_min && flat.price.toDouble() <= price_max }
+            return flats.filter { flat: Roomtype -> flat.price.toDouble() in price_min..price_max }
         else
             return listOf()
     }
@@ -706,23 +712,35 @@ class MapFragment : Fragment(), CameraListener, ViewTreeObserver.OnPreDrawListen
     }
 
     private fun setFirstFlats() {
-//        val visibleRegion = mapView.map.visibleRegion  TODO
-//        val visibleFlats = flats?.filter { flat ->
-//            flat.geo_data?.let { geoData ->
-//                val x = geoData.x?.toDoubleOrNull()
-//                val y = geoData.y?.toDoubleOrNull()
-//
-//                if (x != null && y != null) {
-//                    val flatPoint = Point(x, y)
-//                    isPointInVisibleRegion(flatPoint, visibleRegion)
-//                } else {
-//                    false
-//                }
-//            } ?: false
-//        }
-//
-//        viewModel.updateVisibleFlats(visibleFlats)
+        val map = mapView?.map ?: run {
+            Log.e("MapFragment", "Map is not initialized")
+            return
+        }
+        val visibleRegion = map.visibleRegion
+
+        val flatList = flats ?: run {
+            Log.e("MapFragment", "Flats data is not available")
+            return
+        }
+        val visibleFlats = flatList.filter { flat ->
+            flat.geo_data?.let { geoData ->
+                val x = geoData.x?.toDoubleOrNull()
+                val y = geoData.y?.toDoubleOrNull()
+
+                if (x != null && y != null) {
+                    val flatPoint = Point(x, y)
+                    isPointInVisibleRegion(flatPoint, visibleRegion)
+                } else {
+                    false
+                }
+            } ?: false
+        }
+
+        viewModel.updateVisibleFlats(visibleFlats)
     }
+
+
+
 
 
 
@@ -830,5 +848,7 @@ class MapFragment : Fragment(), CameraListener, ViewTreeObserver.OnPreDrawListen
     private fun initMap() {
         mapView = binding.mapview
     }
+
+
 
 }
