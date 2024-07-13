@@ -3,7 +3,15 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:paddingBottom="0dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="16dp"
+        android:paddingTop="16dp"
+        android:paddingRight="16dp"
+        style="@style/BACKGROUND_CARDVIEW_FLAT">
 
     <TextView
         android:id="@+id/questionTextView"
@@ -11,12 +19,17 @@
         android:layout_height="wrap_content"
         android:textSize="18sp"
         android:textStyle="bold"
-        android:layout_marginBottom="8dp"/>
+        android:layout_marginBottom="8dp"
+        style="@style/QUESTION"/>
+
+    </LinearLayout>
 
     <TextView
         android:id="@+id/answerTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="16sp" />
+        android:textSize="16sp"
+        android:padding="16dp"
+        style="@style/ANSWER"/>
 
 </LinearLayout>
