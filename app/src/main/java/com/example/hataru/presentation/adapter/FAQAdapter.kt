@@ -1,6 +1,8 @@
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hataru.R
@@ -25,11 +27,13 @@ class FAQAdapter(private val faqList: List<FAQItem>) :
     }
 
     inner class FAQViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        private val questionContainer: RelativeLayout = itemView.findViewById(R.id.questionContainer)
         private val questionTextView: TextView = itemView.findViewById(R.id.questionTextView)
         private val answerTextView: TextView = itemView.findViewById(R.id.answerTextView)
+        private val arrowImageView: ImageView = itemView.findViewById(R.id.more)
 
         init {
-            questionTextView.setOnClickListener {
+            questionContainer.setOnClickListener {
                 val faqItem = faqList[adapterPosition]
                 faqItem.isExpanded = !faqItem.isExpanded
                 notifyItemChanged(adapterPosition)
@@ -40,6 +44,9 @@ class FAQAdapter(private val faqList: List<FAQItem>) :
             questionTextView.text = faqItem.question
             answerTextView.text = faqItem.answer
             answerTextView.visibility = if (faqItem.isExpanded) View.VISIBLE else View.GONE
+
+            val rotationAngle = if (faqItem.isExpanded) 180f else 0f
+            arrowImageView.animate().rotation(rotationAngle).setDuration(300).start()
         }
     }
 }
