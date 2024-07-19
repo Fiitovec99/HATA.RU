@@ -323,7 +323,7 @@ class MapFragment : Fragment(), CameraListener, ViewTreeObserver.OnPreDrawListen
             deleteFilter.setOnClickListener {
                 binding.persistentBottomSheet.visibility = View.VISIBLE
                 clasterizedCollection.clear()
-                showFlatsOnMap(viewModel.flats.value!!.toList())
+                showFlatsOnMap(viewModel.flats.value?.toList() ?: emptyList())
                 currentCostTextView.visibility = View.GONE
 
                 val sharedPreferences = requireContext().getSharedPreferences("PriceFilterPrefs", Context.MODE_PRIVATE)
